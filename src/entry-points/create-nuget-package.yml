@@ -1,0 +1,88 @@
+parameters:
+  - name: vmImage
+    displayName: Virtual Machine Image
+    type: string
+    default: 'ubuntu-latest' # windows-latest, macos-latest
+  - name: configuration
+    displayName: Configuration
+    type: string
+    default: Release
+  - name: platform
+    displayName: Platform
+    type: string
+    default: 'Any CPU' # x86, x64, ARM
+  - name: projectName
+    displayName: Project Name
+    type: string
+  - name: targetFramework # When specified, irrelevant tasks will be not be shown in the pipeline
+    displayName: Target Framework
+    type: string
+    default: NotSpecified # DotNet, DotNetCore, DotNetStandard, DotNetFramework, MultiTarget
+  - name: dotNetSDKVersion
+    displayName: .NET SDK Version
+    type: string
+    default: ''
+  - name: releaseNotes
+    displayName: Release Notes
+    type: string
+    default: ''
+  - name: azureDevOpsPackageFeed
+    displayName: Azure DevOps Package Feed
+    type: string
+    default: '' # If specified, the default AzureDevOpsPackageFeed global variable will be overwritten
+  - name: includeAzureDevOpsPush # Push package to an Azure DevOps feed?
+    displayName: Include Azure DevOps Push
+    type: boolean
+    default: true
+  - name: includeGitHubPush # Push to GitHub packages?
+    displayName: Include GitHub Push
+    type: boolean
+    default: true
+  - name: runTests
+    displayName: Run Tests
+    type: boolean
+    default: true
+  - name: testMode # Allow for skipping package push steps, symbol publication, etc.
+    displayName: Test Mode
+    type: boolean
+    default: false 
+  - name: includeLogSteps
+    displayName: Include Log Steps
+    default: true
+
+variables:
+  - name: VirtualMachineImage
+    value: ${{ parameters.vmImage }}
+  - name: Configuration
+    value: ${{ parameters.configuration }}
+  - name: Platform
+    value: ${{ parameters.platform }}
+  - name: ProjectName
+    value: ${{ parameters.projectName }}
+  - name: TargetFramework
+    value: ${{ parameters.targetFramework }}
+  - name: DotNetSDKVersion
+    value: ${{ parameters.dotNetSDKVersion }}
+  - name: ReleaseNotes
+    value: ${{ parameters.releaseNotes }}
+  - name: RunTests
+    value: ${{ parameters.runTests }}
+  - name: TestMode
+    value: ${{ parameters.testMode }}
+  - group: GlobalSecrets # Must be defined as a variable group in the Azure DevOps UI
+  - template: '../templates/shared/variables/global-variables.yml'
+  - template: '../templates/create-nuget-package/variables/create-nuget-package-variables.yml'
+  
+jobs:
+  - job: createPackage
+    displayName: Create NuGet Package
+    continueOnError: false
+    steps:
+      - template: ../templates/create-nuget-package/steps/create-nuget-package-steps.yml
+        parameters:
+          targetFramework: ${{ parameters.targetFramework }}
+          dotNetSDKVersion: ${{ parameters.dotNetSDKVersion }}
+          azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}
+          includeAzureDevOpsPush : ${{ parameters.includeAzureDevOpsPush }}
+          includeGitHubPush : ${{ parameters.includeGitHubPush }}
+          includeLogSteps: ${{ parameters.includeLogSteps }}

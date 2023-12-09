@@ -1,0 +1,8 @@
+steps:
+- task: UseDotNet@2
+  name: UseDotNetSDKVersionSpecified
+  displayName: Use .NET SDK
+  condition: and(succeeded(), ne(variables['DotNetSDKVersion'], ''))
+  inputs:
+    packageType: 'sdk'
+    version: '$(DotNetSDKVersion)' # https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/releases-index.json

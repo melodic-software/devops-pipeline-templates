@@ -1,0 +1,18 @@
+parameters:
+  azureDevOpsPackageFeed: ''
+
+steps:
+- task: PowerShell@2
+  name: OverrideGlobalVariables # Override pipeline specific OR global variables here.
+  displayName: Override Variables
+  condition: succeeded()
+  inputs:
+    targetType: 'inline'
+    script: |
+      $AzureDevOpsPackageFeed = "${{ parameters.azureDevOpsPackageFeed }}"
+
+      if (-not [string]::IsNullOrEmpty($AzureDevOpsPackageFeed)) {
+          Write-Host "AzureDevOpsPackageFeed: $AzureDevOpsPackageFeed"
+          Write-Host "##vso[task.setvariable variable=AzureDevOpsPackageFeed]$AzureDevOpsPackageFeed"
+      }
+    pwsh: true

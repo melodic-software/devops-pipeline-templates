@@ -1,0 +1,20 @@
+steps:
+- task: VSTest@2
+  name: RunTestsDotNetFramework
+  displayName: Run Tests
+  condition: and(succeeded(), eq(variables['DotNetSDKVersion'], ''), eq(variables['RunTests'], true))
+  inputs:
+    testSelector: 'testAssemblies' # making sure we are selecting test assemblies and not test plan
+    testAssemblyVer2: |
+      **\tests\**\bin\$(Configuration)\*.dll
+      **\tests\**\*.Test.dll
+      **\tests\**\*.Tests.dll
+      !**\*TestAdapter.dll  # exclude these files
+      !**\obj\**  # exclude any dlls within obj directories
+    searchFolder: '$(Build.SourcesDirectory)\$(SelfRepositoryFolder)' # Directory to search for the assemblies; usually the place where the build step outputs assemblies
+    vsTestVersion: 'latest' # or specify a specific version if needed
+    platform: '$(Platform)'
+    configuration: '$(Configuration)'
+    codeCoverageEnabled: true
+    diagnosticsEnabled: true # change this to true if you want more detailed logs
+    # You can specify other configurations here like other console options, custom adapters etc.

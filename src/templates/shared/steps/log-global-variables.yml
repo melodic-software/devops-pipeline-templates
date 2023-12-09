@@ -1,0 +1,51 @@
+steps:
+- task: PowerShell@2
+  name: LogGlobalVariables
+  displayName: Log Global Variables
+  condition: succeeded()
+  continueOnError: true
+  inputs:
+    targetType: 'inline'
+    script: |
+      function Log-PipelineVariable {
+        param (
+          [string]$VariableName,
+          [string]$DisplayName
+        )
+        $Variable = Get-Item -Path Env:$VariableName -ErrorAction SilentlyContinue
+        if ($Variable) {
+          Write-Host "${DisplayName}: $($Variable.Value)"
+        } else {
+          Write-Host "$DisplayName is not set"
+        }
+      }
+
+      # Hashtables mapping environment variable names to their Azure DevOps pipeline name
+      
+      $VariableDisplayNames = [ordered]@{
+        "COMPANYNAME" = "CompanyName"
+        "NUGETTOOLINSTALLVERSIONSPEC" = "NugetToolInstallVersionSpec"
+        "SELFREPOSITORYFOLDER" = "SelfRepositoryFolder"
+        "BUILDTEMPLATEREPOSITORYFOLDER" = "BuildTemplateRepositoryFolder"
+        "BUILDTEMPLATEBRANCHNAME" = "BuildTemplateBranchName"
+        "SHAREDTEMPLATEDIRECTORY" = "SharedTemplateDirectory"
+        "SHAREDTEMPLATEPOWERSHELLDIRECTORY" = "SharedTemplatePowerShellDirectory"
+      }
+
+      $DynamicVariableDisplayNames = [ordered]@{
+        # These are dynamically determined in an initial script step when the pipeline runs
+        "ISWINDOWS" = "IsWindows"
+      }
+
+      # Logging variables
+      Write-Host "VARIABLES"
+      foreach ($VariableName in $VariableDisplayNames.Keys) {
+        Log-PipelineVariable -VariableName $VariableName -DisplayName $VariableDisplayNames[$VariableName]
+      }
+
+      # Logging dynamic variables
+      Write-Host "DYNAMIC VARIABLES"
+      foreach ($VariableName in $DynamicVariableDisplayNames.Keys) {
+        Log-PipelineVariable -VariableName $VariableName -DisplayName $DynamicVariableDisplayNames[$VariableName]
+      }
+    pwsh: true

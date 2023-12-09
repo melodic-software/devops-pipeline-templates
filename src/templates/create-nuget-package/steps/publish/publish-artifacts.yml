@@ -1,0 +1,6 @@
+steps:
+- task: PublishBuildArtifacts@1
+  name: PublishArtifacts
+  displayName: Publish Artifacts
+  condition: succeeded()
+  continueOnError: false

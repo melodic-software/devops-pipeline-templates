@@ -1,0 +1,16 @@
+steps:
+# https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/dotnet-core-cli-v2
+# https://learn.microsoft.com/en-us/nuget/reference/msbuild-targets#pack-target
+# https://www.frakkingsweet.com/adding-metadata-to-nuget-packages-in-azure-devops-pipelines/
+- task: DotNetCoreCLI@2
+  displayName: NuGet Pack
+  condition: and(succeeded(), ne(variables['DotNetSDKVersion'], ''))
+  inputs:
+    command: pack
+    packagesToPack: '**/$(ProjectName).csproj' # **/*.csproj;!**/*.Tests.csproj
+    configuration: $(Configuration)
+    nobuild: true # project has already been built in a previous step
+    includesymbols: true # creates symbol NuGet packages
+    includesource: false
+    versioningScheme: byEnvVar
+    versionEnvVar: GitVersion_SemVer # alternative syntax GITVERSION_SEMVER (the former gets converted into the latter internally) - another older format: GitVersion.NuGetVersionV2

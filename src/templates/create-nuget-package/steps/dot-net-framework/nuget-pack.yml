@@ -1,0 +1,12 @@
+steps:
+- task: NuGetCommand@2
+  displayName: Nuget Pack
+  condition: and(succeeded(), eq(variables['DotNetSDKVersion'], '')) # Run if DotNetSDKVersion is not defined or empty
+  inputs:
+    command: pack
+    packagesToPack: '**/$(ProjectName).csproj' # This should be the path to the .csproj or .nuspec file
+    configuration: $(Configuration)
+    versioningScheme: byEnvVar
+    versionEnvVar: GitVersion_SemVer
+    includeSymbols: true
+    symbolPackageFormat: snupkg

@@ -1,0 +1,106 @@
+steps:
+- task: PowerShell@2
+  name: ExtractDotNetFrameworkProjectInfo
+  displayName: Extract .NET Framework Project Info'
+  condition: succeeded()
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Define base directories and script locations
+      $BaseDirectory = "$(Build.SourcesDirectory)"
+      $BuildTemplatesDirectory = "$(BuildTemplateRepositoryFolder)"
+      $PowerShellScriptsDirectory = "$(PowerShellScriptsDirectory)"
+      
+      # Construct the path to the primary script
+      $ScriptName = "extract-dotnet-framework-project-info"
+      $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, $ScriptName, "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
+      $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
+
+      # Define the script parameters
+      $SourceDirectory = ("$(Build.SourcesDirectory)", "$(SelfRepositoryFolder)" -join [IO.Path]::DirectorySeparatorChar)
+      $ProjectName = "$(ProjectName)"
+
+      # Log the script path and variables for debugging purposes
+      Write-Host "ScriptPath: $ScriptPath"
+      Write-Host "SourceDirectory: $SourceDirectory"
+      Write-Host "ProjectName: $ProjectName"
+
+      # Execute the script with the necessary parameters
+      & $ScriptPath -SourceDirectory $SourceDirectory -ProjectName $ProjectName
+    pwsh: true
+
+# https://marketplace.visualstudio.com/items?itemName=bleddynrichards.Assembly-Info-Task
+# https://github.com/BMuuN/vsts-assemblyinfo-task/wiki
+# https://learn.microsoft.com/en-us/nuget/create-packages/package-authoring-best-practices
+# https://learn.microsoft.com/en-us/dotnet/standard/assembly/set-attributes
+- task: Assembly-Info-NetFramework@3
+  name: SetAssemblyMetadataDotNetFramework
+  displayName: Set Assembly Metadata
+  condition: and(succeeded(), eq(variables['DotNetSDKVersion'], ''))
+  inputs:
+    Path: '$(Build.SourcesDirectory)'
+    FileNames: '**\$(ProjectName)\**\AssemblyInfo.cs'
+    InsertAttributes: true
+    FileEncoding: 'auto'
+    WriteBOM: true
+    Title: '$(NugetPackageTitle)'
+    Product: ''
+    Description: '$(NuGetPackageDescription)'
+    Company: '$(CompanyName)'
+    Copyright: 'Copyright $(date:YYYY) $(CompanyName)' # what's the preferred format here?
+    #Trademark: ''
+    #Culture: 'en-US' # informs the resource manager of the default culture for the assembly
+    Configuration: '$(Configuration)'
+    VersionNumber: '$(AssemblyVersion)'
+    FileVersionNumber: '$(FileVersion)' # https://learn.microsoft.com/en-us/dotnet/standard/assembly/set-attributes
+    InformationalVersion: '$(InformationalVersion)' # https://learn.microsoft.com/en-us/dotnet/standard/assembly/set-attributes
+    LogLevel: 'verbose'
+    FailOnWarning: true
+    DisableTelemetry: true # if not disabled, anonymous usage data is collected to help improve the product
+    #UpdateBuildNumber: '$(Build.DefinitionName)_$(SemVer)'
+    #AddBuildTag: 'v$(SemVer)'
+
+- task: PowerShell@2
+  name: UpdateProjectPropertiesDotNetFramework
+  displayName: Update Project Properties
+  condition: and(succeeded(), eq(variables['DotNetSDKVersion'], ''))
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Define base directories and script locations
+      $BaseDirectory = "$(Build.SourcesDirectory)"
+      $BuildTemplatesDirectory = "$(BuildTemplateRepositoryFolder)"
+      $PowerShellScriptsDirectory = "$(PowerShellScriptsDirectory)"
+      
+      # Construct the path to the primary script
+      $ScriptName = "update-project-properties"
+      $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, $ScriptName, "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
+      $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
+
+      # Define the script parameters
+      $SourceDirectory = "$(Build.SourcesDirectory)"
+      $RepositoryName = "$(SelfRepositoryFolder)"
+
+      # E:\Agent1\_work\147\s\demo-package
+      # This helps create deterministic builds by mapping the absolute paths to a common root, which can also aid in Source Link support
+      $PathMap = "${SourceDirectory}\${RepositoryName}=\repo"
+
+      # Define the script parameters hashtable for splatting
+      $Params = @{
+        SourceDirectory = ("$(Build.SourcesDirectory)", "$(SelfRepositoryFolder)" -join [IO.Path]::DirectorySeparatorChar)
+        ProjectName = "$(ProjectName)"
+        RepositoryCommit = "$(Build.SourceVersion)"
+        RepositoryBranch = "$(Build.SourceBranchName)"
+        AssemblyOriginatorKeyFile = "$(DownloadNuGetSigningKey.secureFilePath)"
+        PathMap = $PathMap
+        IsDotNetFrameworkTarget = $true
+        OverwriteExisting = $false
+      }
+
+      # Log the constructed paths for debugging purposes
+      Write-Host "ScriptPath: $ScriptPath"
+      Write-Host "Parameters: $($Params | Out-String)"
+
+      # Execute the script with splatting
+      & $ScriptPath @Params
+    pwsh: true

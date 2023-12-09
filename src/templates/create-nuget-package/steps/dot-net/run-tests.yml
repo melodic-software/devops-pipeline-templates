@@ -1,0 +1,10 @@
+steps:
+- task: DotNetCoreCLI@2
+  name: RunTestsDotNet
+  displayName: Run Tests
+  condition: and(succeeded(), ne(variables['DotNetSDKVersion'], ''), eq(variables['RunTests'], true))
+  inputs:
+    command: 'test'
+    projects: '**/tests/**/*.csproj' # this is a convention - all tests are placed in a "tests" folder at the root
+    arguments: '--configuration $(Configuration) --collect "$(CodeCoverageFramework)" --verbosity detailed'
+    publishTestResults: true  # This is optional but recommended for better tracking of test results

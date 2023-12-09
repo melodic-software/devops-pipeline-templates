@@ -1,0 +1,28 @@
+parameters:
+  azureDevOpsPackageFeed: ''
+  includeLogSteps: false
+
+steps:
+- ${{ if ne(parameters.azureDevOpsPackageFeed, '') }}:
+  - template: ./override-variables.yml
+    parameters:
+      azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}
+      # Add any additional variables (via parameter pass-through) that can optionally be overridden
+
+- template: ../../../shared/steps/update-global-variables.yml
+
+- ${{ if eq(parameters.includeLogSteps, true) }}:
+  - template: ../../../shared/steps/log-global-variables.yml
+  - template: ./log-variables.yml # These are specific to this pipeline template
+  - template: ../../../shared/steps/log-git-info.yml
+  - template: ../../../shared/steps/log-powershell-version.yml
+
+- template: ../../../shared/steps/nuget-tool-install.yml
+- template: ./checkout.yml
+
+- ${{ if eq(parameters.includeLogSteps, true) }}:
+  - template: ../../../shared/steps/log-predefined-variables.yml # Must run AFTER the checkout step
+
+- template: ./git-version.yml
+- template: ./update-release-notes.yml
+- template: ./download-signing-key.yml

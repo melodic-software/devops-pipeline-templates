@@ -1,0 +1,13 @@
+variables:
+  - name: NuGetAssemblySnkFile
+    value: 'melodic-nuget.snk'
+  - name: PackagePrefix
+    value: 'Melodic'
+  - name: AzureDevOpsPackageFeed
+    value: 'melodic-main/main-nuget'
+  - name: GitHubPackageFeed
+    value: 'https://nuget.pkg.github.com/melodic-software/index.json'
+  - name: PackageSymbolsFilePath
+    value: ''
+  - name: PowerShellScriptsDirectory
+    value: 'src/templates/create-nuget-package/powershell'

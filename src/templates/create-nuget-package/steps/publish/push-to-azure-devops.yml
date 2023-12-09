@@ -1,0 +1,21 @@
+steps:
+# https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/nuget-command-v2
+- task: NuGetCommand@2
+  name: PushToAzureDevOps
+  displayName: Push To Azure DevOps
+  condition: |
+    and(
+      succeeded(),
+      ne(variables['AzureDevOpsPackageFeed'], ''),
+      eq(variables['TestMode'], 'false'),
+      ne(variables['Build.Reason'], 'PullRequest')
+    )
+  continueOnError: true
+  inputs:
+    command: push
+    packagesToPush: $(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg # $(Build.ArtifactStagingDirectory)/**/*.nupkg 
+    nuGetFeedType: internal
+    publishVstsFeed: $(AzureDevOpsPackageFeed)
+    allowPackageConflicts: true # ignores packages that already exist
+    publishPackageMetadata: true
+    verbosityPush: Detailed

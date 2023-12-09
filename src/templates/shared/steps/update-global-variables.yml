@@ -1,0 +1,30 @@
+steps:
+- task: PowerShell@2
+  name: UpdateGlobalVariables
+  displayName: Update Global Variables
+  condition: succeeded()
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Set global dynamic variables
+
+      # $IsWindows is predefined (when using PowerShell Core)
+      # TODO: do we need to add a fallback here just in case PowerShell Core is not installed?
+      Write-Host "##vso[task.setvariable variable=IsWindows]$IsWindows"
+
+      if ($IsWindows) {
+        # We're on Windows, so format the path in Windows style
+        $SharedTemplateDirectory = "$(SharedTemplateDirectory)" -replace '/', '\'
+        $SharedTemplatePowerShellDirectory = "$(SharedTemplatePowerShellDirectory)" -replace '/', '\'
+
+        # Update the Azure DevOps variable with the new value
+        Write-Host "##vso[task.setvariable variable=SharedTemplateDirectory]$SharedTemplateDirectory"
+        Write-Host "##vso[task.setvariable variable=SharedTemplatePowerShellDirectory]$SharedTemplatePowerShellDirectory"
+
+        Write-Host "Global variables updated."
+      }
+      else {
+        # If we're not on Windows, no change is needed as the path separator for variables should be '/'
+        Write-Host "No updates required."
+      }
+    pwsh: true

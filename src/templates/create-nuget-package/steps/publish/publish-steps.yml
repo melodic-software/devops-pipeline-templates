@@ -1,0 +1,13 @@
+parameters:
+  - name: includeAzureDevOpsPush
+    type: boolean
+  - name: includeGitHubPush
+    type: boolean
+
+steps:
+- template: ./publish-artifacts.yml
+- ${{ if eq(parameters.includeAzureDevOpsPush, true) }}:
+  - template: ./push-to-azure-devops.yml
+- ${{ if eq(parameters.includeGitHubPush, true) }}:
+  - template: ./push-to-github.yml
+- template: ./publish-symbols.yml

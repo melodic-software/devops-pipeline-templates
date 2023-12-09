@@ -1,0 +1,169 @@
+parameters:
+- name: workingDirectory
+  type: string
+  default: $(Build.SourcesDirectory)/$(SelfRepositoryFolder)
+- name: configFilePath
+  type: string
+  default: $(Build.SourcesDirectory)/$(BuildTemplateRepositoryFolder)/src/templates/create-nuget-package/git-version/GitVersion.yml
+- name: gitVersionSpec
+  type: string
+  default: 5.x # latest
+
+steps:
+- task: PowerShell@2
+  name: StoreOriginalBuildNumber
+  displayName: Store Original Build Number
+  condition: succeeded()
+  inputs:
+    targetType: 'inline'
+    script: |
+      # this gets overwritten by the GitVersion task, so we copy the original value and set it to a new variable
+      # we use it later to extract the revision number, and in publish symbol artifacts step
+      Write-Host "Original Build Number: $(Build.BuildNumber)"
+      Write-Host "##vso[task.setvariable variable=Build.OriginalBuildNumber;]$(Build.BuildNumber)"
+    pwsh: true
+
+# https://github.com/GitTools/actions/blob/main/docs/examples/azure/gitversion/setup/usage-examples.md
+- task: gitversion/setup@0
+  name: InstallGitVersion
+  displayName: Install GitVersion
+  condition: succeeded()
+  inputs:
+    versionSpec: ${{ parameters.gitVersionSpec }}
+    preferLatestVersion: true
+    includePrerelease: false
+
+- task: PowerShell@2
+  name: ConfigureGitVersion
+  displayName: Configure GitVersion
+  condition: succeeded()
+  continueOnError: false
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Define base directories and script locations
+      $BaseDirectory = "$(Build.SourcesDirectory)"
+      $BuildTemplatesDirectory = "$(BuildTemplateRepositoryFolder)"
+      $PowerShellScriptsDirectory = "$(PowerShellScriptsDirectory)"
+      
+      # Construct the path to the primary script
+      $ScriptName = "configure-git-version"
+      $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, $ScriptName, "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
+      $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
+
+      # Define the script parameters
+      $SourceBranch = "$(Build.SourceBranch)"
+      $GitVersionConfigPath = "${{ parameters.configFilePath }}"
+
+      if ($IsWindows) {
+        # We're on Windows, so format the path in Windows style
+        $GitVersionConfigPath = $GitVersionConfigPath -replace '/', '\'
+      }
+
+      # Log the script path and variables for debugging purposes
+      Write-Host "ScriptPath: $ScriptPath"
+      Write-Host "SourceBranch: $SourceBranch"
+      Write-Host "GitVersionConfigPath: $GitVersionConfigPath"
+      Write-Host "WorkingDirectory: $BaseDirectory"
+
+      # Execute the script with the necessary parameters
+      & $ScriptPath -SourceBranch $SourceBranch -GitVersionConfigPath $GitVersionConfigPath -WorkingDirectory $BaseDirectory
+      
+      # Confirm completion
+      Write-Host "GitVersion configured."
+    pwsh: true
+
+# https://github.com/GitTools/actions/blob/main/docs/examples/azure/gitversion/execute/usage-examples.md
+# https://gitversion.net/docs/usage/cli/arguments
+- task: gitversion/execute@0
+  name: DetermineVersion
+  displayName: Determine Version
+  condition: succeeded()
+  inputs:
+    targetPath: ${{ parameters.workingDirectory }}
+    useConfigFile: true
+    configFilePath: ${{ parameters.configFilePath }}
+    additionalArguments: '/output buildserver /nocache'
+
+# - task: PowerShell@2
+#   name: DisplayGitVersionVariables
+#   displayName: Display GitVersion Variables
+#   condition: succeeded()
+#   inputs:
+#     targetType: 'inline'
+#     script: |
+#       Write-Output "Major: $(Major)"
+#       Write-Output "Minor: $(Minor)"
+#       Write-Output "Patch: $(Patch)"
+#       Write-Output "PreReleaseTag: $(PreReleaseTag)"
+#       Write-Output "PreReleaseTagWithDash: $(PreReleaseTagWithDash)"
+#       Write-Output "PreReleaseLabel: $(PreReleaseLabel)"
+#       Write-Output "PreReleaseNumber: $(PreReleaseNumber)"
+#       Write-Output "WeightedPreReleaseNumber: $(WeightedPreReleaseNumber)"
+#       Write-Output "BuildMetaData: $(BuildMetaData)"
+#       Write-Output "BuildMetaDataPadded: $(BuildMetaDataPadded)"
+#       Write-Output "FullBuildMetaData: $(FullBuildMetaData)"
+#       Write-Output "MajorMinorPatch: $(MajorMinorPatch)"
+#       Write-Output "SemVer: $(SemVer)"
+#       Write-Output "LegacySemVer: $(LegacySemVer)"
+#       Write-Output "LegacySemVerPadded: $(LegacySemVerPadded)"
+#       Write-Output "AssemblySemVer: $(AssemblySemVer)"
+#       Write-Output "AssemblySemFileVer: $(AssemblySemFileVer)"
+#       Write-Output "FullSemVer: $(FullSemVer)"
+#       Write-Output "InformationalVersion: $(InformationalVersion)"
+#       Write-Output "BranchName: $(BranchName)"
+#       Write-Output "EscapedBranchName: $(EscapedBranchName)"
+#       Write-Output "Sha: $(Sha)"
+#       Write-Output "ShortSha: $(ShortSha)"
+#       Write-Output "NuGetVersionV2: $(NuGetVersionV2)"
+#       Write-Output "NuGetVersion: $(NuGetVersion)"
+#       Write-Output "NuGetPreReleaseTagV2: $(NuGetPreReleaseTagV2)"
+#       Write-Output "NuGetPreReleaseTag: $(NuGetPreReleaseTag)"
+#       Write-Output "VersionSourceSha: $(VersionSourceSha)"
+#       Write-Output "CommitsSinceVersionSource: $(CommitsSinceVersionSource)"
+#       Write-Output "CommitsSinceVersionSourcePadded: $(CommitsSinceVersionSourcePadded)"
+#       Write-Output "UncommittedChanges: $(UncommittedChanges)"
+#       Write-Output "CommitDate: $(CommitDate)"
+#     pwsh: true
+
+- task: PowerShell@2
+  name: SetAssemblyVersionVariables
+  displayName: Set Assembly Version Variables
+  condition: succeeded()
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Define base directories and script locations
+      $BaseDirectory = "$(Build.SourcesDirectory)"
+      $BuildTemplatesDirectory = "$(BuildTemplateRepositoryFolder)"
+      $PowerShellScriptsDirectory = "$(PowerShellScriptsDirectory)"
+      
+      # Construct the path to the primary script
+      $ScriptName = "set-assembly-version-variables"
+      $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, $ScriptName, "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
+      $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
+
+      # Define the script parameters
+      $BuildId = "$(Build.BuildId)"
+      $BuildNumber = "$(Build.OriginalBuildNumber)"
+      $SemVer = "$(SemVer)"
+      $Major = "$(Major)"
+      $Minor = "$(Minor)"
+      $Patch = "$(Patch)"
+      $PreReleaseLabel = "$(PreReleaseLabel)"
+      $ShortSha = "$(ShortSha)"
+
+      # Log the script path
+      # Variables are logged internally so we're not going to duplicate here
+      Write-Host "ScriptPath: $ScriptPath"
+
+      # Execute the script with the necessary parameters
+      & $ScriptPath -BuildId $BuildId `
+                    -BuildNumber $BuildNumber `
+                    -SemVer $SemVer `
+                    -Major $Major `
+                    -Minor $Minor `
+                    -Patch $Patch `
+                    -PreReleaseLabel $PreReleaseLabel `
+                    -ShortSha $ShortSha
+    pwsh: true

@@ -1,0 +1,26 @@
+parameters:
+  targetFramework: ''
+  dotNetSDKVersion: ''
+  azureDevOpsPackageFeed: ''
+  includeAzureDevOpsPush: true
+  includeGitHubPush: false
+  includeLogSteps: false
+  
+steps:
+- template: ./pre-process/preprocess-steps.yml
+  parameters:
+    azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}
+    includeLogSteps: ${{ parameters.includeLogSteps }}
+
+- ${{ if or(eq(parameters.targetFramework, 'DotNet'), eq(parameters.targetFramework, 'DotNetStandard'), eq(parameters.targetFramework, 'NotSpecified')) }}:
+  - template: ./dot-net/dot-net-steps.yml
+    parameters:
+      dotNetSDKVersion: ${{ parameters.dotNetSDKVersion }}
+
+- ${{ if or(eq(parameters.targetFramework, 'DotNetFramework'), eq(parameters.targetFramework, 'NotSpecified')) }}:
+  - template: ./dot-net-framework/dot-net-framework-steps.yml
+
+- template: ./publish/publish-steps.yml
+  parameters:
+    includeAzureDevOpsPush : ${{ parameters.includeAzureDevOpsPush }}
+    includeGitHubPush : ${{ parameters.includeGitHubPush }}

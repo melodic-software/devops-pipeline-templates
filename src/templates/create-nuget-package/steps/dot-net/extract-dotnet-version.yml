@@ -1,0 +1,49 @@
+steps:
+- task: PowerShell@2
+  name: ExtractDotNetSDKVersion
+  displayName: Extract .NET SDK Version
+  
+  condition: and(succeeded(), eq(variables['DotNetSDKVersion'], ''))
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Define base directories and script locations
+      $BaseDirectory = "$(Build.SourcesDirectory)"
+      $BuildTemplatesDirectory = "$(BuildTemplateRepositoryFolder)"
+      $PowerShellScriptsDirectory = "$(PowerShellScriptsDirectory)"
+      
+      # Construct the path to the primary script
+      $ScriptName = "extract-dotnet-version"
+      $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, $ScriptName, "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
+      $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
+
+      # Define the script parameters
+      $ProjectPath = "$(SelfRepositoryFolder)/**/$(ProjectName).csproj"
+      $SharedTemplateDirectory = Join-Path $BaseDirectory $BuildTemplatesDirectory
+      $SharedTemplateDirectory = Join-Path $SharedTemplateDirectory "$(SharedTemplateDirectory)"
+
+      # Log the constructed paths for debugging purposes
+      Write-Host "ScriptPath: $ScriptPath"
+      Write-Host "ProjectPath: $ProjectPath"
+      Write-Host "SharedTemplateDirectory: $SharedTemplateDirectory"
+
+      # Execute the script and handle potential errors
+      try {
+          # Capturing the script's output, which is assumed to be the major version
+          $MajorVersion = & $ScriptPath -ProjectPath $ProjectPath -SharedTemplateDirectory $SharedTemplateDirectory -Warnings -Information -Verbose -Debug
+      }
+      catch {
+          Write-Host "An error occurred during script execution."
+          Write-Host "Error details: $_"
+          exit 1
+      }
+      
+      # Check if a valid MajorVersion was returned
+      if (-not $MajorVersion) {
+          Write-Host "No .NET SDK version was extracted from the project. SDK installation may be skipped."
+      } else {
+          # Update the pipeline variable and log the value.
+          Write-Host "##vso[task.setvariable variable=DotNetSDKVersion;]$MajorVersion"
+          Write-Host ".NET SDK Version: $MajorVersion"
+      }
+    pwsh: true

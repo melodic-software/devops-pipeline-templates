@@ -1,0 +1,54 @@
+steps:
+- task: PowerShell@2
+  name: LogVariables
+  displayName: Log Pipeline-Specific Variables
+  condition: succeeded()
+  continueOnError: true
+  env:
+     GITHUBPACKAGEPAT: $(GitHubPackagePAT) # Map secret variable from variable group defined in Azure DevOps UI
+  inputs:
+    targetType: 'inline'
+    script: |
+      function Log-PipelineVariable {
+        param (
+          [string]$VariableName,
+          [string]$DisplayName
+        )
+        $Variable = Get-Item -Path Env:$VariableName -ErrorAction SilentlyContinue
+        if ($Variable) {
+          Write-Host "${DisplayName}: $($Variable.Value)"
+        } else {
+          Write-Host "$DisplayName is not set"
+        }
+      }
+
+      # Hashtables mapping environment variable names to their Azure DevOps pipeline name
+      
+      $VariableDisplayNames = [ordered]@{
+        # Predefined variables
+        "NUGETASSEMBLYSNKFILE" = "NuGetAssemblySnkFile"
+        "PACKAGEPREFIX" = "PackagePrefix"
+        "AZUREDEVOPSPACKAGEFEED" = "AzureDevOpsPackageFeed"
+        "GITHUBPACKAGEFEED" = "GitHubPackageFeed"
+        "PACKAGESYMBOLSFILEPATH" = "PackageSymbolsFilePath"
+      }
+
+      $SecretVariableDisplayNames = [ordered]@{
+        # Variable group variables defined in Azure DevOps
+        # Any that are defined as "secret" should result in masked values
+        "GITHUBPACKAGEPAT" = "GitHubPackagePAT"
+      }
+
+      # Logging variables
+      Write-Host "VARIABLES"
+      foreach ($VariableName in $VariableDisplayNames.Keys) {
+        Log-PipelineVariable -VariableName $VariableName -DisplayName $VariableDisplayNames[$VariableName]
+      }
+
+      # Logging secret variables
+      # NOTE: only masked values will be logged
+      Write-Host "SECRET VARIABLES"
+      foreach ($VariableName in $SecretVariableDisplayNames.Keys) {
+        Log-PipelineVariable -VariableName $VariableName -DisplayName $SecretVariableDisplayNames[$VariableName]
+      }
+    pwsh: true

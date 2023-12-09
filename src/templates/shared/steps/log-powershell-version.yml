@@ -1,0 +1,17 @@
+steps:
+- task: PowerShell@2
+  name: LogPowerShellVersion
+  displayName: Log PowerShell Version
+  condition: succeeded()
+  continueOnError: true
+  inputs:
+    targetType: 'inline'
+    script: |
+      Write-Host "PowerShell version: $($PSVersionTable.PSVersion)"
+      Write-Host "CLR version: $($PSVersionTable.CLRVersion)"
+      Write-Host "Build version: $($PSVersionTable.BuildVersion)"
+      Write-Host "WSManStack version: $($PSVersionTable.WSManStackVersion)"
+      Write-Host "PSCompatibleVersions: $($PSVersionTable.PSCompatibleVersions)"
+      Write-Host "Serialization version: $($PSVersionTable.SerializationVersion)"
+      Write-Host "PSRemoting protocol version: $($PSVersionTable.PSRemotingProtocolVersion)"
+    pwsh: true # default: false | use PowerShell core instead of Windows PowerShell

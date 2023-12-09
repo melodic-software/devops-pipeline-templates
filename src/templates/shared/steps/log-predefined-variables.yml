@@ -1,0 +1,21 @@
+steps:
+- task: PowerShell@2
+  name: LogPredefinedVariables
+  displayName: Log Predefined Variables
+  condition: succeeded()
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Define base directories and script locations
+      $BaseDirectory = "$(Build.SourcesDirectory)"
+      $BuildTemplatesDirectory = "$(BuildTemplateRepositoryFolder)"
+      $SharedTemplatePowerShellDirectory = "$(SharedTemplatePowerShellDirectory)"
+
+      # Construct the path to the primary script
+      $ScriptName = "log-predefined-variables"
+      $ChildPath = ($BuildTemplatesDirectory, $SharedTemplatePowerShellDirectory, "functions", "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
+      $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
+
+      # Execute the script
+      & $ScriptPath
+    pwsh: true

@@ -1,0 +1,31 @@
+steps:
+- task: PowerShell@2
+  name: PrintProjectContentDotNetFramework
+  displayName: Print Project Content
+  condition: and(succeeded(), eq(variables['DotNetSDKVersion'], ''))
+  continueOnError: true
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Define base directories and script locations
+      $BaseDirectory = "$(Build.SourcesDirectory)"
+      $BuildTemplatesDirectory = "$(BuildTemplateRepositoryFolder)"
+      $PowerShellScriptsDirectory = "$(PowerShellScriptsDirectory)"
+      
+      # Construct the path to the primary script
+      $ScriptName = "print-project-content"
+      $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, $ScriptName, "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
+      $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
+
+      # Define the script parameters
+      $SourceDirectory = ("$(Build.SourcesDirectory)", "$(SelfRepositoryFolder)" -join [IO.Path]::DirectorySeparatorChar)
+      $ProjectName = "$(ProjectName)"
+
+      # Log the script path and variables for debugging purposes
+      Write-Host "ScriptPath: $ScriptPath"
+      Write-Host "SourceDirectory: $SourceDirectory"
+      Write-Host "ProjectName: $ProjectName"
+
+      # Execute the script with the necessary parameters
+      & $ScriptPath -SourceDirectory $SourceDirectory -ProjectName $ProjectName
+    pwsh: true

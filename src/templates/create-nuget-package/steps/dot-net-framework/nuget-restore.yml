@@ -1,0 +1,10 @@
+steps:
+- task: NuGetCommand@2
+  name: NuGetRestoreDotNetFramework
+  displayName: NuGet Restore
+  condition: and(succeeded(), eq(variables['DotNetSDKVersion'], ''))
+  inputs:
+    command: 'restore'
+    restoreSolution: '**/*.sln'  # Specify the solution file instead of the project file.
+    noCache: true
+    restoreDirectory: '$(Build.SourcesDirectory)'  # Adding this line specifies the root of restoration.
