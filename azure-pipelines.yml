@@ -11,7 +11,7 @@ trigger:
 # defines where the pipeline should run
 # a parameter expression cannot be used here, but a variable reference can
 pool:
-  name: Azure Pipelines
+  name: KYLE-MELODIC
 
 steps:
 - checkout: self
