@@ -8,6 +8,7 @@ steps:
   inputs:
     command: pack
     packagesToPack: '**/$(ProjectName).csproj' # **/*.csproj;!**/*.Tests.csproj
+    packDirectory: '$(Build.ArtifactStagingDirectory)' # this is the default
     configuration: $(Configuration)
     nobuild: true # project has already been built in a previous step
     includesymbols: true # creates symbol NuGet packages
