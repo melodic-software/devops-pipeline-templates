@@ -12,21 +12,13 @@ steps:
     azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}
     includeLogSteps: ${{ parameters.includeLogSteps }}
 
-- ${{ if or(
-      eq(parameters.targetFramework, 'DotNet'), 
-      eq(parameters.targetFramework, 'DotNetCore'), 
-      eq(parameters.targetFramework, 'DotNetStandard'), 
-      eq(parameters.targetFramework, 'NotSpecified')
-    ) }}:
-  - template: ./dot-net/dot-net-steps.yml
-    parameters:
-      dotNetSDKVersion: ${{ parameters.dotNetSDKVersion }}
+- ${{ if or(eq(parameters.targetFramework, 'DotNet'), eq(parameters.targetFramework, 'DotNetCore'), eq(parameters.targetFramework, 'DotNetStandard'), eq(parameters.targetFramework, 'NotSpecified')) }}:
+    - template: ./dot-net/dot-net-steps.yml
+      parameters:
+        dotNetSDKVersion: ${{ parameters.dotNetSDKVersion }}
 
-- ${{ if or(
-      eq(parameters.targetFramework, 'DotNetFramework'), 
-      eq(parameters.targetFramework, 'NotSpecified')
-    ) }}:
-  - template: ./dot-net-framework/dot-net-framework-steps.yml
+- ${{ if or(eq(parameters.targetFramework, 'DotNetFramework'), eq(parameters.targetFramework, 'NotSpecified')) }}:
+    - template: ./dot-net-framework/dot-net-framework-steps.yml
 
 - template: ./publish/publish-steps.yml
   parameters:
