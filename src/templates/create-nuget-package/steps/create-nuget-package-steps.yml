@@ -6,34 +6,26 @@ parameters:
   includeGitHubPush: false
   includeLogSteps: false
 
-conditions:
-  isDotNet: &isDotNet
-    >-
-    or(
-      eq(parameters.targetFramework, 'DotNet'), 
-      eq(parameters.targetFramework, 'DotNetCore'), 
-      eq(parameters.targetFramework, 'DotNetStandard'), 
-      eq(parameters.targetFramework, 'NotSpecified')
-    )
-  isDotNetFramework: &isDotNetFramework
-    >-
-    or(
-      eq(parameters.targetFramework, 'DotNetFramework'), 
-      eq(parameters.targetFramework, 'NotSpecified')
-    )
-
 steps:
 - template: ./pre-process/preprocess-steps.yml
   parameters:
     azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}
     includeLogSteps: ${{ parameters.includeLogSteps }}
 
-- ${{ if *isDotNet }}:
+- ${{ if or(
+      eq(parameters.targetFramework, 'DotNet'), 
+      eq(parameters.targetFramework, 'DotNetCore'), 
+      eq(parameters.targetFramework, 'DotNetStandard'), 
+      eq(parameters.targetFramework, 'NotSpecified')
+    ) }}:
   - template: ./dot-net/dot-net-steps.yml
     parameters:
       dotNetSDKVersion: ${{ parameters.dotNetSDKVersion }}
 
-- ${{ if *isDotNetFramework }}:
+- ${{ if or(
+      eq(parameters.targetFramework, 'DotNetFramework'), 
+      eq(parameters.targetFramework, 'NotSpecified')
+    ) }}:
   - template: ./dot-net-framework/dot-net-framework-steps.yml
 
 - template: ./publish/publish-steps.yml
