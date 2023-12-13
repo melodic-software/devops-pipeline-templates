@@ -22,6 +22,10 @@ parameters:
     displayName: .NET SDK Version
     type: string
     default: ''
+  - name: useGlobalJson
+    displayName: Use Global JSON
+    type: boolean
+    default: false
   - name: releaseNotes
     displayName: Release Notes
     type: string
@@ -82,6 +86,7 @@ jobs:
         parameters:
           targetFramework: ${{ parameters.targetFramework }}
           dotNetSDKVersion: ${{ parameters.dotNetSDKVersion }}
+          useGlobalJson: ${{ parameters.useGlobalJson }}
           azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}
           includeAzureDevOpsPush : ${{ parameters.includeAzureDevOpsPush }}
           includeGitHubPush : ${{ parameters.includeGitHubPush }}
