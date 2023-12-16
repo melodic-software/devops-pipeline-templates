@@ -15,16 +15,16 @@ branches:
   feature:
     regex: ^features?(/[^/]+)+$
     source-branches: ['main', 'feature', 'support', 'hotfix']
-    increment: Patch # ensure the version is incremented upon branch creation
-    prevent-increment-of-merged-branch-version: false # allows merge commits from main to accurately update the version
+    increment: Patch
+    prevent-increment-of-merged-branch-version: false
     tag: 'alpha'
     pre-release-weight: 50000
 
   hotfix:
     regex: ^hotfix(es)?(/[^/]+)+$
     source-branches: ['main', 'support', 'hotfix']
-    increment: Patch # ensure the version is incremented upon branch creation
-    prevent-increment-of-merged-branch-version: false # allows merge commits from main to accurately update the version
+    increment: Patch
+    prevent-increment-of-merged-branch-version: false
     tag: 'beta'
     pre-release-weight: 50000
 
@@ -58,7 +58,6 @@ branches:
     is-mainline: true
     pre-release-weight: 55000
 
-  # these are unused branches
   # since we're using GitHubFlow for NuGet package libraries, we shouldn't need or use these
   develop:
     regex: ^dev(elop)?(ment)?$
