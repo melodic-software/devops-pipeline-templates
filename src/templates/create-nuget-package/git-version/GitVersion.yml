@@ -12,9 +12,29 @@ branches:
     tag: ''
     pre-release-weight: 60000
 
+  # The feature, bugfix (fix), and refactor configurations are pretty much the same
+  # But each has a different regex pattern and explicit usage / context
+  # NOTE: there is a PowerShell script that dynamically updates the tag name to use the branch name (leaf)
+
   feature:
     regex: ^features?(/[^/]+)+$
-    source-branches: ['main', 'feature', 'support', 'hotfix']
+    source-branches: ['main', 'feature', 'bugfix', 'refactor', 'support', 'hotfix']
+    increment: Patch
+    prevent-increment-of-merged-branch-version: false
+    tag: 'alpha'
+    pre-release-weight: 50000
+
+  bugfix:
+    regex: ^(bugfix(es)?|fix(es)?)[/-].+$
+    source-branches: ['main', 'feature', 'bugfix', 'refactor', 'support', 'hotfix']
+    increment: Patch
+    prevent-increment-of-merged-branch-version: false
+    tag: 'alpha'
+    pre-release-weight: 50000
+
+  refactor:
+    regex: ^refactor(ing)?(/[^/]+)+$
+    source-branches: ['main', 'feature', 'bugfix', 'refactor', 'support', 'hotfix']
     increment: Patch
     prevent-increment-of-merged-branch-version: false
     tag: 'alpha'
@@ -28,20 +48,20 @@ branches:
     tag: 'beta'
     pre-release-weight: 50000
 
-  # this applies to manually created branches to merge one branch into another
+  # This applies to manually created branches to merge one branch into another
   pull-request:
     regex: ^(pull\-request(s)?|pr(s)?)(/[^/]+)*/[^/]+$
-    source-branches: ['main', 'feature', 'support', 'hotfix']
+    source-branches: ['main', 'feature', 'bugfix', 'refactor', 'support', 'hotfix']
     increment: Inherit
     tag: pr
     tag-number-pattern: '[/-](?<number>\d+)'
 
-  # this applies to branches automatically created by Azure DevOps to test the result of merging
-  # this is usually done when a validation branch policy has been applied
-  # the format usually looks like "2.0.0-pull-5701-merge.3"
+  # This applies to branches automatically created by Azure DevOps to test the result of merging
+  # This is usually done when a validation branch policy has been applied
+  # The format usually looks like "2.0.0-pull-5701-merge.3"
   pull-request-azure-devops:
     regex: ^\d+\.\d+\.\d+\-pull\-\d+\-merge\.\d+$
-    source-branches: ['main', 'feature', 'support', 'hotfix']
+    source-branches: ['main', 'feature', 'bugfix', 'refactor', 'support', 'hotfix']
     increment: Inherit
     tag: pr
     tag-number-pattern: '[/-](?<number>\d+)'
@@ -58,7 +78,8 @@ branches:
     is-mainline: true
     pre-release-weight: 55000
 
-  # since we're using GitHubFlow for NuGet package libraries, we shouldn't need or use these
+  # Since we're using GitHubFlow for NuGet package libraries, we shouldn't need or use these
+  # TODO: update these and other branch configurations to support GitFlow
   develop:
     regex: ^dev(elop)?(ment)?$
     source-branches: []
