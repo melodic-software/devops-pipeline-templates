@@ -19,7 +19,10 @@ Describe "Set-PreReleaseTag Tests" {
             } | ConvertTo-Yaml
         }
         
-        Mock Set-Content {}
+        Mock Set-Content {
+            param($Value, $Path)
+            $script:CapturedConfig = $Value
+        }
 
         # Dot source the script under test
         . "$PSScriptRoot/../../../../../src/templates/create-nuget-package/powershell/configure-git-version/functions/set-pre-release-tag.ps1"
@@ -31,10 +34,22 @@ Describe "Set-PreReleaseTag Tests" {
         Assert-MockCalled Set-Content -Exactly -Times 1 -Scope It
     }
 
+    It "Updates pre-release tag for feature branches and sets correct tag" {
+        Set-PreReleaseTag -BranchName "refs/heads/feature/new-feature" -ConfigPath "dummyPath"
+        $UpdatedConfig = $script:CapturedConfig | ConvertFrom-Yaml
+        $UpdatedConfig.branches.feature.tag | Should -Be "new-feature"
+    }
+
     It "Updates pre-release tag for bugfix branches" {
         Mock Set-Content -Verifiable -ParameterFilter { $Path -eq "dummyPath" }
         Set-PreReleaseTag -BranchName "refs/heads/bugfix/fix-issue" -ConfigPath "dummyPath"
         Assert-MockCalled Set-Content -Exactly -Times 1 -Scope It
+    }
+
+    It "Updates pre-release tag for bugfix branches and sets correct tag" {
+        Set-PreReleaseTag -BranchName "refs/heads/bugfix/fix-issue" -ConfigPath "dummyPath"
+        $UpdatedConfig = $script:CapturedConfig | ConvertFrom-Yaml
+        $UpdatedConfig.branches.bugfix.tag | Should -Be "fix-issue"
     }
 
     It "Updates pre-release tag for refactor branches" {
@@ -43,10 +58,22 @@ Describe "Set-PreReleaseTag Tests" {
         Assert-MockCalled Set-Content -Exactly -Times 1 -Scope It
     }
 
+    It "Updates pre-release tag for refactor branches and sets correct tag" {
+        Set-PreReleaseTag -BranchName "refs/heads/refactor/code-cleanup" -ConfigPath "dummyPath"
+        $UpdatedConfig = $script:CapturedConfig | ConvertFrom-Yaml
+        $UpdatedConfig.branches.refactor.tag | Should -Be "code-cleanup"
+    }
+
     It "Updates pre-release tag for hotfix branches" {
         Mock Set-Content -Verifiable -ParameterFilter { $Path -eq "dummyPath" }
         Set-PreReleaseTag -BranchName "refs/heads/hotfix/urgent-fix" -ConfigPath "dummyPath"
         Assert-MockCalled Set-Content -Exactly -Times 1 -Scope It
+    }
+
+    It "Updates pre-release tag for hotfix branches and sets correct tag" {
+        Set-PreReleaseTag -BranchName "refs/heads/hotfix/urgent-fix" -ConfigPath "dummyPath"
+        $UpdatedConfig = $script:CapturedConfig | ConvertFrom-Yaml
+        $UpdatedConfig.branches.hotfix.tag | Should -Be "urgent-fix"
     }
 
     It "Does not modify the tag for non-feature/hotfix branches" {
