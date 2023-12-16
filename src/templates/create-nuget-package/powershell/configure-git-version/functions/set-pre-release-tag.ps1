@@ -47,18 +47,18 @@ function Set-PreReleaseTag {
     }
 
     $BranchTypeMap = @{
-        "Feature"  = { $_ -match '^refs/heads/features?/' }
-        "Bugfix"   = { $_ -match '^refs/heads/(bugfix(es)?|fix(es)?)[/-]' }
-        "Refactor" = { $_ -match '^refs/heads/refactor(ing)?/' }
-        "Hotfix"   = { $_ -match '^refs/heads/hotfix(es)?/' }
+        "feature"  = { $BranchName -match '^refs/heads/features?/' }
+        "bugfix"   = { $BranchName -match '^refs/heads/(bugfix(es)?|fix(es)?)[/-]' }
+        "refactor" = { $BranchName -match '^refs/heads/refactor(ing)?/' }
+        "hotfix"   = { $BranchName -match '^refs/heads/hotfix(es)?/' }
     }
 
     $Matched = $false
     foreach ($Entry in $BranchTypeMap.GetEnumerator()) {
-        if ($BranchName -match $Entry.Value.Invoke()) {
+        if ($Entry.Value.Invoke()) {
             $BranchTagName = ($BranchName -split '/')[-1]
             $Config.branches.$($Entry.Key).tag = $BranchTagName
-            Write-Host "$($Entry.Key.ToUpper()) branch detected. Setting the pre-release tag to: $BranchTagName"
+            Write-Host "$($Entry.Key.ToUpperInvariant()) branch detected. Setting the pre-release tag to: $BranchTagName"
             $Matched = $true
             break
         }

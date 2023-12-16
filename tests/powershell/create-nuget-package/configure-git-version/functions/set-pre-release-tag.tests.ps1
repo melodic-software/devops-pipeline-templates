@@ -7,7 +7,18 @@ Describe "Set-PreReleaseTag Tests" {
 
         # Mocks and other setup
         Mock Test-Path { $true }
-        Mock Get-Content { @{ branches = @{ feature = @{ tag = '' }; hotfix = @{ tag = '' } } } | ConvertTo-Yaml }
+
+        Mock Get-Content {
+            @{
+                branches = @{
+                    feature = @{ tag = 'alpha' }
+                    bugfix = @{ tag = 'alpha' }
+                    refactor = @{ tag = 'alpha' }
+                    hotfix = @{ tag = 'beta' }
+                }
+            } | ConvertTo-Yaml
+        }
+        
         Mock Set-Content {}
 
         # Dot source the script under test
@@ -128,7 +139,8 @@ Describe "Set-PreReleaseTag Tests" {
 
     It "Handles extremely long branch names" {
         Mock Set-Content -Verifiable -ParameterFilter { $Path -eq "dummyPath" }
-        Set-PreReleaseTag -BranchName "refs/heads/feature/${'a' * 500}" -ConfigPath "dummyPath"
+        $ReallyLongName = 'a' * 500
+        Set-PreReleaseTag -BranchName "refs/heads/feature/$ReallyLongName" -ConfigPath "dummyPath"
         Assert-MockCalled Set-Content -Exactly -Times 1 -Scope It
     }
 
