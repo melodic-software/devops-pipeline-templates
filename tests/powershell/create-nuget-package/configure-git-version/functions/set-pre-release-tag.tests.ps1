@@ -20,6 +20,18 @@ Describe "Set-PreReleaseTag Tests" {
         Assert-MockCalled Set-Content -Exactly -Times 1 -Scope It
     }
 
+    It "Updates pre-release tag for bugfix branches" {
+        Mock Set-Content -Verifiable -ParameterFilter { $Path -eq "dummyPath" }
+        Set-PreReleaseTag -BranchName "refs/heads/bugfix/fix-issue" -ConfigPath "dummyPath"
+        Assert-MockCalled Set-Content -Exactly -Times 1 -Scope It
+    }
+
+    It "Updates pre-release tag for refactor branches" {
+        Mock Set-Content -Verifiable -ParameterFilter { $Path -eq "dummyPath" }
+        Set-PreReleaseTag -BranchName "refs/heads/refactor/code-cleanup" -ConfigPath "dummyPath"
+        Assert-MockCalled Set-Content -Exactly -Times 1 -Scope It
+    }
+
     It "Updates pre-release tag for hotfix branches" {
         Mock Set-Content -Verifiable -ParameterFilter { $Path -eq "dummyPath" }
         Set-PreReleaseTag -BranchName "refs/heads/hotfix/urgent-fix" -ConfigPath "dummyPath"
@@ -75,6 +87,18 @@ Describe "Set-PreReleaseTag Tests" {
     It "Correctly parses feature branch name" {
         Mock Set-Content -Verifiable -ParameterFilter { $Path -eq "dummyPath" }
         Set-PreReleaseTag -BranchName "refs/heads/feature/complex-feature-name" -ConfigPath "dummyPath"
+        Assert-MockCalled Set-Content -Exactly -Times 1 -Scope It
+    }
+
+    It "Correctly parses bugfix branch name" {
+        Mock Set-Content -Verifiable -ParameterFilter { $Path -eq "dummyPath" }
+        Set-PreReleaseTag -BranchName "refs/heads/bugfix/complex-bugfix-name" -ConfigPath "dummyPath"
+        Assert-MockCalled Set-Content -Exactly -Times 1 -Scope It
+    }
+
+    It "Correctly parses refactor branch name" {
+        Mock Set-Content -Verifiable -ParameterFilter { $Path -eq "dummyPath" }
+        Set-PreReleaseTag -BranchName "refs/heads/refactor/complex-refactor-name" -ConfigPath "dummyPath"
         Assert-MockCalled Set-Content -Exactly -Times 1 -Scope It
     }
 
