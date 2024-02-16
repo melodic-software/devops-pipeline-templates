@@ -5,7 +5,8 @@ steps:
   condition: succeeded()
   continueOnError: true
   env:
-     GITHUBPACKAGEPAT: $(GitHubPackagePAT) # Map secret variable from variable group defined in Azure DevOps UI
+    # Map secret variables from variable group defined in Azure DevOps UI
+    GITHUBPACKAGEPAT: $(GitHubPackagePAT)
   inputs:
     targetType: 'inline'
     script: |
@@ -29,8 +30,9 @@ steps:
         "NUGETASSEMBLYSNKFILE" = "NuGetAssemblySnkFile"
         "PACKAGEPREFIX" = "PackagePrefix"
         "AZUREDEVOPSPACKAGEFEED" = "AzureDevOpsPackageFeed"
+        "AZUREDEVOPSPACKAGESYMBOLSFILEPATH" = "AzureDevopsPackageSymbolsFilePath"
         "GITHUBPACKAGEFEED" = "GitHubPackageFeed"
-        "PACKAGESYMBOLSFILEPATH" = "PackageSymbolsFilePath"
+        "JFROGTARGETDEPLOYREPO" = "JFrogTargetDeployRepo"
       }
 
       $SecretVariableDisplayNames = [ordered]@{

@@ -1,13 +1,14 @@
 parameters:
   azureDevOpsPackageFeed: ''
+  jFrogTargetDeployRepo: ''
   includeLogSteps: false
 
 steps:
-- ${{ if ne(parameters.azureDevOpsPackageFeed, '') }}:
-  - template: ./override-variables.yml
-    parameters:
-      azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}
-      # Add any additional variables (via parameter pass-through) that can optionally be overridden
+- template: ./override-variables.yml
+  parameters:
+    azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}
+    jFrogTargetDeployRepo: ${{ parameters.jFrogTargetDeployRepo }}
+    # Add any additional variables (via parameter pass-through) that can optionally be overridden
 
 - template: ../../../shared/steps/update-global-variables.yml
 

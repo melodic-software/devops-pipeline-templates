@@ -18,3 +18,5 @@ steps:
       --source "$(GitHubPackageFeed)"
       --api-key "$(GitHubPackagePAT)"
       --skip-duplicate
+
+# GitHub Packages does not have symbol server support.

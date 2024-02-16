@@ -9,7 +9,6 @@ parameters:
     default: false
 
 steps:
-  # No need to do this if the SDK version was manually specified via pipeline param
 - ${{ if eq(parameters.dotNetSDKVersion, '') }}:
   - template: ./extract-dotnet-version.yml
 

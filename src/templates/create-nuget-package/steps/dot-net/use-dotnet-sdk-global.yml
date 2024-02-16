@@ -1,6 +1,6 @@
 steps:
 - task: UseDotNet@2
-  name: UseDotNetSDKGlobalJson
+  name: UseDotNetSDK
   displayName: Use .NET SDK
   condition: succeeded()
   inputs:

@@ -1,0 +1,23 @@
+steps:
+# https://github.com/jfrog/jfrog-azure-devops-extension
+- task: JFrogNuGet@1
+  name: PushPackagesToJFrog
+  displayName: 'Push to JFrog'
+  condition: |
+    and(
+      succeeded(),
+      ne(variables['JFrogTargetDeployRepo'], ''),
+      eq(variables['TestMode'], 'false'),
+      ne(variables['Build.Reason'], 'PullRequest')
+    )
+  inputs:
+    command: 'push'
+    artifactoryConnection: $(JFrogArtifactoryConnection)
+    targetDeployRepo: $(JFrogTargetDeployRepo)
+    #targetDeployPath: ''
+    pathToNupkg: '$(Build.ArtifactStagingDirectory)/**' # This will pick up all artifacts, which should be .nupkg, symbols.nupkg, and .snupkg
+    collectBuildInfo: true
+    buildName: '$(Build.DefinitionName)'
+    buildNumber: '$(Build.OriginalBuildNumber)'
+    #projectKey: ''
+    includeEnvVars: true

@@ -2,15 +2,18 @@ parameters:
   targetFramework: ''
   dotNetSDKVersion: ''
   useGlobalJson: false
-  azureDevOpsPackageFeed: ''
   includeAzureDevOpsPush: true
+  azureDevOpsPackageFeed: ''
   includeGitHubPush: false
+  includeJFrogPush: false
+  jFrogTargetDeployRepo: ''
   includeLogSteps: false
 
 steps:
 - template: ./pre-process/preprocess-steps.yml
   parameters:
     azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}
+    jFrogTargetDeployRepo: ${{ parameters.jFrogTargetDeployRepo }}
     includeLogSteps: ${{ parameters.includeLogSteps }}
 
 - ${{ if or(eq(parameters.targetFramework, 'DotNet'), eq(parameters.targetFramework, 'DotNetCore'), eq(parameters.targetFramework, 'DotNetStandard'), eq(parameters.targetFramework, 'NotSpecified')) }}:
@@ -26,3 +29,4 @@ steps:
   parameters:
     includeAzureDevOpsPush : ${{ parameters.includeAzureDevOpsPush }}
     includeGitHubPush : ${{ parameters.includeGitHubPush }}
+    includeJFrogPush: ${{ parameters.includeJFrogPush }}

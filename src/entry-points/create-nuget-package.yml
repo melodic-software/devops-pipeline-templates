@@ -30,18 +30,26 @@ parameters:
     displayName: Release Notes
     type: string
     default: ''
+  - name: includeAzureDevOpsPush # Push package to an Azure DevOps feed?
+    displayName: Include Azure DevOps Push
+    type: boolean
+    default: false
   - name: azureDevOpsPackageFeed
     displayName: Azure DevOps Package Feed
     type: string
     default: '' # If specified, the default AzureDevOpsPackageFeed global variable will be overwritten
-  - name: includeAzureDevOpsPush # Push package to an Azure DevOps feed?
-    displayName: Include Azure DevOps Push
-    type: boolean
-    default: true
   - name: includeGitHubPush # Push to GitHub packages?
     displayName: Include GitHub Push
     type: boolean
-    default: true
+    default: false
+  - name: includeJFrogPush # Push to JFrog Artifactory?
+    displayName: Include JFrog Artifactory Push
+    type: boolean
+    default: false
+  - name: jFrogTargetDeployRepo
+    displayName: JFrog Target Deploy Repo
+    type: string
+    default: '' # If specified, the default JFrogTargetDeployRepo global variable will be overwritten
   - name: runTests
     displayName: Run Tests
     type: boolean
@@ -87,7 +95,9 @@ jobs:
           targetFramework: ${{ parameters.targetFramework }}
           dotNetSDKVersion: ${{ parameters.dotNetSDKVersion }}
           useGlobalJson: ${{ parameters.useGlobalJson }}
-          azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}
           includeAzureDevOpsPush : ${{ parameters.includeAzureDevOpsPush }}
+          azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}
           includeGitHubPush : ${{ parameters.includeGitHubPush }}
+          includeJFrogPush : ${{ parameters.includeJFrogPush }}
+          jFrogTargetDeployRepo: ${{ parameters.jFrogTargetDeployRepo }}
           includeLogSteps: ${{ parameters.includeLogSteps }}
