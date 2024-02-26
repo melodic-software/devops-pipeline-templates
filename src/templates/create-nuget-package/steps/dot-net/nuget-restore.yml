@@ -1,5 +1,6 @@
 steps:
-- task: NuGetAuthenticate@0
+# https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/nuget-authenticate-v1?view=azure-pipelines
+- task: NuGetAuthenticate@1
   name: NuGetAuthenticate
   displayName: Nuget Authenticate
 
