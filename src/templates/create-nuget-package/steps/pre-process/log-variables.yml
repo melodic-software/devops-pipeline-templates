@@ -32,7 +32,6 @@ steps:
         "AZUREDEVOPSPACKAGEFEED" = "AzureDevOpsPackageFeed"
         "AZUREDEVOPSPACKAGESYMBOLSFILEPATH" = "AzureDevopsPackageSymbolsFilePath"
         "GITHUBPACKAGEFEED" = "GitHubPackageFeed"
-        "JFROGTARGETDEPLOYREPO" = "JFrogTargetDeployRepo"
       }
 
       $SecretVariableDisplayNames = [ordered]@{

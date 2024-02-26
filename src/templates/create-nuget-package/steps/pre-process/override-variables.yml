@@ -1,6 +1,5 @@
 parameters:
   azureDevOpsPackageFeed: ''
-  jFrogTargetDeployRepo: ''
 
 steps:
 - task: PowerShell@2
@@ -15,12 +14,5 @@ steps:
       if (-not [string]::IsNullOrEmpty($AzureDevOpsPackageFeed)) {
           Write-Host "AzureDevOpsPackageFeed: $AzureDevOpsPackageFeed"
           Write-Host "##vso[task.setvariable variable=AzureDevOpsPackageFeed]$AzureDevOpsPackageFeed"
-      }
-
-      $JFrogTargetDeployRepo = "${{ parameters.jFrogTargetDeployRepo }}"
-
-      if (-not [string]::IsNullOrEmpty($JFrogTargetDeployRepo)) {
-          Write-Host "JFrogTargetDeployRepo: $JFrogTargetDeployRepo"
-          Write-Host "##vso[task.setvariable variable=JFrogTargetDeployRepo]$JFrogTargetDeployRepo"
       }
     pwsh: true

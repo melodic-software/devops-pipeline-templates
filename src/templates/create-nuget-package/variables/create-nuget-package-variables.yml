@@ -9,9 +9,5 @@ variables:
     value: ''
   - name: GitHubPackageFeed
     value: 'https://nuget.pkg.github.com/melodic-software/index.json'
-  - name: JFrogTargetDeployRepo
-    value: 'main-nuget-demo'
-  - name: JFrogArtifactoryConnection
-    value: 'jfrog-artifactory'
   - name: PowerShellScriptsDirectory
     value: 'src/templates/create-nuget-package/powershell'

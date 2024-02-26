@@ -3,8 +3,6 @@ parameters:
     type: boolean
   - name: includeGitHubPush
     type: boolean
-  - name: includeJFrogPush
-    type: boolean
 
 steps:
 - template: ./publish-artifacts.yml
@@ -12,5 +10,3 @@ steps:
   - template: ./push-to-azure-devops.yml
 - ${{ if eq(parameters.includeGitHubPush, true) }}:
   - template: ./push-to-github.yml
-- ${{ if eq(parameters.includeJFrogPush, true) }}:
-  - template: ./push-to-jfrog.yml

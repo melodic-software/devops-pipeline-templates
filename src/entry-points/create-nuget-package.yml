@@ -42,14 +42,6 @@ parameters:
     displayName: Include GitHub Push
     type: boolean
     default: false
-  - name: includeJFrogPush # Push to JFrog Artifactory?
-    displayName: Include JFrog Artifactory Push
-    type: boolean
-    default: false
-  - name: jFrogTargetDeployRepo
-    displayName: JFrog Target Deploy Repo
-    type: string
-    default: '' # If specified, the default JFrogTargetDeployRepo global variable will be overwritten
   - name: runTests
     displayName: Run Tests
     type: boolean
@@ -98,6 +90,4 @@ jobs:
           includeAzureDevOpsPush : ${{ parameters.includeAzureDevOpsPush }}
           azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}
           includeGitHubPush : ${{ parameters.includeGitHubPush }}
-          includeJFrogPush : ${{ parameters.includeJFrogPush }}
-          jFrogTargetDeployRepo: ${{ parameters.jFrogTargetDeployRepo }}
           includeLogSteps: ${{ parameters.includeLogSteps }}
