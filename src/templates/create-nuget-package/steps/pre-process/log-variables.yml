@@ -6,7 +6,9 @@ steps:
   continueOnError: true
   env:
     # Map secret variables from variable group defined in Azure DevOps UI
+    # TODO: Is there a way to make this so it doesn't require the variable to be defined (like default to null?)
     GITHUBPACKAGEPAT: $(GitHubPackagePAT)
+    PROGETPACKAGEAPIKEY: $(ProGetPackageApiKey)
   inputs:
     targetType: 'inline'
     script: |
@@ -32,12 +34,14 @@ steps:
         "AZUREDEVOPSPACKAGEFEED" = "AzureDevOpsPackageFeed"
         "AZUREDEVOPSPACKAGESYMBOLSFILEPATH" = "AzureDevopsPackageSymbolsFilePath"
         "GITHUBPACKAGEFEED" = "GitHubPackageFeed"
+        "PROGETPACKAGEFEED" = "ProGetPackageFeed"
       }
 
       $SecretVariableDisplayNames = [ordered]@{
         # Variable group variables defined in Azure DevOps
         # Any that are defined as "secret" should result in masked values
         "GITHUBPACKAGEPAT" = "GitHubPackagePAT"
+        "PROGETPACKAGEAPIKEY" = "ProGetPackageApiKey"
       }
 
       # Logging variables

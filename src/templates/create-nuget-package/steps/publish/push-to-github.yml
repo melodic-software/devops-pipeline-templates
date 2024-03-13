@@ -1,7 +1,7 @@
 steps:
 - task: DotNetCoreCLI@2
-  name: PushPackageToGitHub
-  displayName: 'Push Package to GitHub'
+  name: PushPackagesToGitHub
+  displayName: 'Push Packages to GitHub'
   condition: |
     and(
       succeeded(),

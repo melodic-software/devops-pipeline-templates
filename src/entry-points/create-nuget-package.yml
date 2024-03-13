@@ -42,6 +42,14 @@ parameters:
     displayName: Include GitHub Push
     type: boolean
     default: false
+  - name: includeProGetPush # Push packages to ProGet server?
+    displayName: Include ProGet Push
+    type: boolean
+    default: false
+  - name: proGetPackageFeed
+    displayName: ProGet Package Feed
+    type: string
+    default: '' # If specified, the default ProGetPackageFeed global variable will be overwritten
   - name: runTests
     displayName: Run Tests
     type: boolean
@@ -90,4 +98,6 @@ jobs:
           includeAzureDevOpsPush : ${{ parameters.includeAzureDevOpsPush }}
           azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}
           includeGitHubPush : ${{ parameters.includeGitHubPush }}
+          includeProGetPush : ${{ parameters.includeProGetPush }}
+          proGetPackageFeed: ${{ parameters.proGetPackageFeed }}
           includeLogSteps: ${{ parameters.includeLogSteps }}

@@ -1,8 +1,8 @@
 steps:
 # https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/nuget-command-v2
 - task: NuGetCommand@2
-  name: PushToAzureDevOps
-  displayName: Push To Azure DevOps
+  name: PushPackagesToAzureDevOps
+  displayName: Push Packages to Azure DevOps
   condition: |
     and(
       succeeded(),
