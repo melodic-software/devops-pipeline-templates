@@ -9,5 +9,7 @@ variables:
     value: ''
   - name: GitHubPackageFeed
     value: 'https://nuget.pkg.github.com/melodic-software/index.json'
+  - name: ProGetPackageFeed
+    value: 'https://packages.melodicsoftware.com/nuget/main/v3/index.json'
   - name: PowerShellScriptsDirectory
     value: 'src/templates/create-nuget-package/powershell'

@@ -3,6 +3,28 @@ steps:
 - task: NuGetAuthenticate@1
   name: NuGetAuthenticate
   displayName: Nuget Authenticate
+  condition: and(succeeded(), ne(variables['DotNetSDKVersion'], ''))
+
+# NuGet.config should exist in the source repository root, but this isn't guaranteed.
+- task: PowerShell@2
+  name: SetNuGetRestoreSettings
+  displayName: Set NuGet Restore Settings
+  condition: and(succeeded(), ne(variables['DotNetSDKVersion'], ''))
+  continueOnError: true
+  inputs:
+    targetType: 'inline'
+    script: |
+      $NuGetConfigFile = Get-ChildItem -Path "$(SelfRepositoryFolder)" -Filter NuGet.config -Recurse | Select-Object -First 1
+      if ($NuGetConfigFile) {
+          $FullPath = $NuGetConfigFile.FullName
+          Write-Host "Found NuGet.config at $FullPath"
+          echo "##vso[task.setvariable variable=NuGetConfigPath]$FullPath"
+          echo "##vso[task.setvariable variable=FeedsToUse]config"
+      } else {
+          Write-Host "No NuGet.config found. Using default configuration."
+          echo "##vso[task.setvariable variable=FeedsToUse]select"
+      }
+    pwsh: true
 
 - task: DotNetCoreCLI@2
   name: NuGetRestoreDotNet
@@ -10,5 +32,7 @@ steps:
   condition: and(succeeded(), ne(variables['DotNetSDKVersion'], ''))
   inputs:
     command: restore
-    projects: '**/*.csproj'
+    projects: '$(SelfRepositoryFolder)/**/*.csproj'
+    feedsToUse: $(FeedsToUse)
+    nugetConfigPath: $(NuGetConfigPath)
     noCache: true
