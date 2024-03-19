@@ -18,7 +18,11 @@ $MajorMinorPatch = "$Major.$Minor.$Patch"
 
 Write-Host "BuildId: $BuildId"
 Write-Host "BuildNumber: $BuildNumber"
-Write-Host "OriginalBuildNumber: $OriginalBuildNumber"
+
+if ($null -ne $OriginalBuildNumber) {
+    Write-Host "OriginalBuildNumber: $OriginalBuildNumber"
+}
+
 Write-Host "SemVer: $SemVer"
 Write-Host "Major: $Major"
 Write-Host "Minor: $Minor"
