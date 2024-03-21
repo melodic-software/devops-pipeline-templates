@@ -26,16 +26,16 @@ steps:
       }
     pwsh: true
 
-# - task: PowerShell@2
-#   name: ClearNuGetCache
-#   displayName: 'Clear NuGet Cache'
-#   condition: and(succeeded(), ne(variables['DotNetSDKVersion'], ''))
-#   continueOnError: true
-#   inputs:
-#     targetType: 'inline'
-#     script: |
-#       dotnet nuget locals all --clear
-#       Write-Host "NuGet cache cleared"
+- task: PowerShell@2
+  name: ClearNuGetCache
+  displayName: 'Clear NuGet Cache'
+  condition: and(succeeded(), ne(variables['DotNetSDKVersion'], ''))
+  continueOnError: true
+  inputs:
+    targetType: 'inline'
+    script: |
+      dotnet nuget locals all --clear
+      Write-Host "NuGet cache cleared"
 
 - task: DotNetCoreCLI@2
   name: NuGetRestoreDotNet
