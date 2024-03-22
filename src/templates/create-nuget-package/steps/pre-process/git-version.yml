@@ -175,3 +175,23 @@ steps:
                     -PreReleaseLabel $PreReleaseLabel `
                     -ShortSha $ShortSha
     pwsh: true
+
+- task: PowerShell@2
+  name: UpdateConfigurationForPreRelease
+  displayName: 'Update Configuration for Pre-Release'
+  condition: succeeded()
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Check if the PreReleaseTag variable from GitVersion indicates a pre-release
+      $PreReleaseTag = "$(PreReleaseTag)"
+      Write-Host "PreReleaseTag: $PreReleaseTag"
+
+      if (-not [string]::IsNullOrWhiteSpace($PreReleaseTag)) {
+        # This is a pre-release build, so set the configuration to Debug
+        Write-Host "This is a pre-release build. Updating the configuration to Debug."
+        Write-Host "##vso[task.setvariable variable=Configuration]Debug"
+      } else {
+        Write-Host "This is not a pre-release build. No change to the configuration."
+      }
+    pwsh: true
