@@ -16,9 +16,8 @@ steps:
           [string]$VariableName,
           [string]$DisplayName
         )
-        # Check if the variable is defined in the environment
         $Variable = Get-Item -Path Env:$VariableName -ErrorAction SilentlyContinue
-        if ($Variable) {
+        if ($Variable -and $Variable.Value -ne '$(' + $VariableName + ')') {
           Write-Host "${DisplayName}: $($Variable.Value)"
         } else {
           Write-Host "${DisplayName} is not set or defaulted to null."
@@ -51,7 +50,6 @@ steps:
       }
 
       # Logging secret variables
-      # NOTE: only masked values will be logged
       Write-Host "SECRET VARIABLES"
       foreach ($VariableName in $SecretVariableDisplayNames.Keys) {
         Log-PipelineVariable -VariableName $VariableName -DisplayName $SecretVariableDisplayNames[$VariableName]
