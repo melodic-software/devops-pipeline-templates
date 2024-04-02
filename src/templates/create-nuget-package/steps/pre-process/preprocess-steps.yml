@@ -6,7 +6,7 @@ steps:
 - template: ./override-variables.yml
   parameters:
     azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}
-    proGetPackageFeed: ${{ parameters.proGetPackageFeed }}
+    proGetPackageServiceIndex: ${{ parameters.proGetPackageServiceIndex }}
     # Add any additional variables (via parameter pass-through) that can optionally be overridden
 
 - template: ../../../shared/steps/update-global-variables.yml

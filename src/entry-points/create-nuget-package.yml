@@ -46,10 +46,10 @@ parameters:
     displayName: Include ProGet Push
     type: boolean
     default: true
-  - name: proGetPackageFeed
-    displayName: ProGet Package Feed
+  - name: proGetPackageServiceIndex
+    displayName: ProGet Package Service Index
     type: string
-    default: '' # If specified, the default ProGetPackageFeed global variable will be overwritten
+    default: '' # If specified, the default ProGetPackageServiceIndex global variable will be overwritten
   - name: runTests
     displayName: Run Tests
     type: boolean
@@ -99,5 +99,5 @@ jobs:
           azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}
           includeGitHubPush : ${{ parameters.includeGitHubPush }}
           includeProGetPush : ${{ parameters.includeProGetPush }}
-          proGetPackageFeed: ${{ parameters.proGetPackageFeed }}
+          proGetPackageServiceIndex: ${{ parameters.proGetPackageServiceIndex }}
           includeLogSteps: ${{ parameters.includeLogSteps }}

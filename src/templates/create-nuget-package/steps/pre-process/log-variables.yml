@@ -7,7 +7,7 @@ steps:
   env:
     # Map secret variables from variable group defined in Azure DevOps UI
     # TODO: Is there a way to make this so it doesn't require the variable to be defined (like default to null?)
-    GITHUBPACKAGEPAT: $(GitHubPackagePAT)
+    GITHUBPACKAGEAPIKEY: $(GitHubPackageApiKey)
     PROGETPACKAGEAPIKEY: $(ProGetPackageApiKey)
   inputs:
     targetType: 'inline'
@@ -33,14 +33,14 @@ steps:
         "PACKAGEPREFIX" = "PackagePrefix"
         "AZUREDEVOPSPACKAGEFEED" = "AzureDevOpsPackageFeed"
         "AZUREDEVOPSPACKAGESYMBOLSFILEPATH" = "AzureDevopsPackageSymbolsFilePath"
-        "GITHUBPACKAGEFEED" = "GitHubPackageFeed"
-        "PROGETPACKAGEFEED" = "ProGetPackageFeed"
+        "GITHUBPACKAGESERVICEINDEX" = "GitHubPackageServiceIndex"
+        "PROGETPACKAGESERVICEINDEX" = "ProGetPackageServiceIndex"
       }
 
       $SecretVariableDisplayNames = [ordered]@{
         # Variable group variables defined in Azure DevOps
         # Any that are defined as "secret" should result in masked values
-        "GITHUBPACKAGEPAT" = "GitHubPackagePAT"
+        "GITHUBPACKAGEAPIKEY" = "GitHubPackageApiKey"
         "PROGETPACKAGEAPIKEY" = "ProGetPackageApiKey"
       }
 

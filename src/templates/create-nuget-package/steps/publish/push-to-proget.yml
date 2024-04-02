@@ -5,7 +5,7 @@ steps:
   condition: |
     and(
       succeeded(),
-      ne(variables['ProGetPackageFeed'], ''),
+      ne(variables['ProGetPackageServiceIndex'], ''),
       ne(variables['ProGetPackageApiKey'], ''),
       eq(variables['TestMode'], 'false'),
       ne(variables['Build.Reason'], 'PullRequest')
@@ -15,6 +15,6 @@ steps:
     custom: nuget
     arguments: >
       push "$(Build.ArtifactStagingDirectory)/**/**"
-      --source "$(ProGetPackageFeed)"
+      --source "$(ProGetPackageServiceIndex)"
       --api-key $(ProGetPackageApiKey)
       --skip-duplicate

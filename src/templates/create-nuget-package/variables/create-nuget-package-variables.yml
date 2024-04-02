@@ -7,9 +7,9 @@ variables:
     value: 'melodic-main/main-nuget'
   - name: AzureDevopsPackageSymbolsFilePath
     value: ''
-  - name: GitHubPackageFeed
+  - name: GitHubPackageServiceIndex
     value: 'https://nuget.pkg.github.com/melodic-software/index.json'
-  - name: ProGetPackageFeed
+  - name: ProGetPackageServiceIndex
     value: 'https://packages.melodicsoftware.com/nuget/main-nuget/v3/index.json'
   - name: PowerShellScriptsDirectory
     value: 'src/templates/create-nuget-package/powershell'

@@ -12,7 +12,7 @@ steps:
 - template: ./pre-process/preprocess-steps.yml
   parameters:
     azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}
-    proGetPackageFeed: ${{ parameters.proGetPackageFeed }}
+    proGetPackageServiceIndex: ${{ parameters.proGetPackageServiceIndex }}
     includeLogSteps: ${{ parameters.includeLogSteps }}
 
 - ${{ if or(eq(parameters.targetFramework, 'DotNet'), eq(parameters.targetFramework, 'DotNetCore'), eq(parameters.targetFramework, 'DotNetStandard'), eq(parameters.targetFramework, 'NotSpecified')) }}:

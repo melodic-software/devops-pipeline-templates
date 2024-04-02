@@ -5,8 +5,8 @@ steps:
   condition: |
     and(
       succeeded(),
-      ne(variables['GitHubPackageFeed'], ''),
-      ne(variables['GitHubPackagePAT'], ''),
+      ne(variables['GitHubPackageServiceIndex'], ''),
+      ne(variables['GitHubPackageApiKey'], ''),
       eq(variables['TestMode'], 'false'),
       ne(variables['Build.Reason'], 'PullRequest')
     )
@@ -15,8 +15,8 @@ steps:
     custom: nuget
     arguments: >
       push "$(Build.ArtifactStagingDirectory)/**/*.nupkg"
-      --source "$(GitHubPackageFeed)"
-      --api-key "$(GitHubPackagePAT)"
+      --source "$(GitHubPackageServiceIndex)"
+      --api-key "$(GitHubPackageApiKey)"
       --skip-duplicate
 
 # GitHub Packages does not have symbol server support.

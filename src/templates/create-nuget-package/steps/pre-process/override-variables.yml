@@ -16,10 +16,10 @@ steps:
           Write-Host "##vso[task.setvariable variable=AzureDevOpsPackageFeed]$AzureDevOpsPackageFeed"
       }
 
-      $ProGetPackageFeed = "${{ parameters.proGetPackageFeed }}"
+      $ProGetPackageServiceIndex = "${{ parameters.proGetPackageServiceIndex }}"
 
-      if (-not [string]::IsNullOrEmpty($ProGetPackageFeed)) {
-          Write-Host "ProGetPackageFeed: $ProGetPackageFeed"
-          Write-Host "##vso[task.setvariable variable=ProGetPackageFeed]$ProGetPackageFeed"
+      if (-not [string]::IsNullOrEmpty($ProGetPackageServiceIndex)) {
+          Write-Host "ProGetPackageServiceIndex: $ProGetPackageServiceIndex"
+          Write-Host "##vso[task.setvariable variable=ProGetPackageServiceIndex]$ProGetPackageServiceIndex"
       }
     pwsh: true
