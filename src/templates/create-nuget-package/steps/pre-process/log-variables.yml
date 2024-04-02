@@ -4,6 +4,10 @@ steps:
   displayName: Log Pipeline-Specific Variables
   condition: succeeded()
   continueOnError: true
+  env:
+    # Map secret variables from variable group defined in Azure DevOps UI
+    GITHUBPACKAGEAPIKEY: $(GitHubPackageApiKey)
+    PROGETPACKAGEAPIKEY: $(ProGetPackageApiKey)
   inputs:
     targetType: 'inline'
     script: |
@@ -12,11 +16,12 @@ steps:
           [string]$VariableName,
           [string]$DisplayName
         )
-        $VariableValue = [Environment]::GetEnvironmentVariable($VariableName)
-        if (-not [string]::IsNullOrEmpty($VariableValue)) {
-          Write-Host "${DisplayName}: $VariableValue"
+        # Check if the variable is defined in the environment
+        $Variable = Get-Item -Path Env:$VariableName -ErrorAction SilentlyContinue
+        if ($Variable) {
+          Write-Host "${DisplayName}: $($Variable.Value)"
         } else {
-          Write-Host "${DisplayName} is not set or defaulted to null"
+          Write-Host "${DisplayName} is not set or defaulted to null."
         }
       }
 
