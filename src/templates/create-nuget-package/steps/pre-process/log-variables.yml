@@ -9,7 +9,7 @@ steps:
     GITHUBPACKAGEAPIKEY: $(GitHubPackageApiKey)
     PROGETPACKAGEAPIKEY: $(ProGetPackageApiKey)
   inputs:
-    targetType: 'inline'
+    targetType: "inline"
     script: |
       function Log-PipelineVariable {
         param (
@@ -17,15 +17,15 @@ steps:
           [string]$DisplayName
         )
         $Variable = Get-Item -Path Env:$VariableName -ErrorAction SilentlyContinue
-        if ($Variable -and $Variable.Value -ne '$(' + $VariableName + ')') {
+        if ($Variable -and $Variable.Value -ne '' -and $Variable.Value -ne '$(' + $VariableName + ')') {
           Write-Host "${DisplayName}: $($Variable.Value)"
         } else {
-          Write-Host "${DisplayName} is not set or defaulted to null."
+          Write-Host "${DisplayName} is not set or has been defaulted to null."
         }
       }
 
       # Hashtables mapping environment variable names to their Azure DevOps pipeline name
-      
+
       $VariableDisplayNames = [ordered]@{
         # Predefined variables
         "NUGETASSEMBLYSNKFILE" = "NuGetAssemblySnkFile"
