@@ -14,9 +14,9 @@ steps:
         )
         $VariableValue = [Environment]::GetEnvironmentVariable($VariableName)
         if (-not [string]::IsNullOrEmpty($VariableValue)) {
-          Write-Host "$DisplayName: $VariableValue"
+          Write-Host "${DisplayName}: $VariableValue"
         } else {
-          Write-Host "$DisplayName is not set or defaulted to null"
+          Write-Host "${DisplayName} is not set or defaulted to null"
         }
       }
 
