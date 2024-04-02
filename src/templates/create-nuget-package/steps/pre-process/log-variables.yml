@@ -4,11 +4,6 @@ steps:
   displayName: Log Pipeline-Specific Variables
   condition: succeeded()
   continueOnError: true
-  env:
-    # Map secret variables from variable group defined in Azure DevOps UI
-    # TODO: Is there a way to make this so it doesn't require the variable to be defined (like default to null?)
-    GITHUBPACKAGEAPIKEY: $(GitHubPackageApiKey)
-    PROGETPACKAGEAPIKEY: $(ProGetPackageApiKey)
   inputs:
     targetType: 'inline'
     script: |
@@ -17,11 +12,11 @@ steps:
           [string]$VariableName,
           [string]$DisplayName
         )
-        $Variable = Get-Item -Path Env:$VariableName -ErrorAction SilentlyContinue
-        if ($Variable) {
-          Write-Host "${DisplayName}: $($Variable.Value)"
+        $VariableValue = [Environment]::GetEnvironmentVariable($VariableName)
+        if (-not [string]::IsNullOrEmpty($VariableValue)) {
+          Write-Host "$DisplayName: $VariableValue"
         } else {
-          Write-Host "$DisplayName is not set"
+          Write-Host "$DisplayName is not set or defaulted to null"
         }
       }
 
