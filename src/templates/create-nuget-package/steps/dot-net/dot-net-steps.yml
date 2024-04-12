@@ -7,21 +7,27 @@ parameters:
     displayName: Use Global JSON
     type: boolean
     default: false
+  - name: useNuspecFile
+    displayName: Use Nuspec File
+    type: boolean
+    default: false
 
 steps:
-- ${{ if eq(parameters.dotNetSDKVersion, '') }}:
-  - template: ./extract-dotnet-version.yml
+  - ${{ if eq(parameters.dotNetSDKVersion, '') }}:
+      - template: ./extract-dotnet-version.yml
 
-- template: ./set-assembly-metadata.yml
-- template: ./print-project-content.yml
+  - template: ./set-assembly-metadata.yml
+  - template: ./print-project-content.yml
 
-- ${{ if eq(parameters.useGlobalJson, true) }}:
-  - template: ./use-dotnet-sdk-global.yml
-- ${{ if eq(parameters.useGlobalJson, false) }}:
-  - template: ./use-dotnet-sdk.yml
+  - ${{ if eq(parameters.useGlobalJson, true) }}:
+      - template: ./use-dotnet-sdk-global.yml
+  - ${{ if eq(parameters.useGlobalJson, false) }}:
+      - template: ./use-dotnet-sdk.yml
 
-- template: ./nuget-restore.yml
-- template: ./build.yml
-- template: ./set-code-coverage-framework.yml
-- template: ./run-tests.yml
-- template: ./nuget-pack.yml
+  - template: ./nuget-restore.yml
+  - template: ./build.yml
+  - template: ./set-code-coverage-framework.yml
+  - template: ./run-tests.yml
+  - template: ./nuget-pack.yml
+    parameters:
+      useNuspecFile: ${{ parameters.useNuspecFile }}

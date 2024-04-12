@@ -1,7 +1,15 @@
+parameters:
+  - name: useNuspecFile
+    displayName: Use Nuspec File
+    type: boolean
+    default: false
+
 steps:
-- template: ./set-assembly-metadata.yml
-- template: ./print-project-content.yml
-- template: ./nuget-restore.yml
-- template: ./build.yml
-- template: ./run-tests.yml
-- template: ./nuget-pack.yml
+  - template: ./set-assembly-metadata.yml
+  - template: ./print-project-content.yml
+  - template: ./nuget-restore.yml
+  - template: ./build.yml
+  - template: ./run-tests.yml
+  - template: ./nuget-pack.yml
+    parameters:
+      useNuspecFile: ${{ parameters.useNuspecFile }}

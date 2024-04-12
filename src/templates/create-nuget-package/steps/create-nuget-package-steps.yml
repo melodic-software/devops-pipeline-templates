@@ -2,6 +2,7 @@ parameters:
   targetFramework: ''
   dotNetSDKVersion: ''
   useGlobalJson: false
+  useNuspecFile: false
   includeAzureDevOpsPush: false
   azureDevOpsPackageFeed: ''
   includeGitHubPush: false
@@ -20,12 +21,15 @@ steps:
       parameters:
         dotNetSDKVersion: ${{ parameters.dotNetSDKVersion }}
         useGlobalJson: ${{ parameters.useGlobalJson }}
+        useNuspecFile: ${{ parameters.useNuspecFile }}
 
 - ${{ if or(eq(parameters.targetFramework, 'DotNetFramework'), eq(parameters.targetFramework, 'NotSpecified')) }}:
     - template: ./dot-net-framework/dot-net-framework-steps.yml
+      parameters:
+        useNuspecFile: ${{ parameters.useNuspecFile }}
 
 - template: ./publish/publish-steps.yml
   parameters:
-    includeAzureDevOpsPush : ${{ parameters.includeAzureDevOpsPush }}
-    includeGitHubPush : ${{ parameters.includeGitHubPush }}
-    includeProGetPush : ${{ parameters.includeProGetPush }}
+    includeAzureDevOpsPush: ${{ parameters.includeAzureDevOpsPush }}
+    includeGitHubPush: ${{ parameters.includeGitHubPush }}
+    includeProGetPush: ${{ parameters.includeProGetPush }}

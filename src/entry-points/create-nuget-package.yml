@@ -26,6 +26,10 @@ parameters:
     displayName: Use Global JSON
     type: boolean
     default: false
+  - name: useNuspecFile
+    displayName: Use Nuspec File
+    type: boolean
+    default: false
   - name: releaseNotes
     displayName: Release Notes
     type: string
@@ -57,7 +61,7 @@ parameters:
   - name: testMode # Allow for skipping package push steps, symbol publication, etc.
     displayName: Test Mode
     type: boolean
-    default: false 
+    default: false
   - name: includeLogSteps
     displayName: Include Log Steps
     default: true
@@ -84,7 +88,7 @@ variables:
   - group: GlobalSecrets # Must be defined as a variable group in the Azure DevOps UI
   - template: '../templates/shared/variables/global-variables.yml'
   - template: '../templates/create-nuget-package/variables/create-nuget-package-variables.yml'
-  
+
 jobs:
   - job: createPackage
     displayName: Create NuGet Package
@@ -95,9 +99,10 @@ jobs:
           targetFramework: ${{ parameters.targetFramework }}
           dotNetSDKVersion: ${{ parameters.dotNetSDKVersion }}
           useGlobalJson: ${{ parameters.useGlobalJson }}
-          includeAzureDevOpsPush : ${{ parameters.includeAzureDevOpsPush }}
+          useNuspecFile: ${{ parameters.useNuspecFile }}
+          includeAzureDevOpsPush: ${{ parameters.includeAzureDevOpsPush }}
           azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}
-          includeGitHubPush : ${{ parameters.includeGitHubPush }}
-          includeProGetPush : ${{ parameters.includeProGetPush }}
+          includeGitHubPush: ${{ parameters.includeGitHubPush }}
+          includeProGetPush: ${{ parameters.includeProGetPush }}
           proGetPackageServiceIndex: ${{ parameters.proGetPackageServiceIndex }}
           includeLogSteps: ${{ parameters.includeLogSteps }}
