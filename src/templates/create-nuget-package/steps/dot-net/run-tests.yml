@@ -7,5 +7,5 @@ steps:
     command: 'test'
     # this is a convention - all tests are placed in a "tests" folder at the root
     projects: '$(SelfRepositoryFolder)/test*/**/*.csproj'
-    arguments: '--configuration $(Configuration) --collect "$(CodeCoverageFramework)" --verbosity detailed /p:SignAssembly=true /p:AssemblyOriginatorKeyFile=$(DownloadNuGetSigningKey.secureFilePath)'
+    arguments: '--configuration $(Configuration) --collect "$(CodeCoverageFramework)" --verbosity detailed /p:AssemblyOriginatorKeyFile=$(DownloadNuGetSigningKey.secureFilePath)'
     publishTestResults: true  # This is optional but recommended for better tracking of test results
