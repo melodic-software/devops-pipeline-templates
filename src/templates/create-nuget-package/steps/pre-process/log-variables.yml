@@ -35,6 +35,7 @@ steps:
         "AZUREDEVOPSPACKAGESYMBOLSFILEPATH" = "AzureDevopsPackageSymbolsFilePath"
         "GITHUBPACKAGESERVICEINDEX" = "GitHubPackageServiceIndex"
         "PROGETPACKAGESERVICEINDEX" = "ProGetPackageServiceIndex"
+        "POWERSHELLSCRIPTSDIRECTORY" = "PowerShellScriptsDirectory"
       }
 
       $SecretVariableDisplayNames = [ordered]@{
