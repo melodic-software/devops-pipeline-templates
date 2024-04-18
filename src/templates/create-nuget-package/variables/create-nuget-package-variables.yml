@@ -1,6 +1,8 @@
 variables:
   - name: NuGetAssemblySnkFile
     value: 'melodic-nuget.snk'
+  - name: NuGetAssemblySnkPublicKey
+    value: '0024000004800000940000000602000000240000525341310004000001000100d197c035ac6eb4cd512c2f196ee3c0ea1483f2701a7d9ddbdc300cd9faff5314e734e1b13a43de0b093afb42e26dc073f90f73acb65c5fc03d8e2dd92a30697bc6e825847c04200a1e8ff3aac207c15f78e1c4618c9720a5b2776a1b611cd64a93b53360e6bb583ee86d4f1bc5064d98871178843a3d47364b2d9ed6b4ee36a0'
   - name: PackagePrefix
     value: 'Melodic'
   - name: AzureDevOpsPackageFeed

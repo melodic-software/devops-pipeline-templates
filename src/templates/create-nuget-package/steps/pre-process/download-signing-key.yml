@@ -1,7 +1,7 @@
 steps:
 - task: DownloadSecureFile@1
-  name: DownloadNuGetSigningKey
-  displayName: Download SNK File # This is the "strong name key" used to sign assemblies
+  name: DownloadNuGetSigningKey # This name is what other tasks must refer to in order to access the secure file.
+  displayName: Download SNK File # This is the "strong name key" used to sign assemblies.
   condition: succeeded()
   inputs:
     secureFile: $(NuGetAssemblySnkFile)

@@ -29,6 +29,7 @@ steps:
       $VariableDisplayNames = [ordered]@{
         # Predefined variables
         "NUGETASSEMBLYSNKFILE" = "NuGetAssemblySnkFile"
+        "NUGETASSEMBLYSNKPUBLICKEY" = "NuGetAssemblySnkPublicKey"
         "PACKAGEPREFIX" = "PackagePrefix"
         "AZUREDEVOPSPACKAGEFEED" = "AzureDevOpsPackageFeed"
         "AZUREDEVOPSPACKAGESYMBOLSFILEPATH" = "AzureDevopsPackageSymbolsFilePath"
