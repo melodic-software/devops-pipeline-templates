@@ -12,6 +12,7 @@ parameters:
 steps:
 - template: ./pre-process/preprocess-steps.yml
   parameters:
+    useNuspecFile: ${{ parameters.useNuspecFile }}
     azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}
     proGetPackageServiceIndex: ${{ parameters.proGetPackageServiceIndex }}
     includeLogSteps: ${{ parameters.includeLogSteps }}
@@ -21,12 +22,9 @@ steps:
       parameters:
         dotNetSDKVersion: ${{ parameters.dotNetSDKVersion }}
         useGlobalJson: ${{ parameters.useGlobalJson }}
-        useNuspecFile: ${{ parameters.useNuspecFile }}
 
 - ${{ if or(eq(parameters.targetFramework, 'DotNetFramework'), eq(parameters.targetFramework, 'NotSpecified')) }}:
     - template: ./dot-net-framework/dot-net-framework-steps.yml
-      parameters:
-        useNuspecFile: ${{ parameters.useNuspecFile }}
 
 - template: ./publish/publish-steps.yml
   parameters:

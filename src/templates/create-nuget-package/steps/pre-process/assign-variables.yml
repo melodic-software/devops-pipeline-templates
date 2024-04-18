@@ -1,0 +1,17 @@
+parameters:
+  useNuspecFile: false
+
+steps:
+- task: PowerShell@2
+  name: AssignVariables
+  displayName: Assign Variables
+  condition: succeeded()
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Assign variable we use in NuGet packaging steps later in the pipeline.
+      $Extension = ${{ parameters.useNuspecFile }} ? 'nuspec' : 'csproj'
+      $VariableValue = "$(SelfRepositoryFolder)/**/$(ProjectName).$Extension"
+      Write-Host "Setting PackagesToPack to: $VariableValue"
+      Write-Host "##vso[task.setvariable variable=PackagesToPack]$VariableValue"
+    pwsh: true

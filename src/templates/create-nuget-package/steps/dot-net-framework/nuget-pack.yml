@@ -1,34 +1,12 @@
-parameters:
-  - name: useNuspecFile
-    displayName: Use Nuspec File
-    type: boolean
-    default: false
-
 steps:
-- ${{ if eq(parameters.useNuspecFile, false) }}:
   - task: NuGetCommand@2
     displayName: Nuget Pack
     condition: and(succeeded(), eq(variables['DotNetSDKVersion'], ''))
     inputs:
       command: pack
-      packagesToPack: "$(SelfRepositoryFolder)/**/$(ProjectName).csproj"
+      packagesToPack: "$(PackagesToPack)"
       configuration: $(Configuration)
       versioningScheme: byEnvVar
       versionEnvVar: GitVersion_SemVer
       includeSymbols: true
       symbolPackageFormat: snupkg
-
-- ${{ if eq(parameters.useNuspecFile, true) }}:
-  - task: NuGetCommand@2
-    displayName: "NuGet Pack with Nuspec"
-    condition: and(succeeded(), eq(variables['DotNetSDKVersion'], ''))
-    inputs:
-      command: "pack"
-      packagesToPack: "$(SelfRepositoryFolder)/**/$(ProjectName).nuspec"
-      packDirectory: "$(Build.ArtifactStagingDirectory)"
-      configuration: $(Configuration)
-      nobuild: true
-      includesymbols: true
-      includesource: false
-      versioningScheme: byEnvVar
-      versionEnvVar: GitVersion_SemVer

@@ -7,10 +7,6 @@ parameters:
     displayName: Use Global JSON
     type: boolean
     default: false
-  - name: useNuspecFile
-    displayName: Use Nuspec File
-    type: boolean
-    default: false
 
 steps:
   - ${{ if eq(parameters.dotNetSDKVersion, '') }}:
@@ -29,5 +25,3 @@ steps:
   - template: ./set-code-coverage-framework.yml
   - template: ./run-tests.yml
   - template: ./nuget-pack.yml
-    parameters:
-      useNuspecFile: ${{ parameters.useNuspecFile }}

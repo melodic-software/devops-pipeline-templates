@@ -1,5 +1,6 @@
 parameters:
   azureDevOpsPackageFeed: ''
+  proGetPackageServiceIndex: ''
 
 steps:
 - task: PowerShell@2
