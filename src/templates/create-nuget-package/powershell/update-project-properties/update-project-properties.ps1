@@ -4,6 +4,7 @@ param(
     [string]$RepositoryCommit,
     [string]$RepositoryBranch,
     [string]$AssemblyOriginatorKeyFile,
+    [string]$NuGetAssemblySnkPublicKey,
     [string]$PathMap = $null,
     [bool]$IsDotNetFrameworkTarget = $false,
     [bool]$OverwriteExisting = $false
@@ -31,6 +32,11 @@ if ($IsDotNetFrameworkTarget) {
 if ($AssemblyOriginatorKeyFile) {
     $Properties["SignAssembly"] = "true"
     $Properties["AssemblyOriginatorKeyFile"] = $AssemblyOriginatorKeyFile
+
+    if (-not [string]::IsNullOrWhiteSpace($NuGetAssemblySnkPublicKey))
+    {
+        $Properties["PublicKey"] = $NuGetAssemblySnkPublicKey
+    }
 }
 
 if (-not [string]::IsNullOrWhiteSpace($PathMap)) {

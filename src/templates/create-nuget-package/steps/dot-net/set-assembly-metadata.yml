@@ -97,6 +97,7 @@ steps:
         RepositoryCommit = "$(Build.SourceVersion)"
         RepositoryBranch = "$(Build.SourceBranchName)"
         AssemblyOriginatorKeyFile = "$(DownloadNuGetSigningKey.secureFilePath)"
+        NuGetAssemblySnkPublicKey = "$(NuGetAssemblySnkPublicKey)"
         PathMap = $null
         IsDotNetFrameworkTarget = $false
         OverwriteExisting = $false
@@ -108,33 +109,4 @@ steps:
 
       # Execute the script with splatting
       & $ScriptPath @Params
-    pwsh: true
-
-- task: PowerShell@2
-  name: UpdateInternalsVisibleToWithPublicKey
-  displayName: Update InternalsVisibleTo with Public Key
-  condition: and(succeeded(), ne(variables['NuGetAssemblySnkPublicKey'], ''))
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Define base directories and script locations
-      $BaseDirectory = "$(Build.SourcesDirectory)"
-      $BuildTemplatesDirectory = "$(BuildTemplateRepositoryFolder)"
-      $PowerShellScriptsDirectory = "$(PowerShellScriptsDirectory)"
-      
-      # Construct the path to the primary script
-      $ScriptName = "update-internals-visible-to-with-public-key"
-      $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, $ScriptName, "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
-      $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
-
-      # Define the script parameters
-      $SourceDirectory = ("$(Build.SourcesDirectory)", "$(SelfRepositoryFolder)" -join [IO.Path]::DirectorySeparatorChar)
-      $PublicKey = "$(NuGetAssemblySnkPublicKey)"
-
-      # Log the script path and variables for debugging purposes
-      Write-Host "SourceDirectory: $SourceDirectory"
-      Write-Host "PublicKey: $PublicKey"
-
-      # Execute the script
-      & $ScriptPath -SourceDirectory $SourceDirectory -PublicKey $PublicKey
     pwsh: true
