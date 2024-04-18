@@ -97,7 +97,6 @@ steps:
         RepositoryCommit = "$(Build.SourceVersion)"
         RepositoryBranch = "$(Build.SourceBranchName)"
         AssemblyOriginatorKeyFile = "$(DownloadNuGetSigningKey.secureFilePath)"
-        #NuGetAssemblySnkPublicKey = "$(NuGetAssemblySnkPublicKey)"
         PathMap = $null
         IsDotNetFrameworkTarget = $false
         OverwriteExisting = $false
