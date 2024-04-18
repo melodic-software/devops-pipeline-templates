@@ -1,13 +1,10 @@
 parameters:
-  useNuspecFile: false
   azureDevOpsPackageFeed: ''
   proGetPackageServiceIndex: ''
   includeLogSteps: false
 
 steps:
 - template: ./assign-variables.yml
-  parameters:
-    useNuspecFile: ${{ parameters.useNuspecFile }}
 
 - template: ./override-variables.yml
   parameters:

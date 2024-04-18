@@ -79,6 +79,8 @@ variables:
     value: ${{ parameters.targetFramework }}
   - name: DotNetSDKVersion
     value: ${{ parameters.dotNetSDKVersion }}
+  - name: UseNuspecFile
+    value: ${{ parameters.useNuspecFile }}
   - name: ReleaseNotes
     value: ${{ parameters.releaseNotes }}
   - name: RunTests
@@ -99,7 +101,6 @@ jobs:
           targetFramework: ${{ parameters.targetFramework }}
           dotNetSDKVersion: ${{ parameters.dotNetSDKVersion }}
           useGlobalJson: ${{ parameters.useGlobalJson }}
-          useNuspecFile: ${{ parameters.useNuspecFile }}
           includeAzureDevOpsPush: ${{ parameters.includeAzureDevOpsPush }}
           azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}
           includeGitHubPush: ${{ parameters.includeGitHubPush }}
