@@ -7,15 +7,15 @@ steps:
     condition: and(succeeded(), ne(variables['DotNetSDKVersion'], ''))
     inputs:
       command: pack
-      packagesToPack: '$(PackagesToPack)'  
+      packagesToPack: '$(PackagesToPack)'
       packDirectory: '$(Build.ArtifactStagingDirectory)' # This is the default. The alias "outputDir" can also be used.
-      configuration: $(Configuration)
+      configuration: $(BuildConfiguration)
       nobuild: true # The project has already been built in a previous step.
       includesymbols: true # Creates symbol NuGet packages.
       includesource: false
       versioningScheme: byEnvVar
-      versionEnvVar: GitVersion_SemVer 
+      versionEnvVar: GitVersion_SemVer
 
-# Regarding the "versionEnvVar":
-# The alternative syntax is GITVERSION_SEMVER (the former gets converted into the latter internally)
-# Here's another older format: GitVersion.NuGetVersionV2
+  # Regarding the "versionEnvVar":
+  # The alternative syntax is GITVERSION_SEMVER (the former gets converted into the latter internally)
+  # Here's another older format: GitVersion.NuGetVersionV2

@@ -50,7 +50,7 @@ steps:
     Copyright: 'Copyright $(date:YYYY) $(CompanyName)' # what's the preferred format here?
     #Trademark: ''
     #Culture: 'en-US' # informs the resource manager of the default culture for the assembly
-    Configuration: '$(Configuration)'
+    Configuration: '$(BuildConfiguration)'
     VersionNumber: '$(AssemblyVersion)'
     FileVersionNumber: '$(FileVersion)' # https://learn.microsoft.com/en-us/dotnet/standard/assembly/set-attributes
     InformationalVersion: '$(InformationalVersion)' # https://learn.microsoft.com/en-us/dotnet/standard/assembly/set-attributes

@@ -5,7 +5,7 @@ steps:
     inputs:
       command: pack
       packagesToPack: "$(PackagesToPack)"
-      configuration: $(Configuration)
+      configuration: $(BuildConfiguration)
       versioningScheme: byEnvVar
       versionEnvVar: GitVersion_SemVer
       includeSymbols: true

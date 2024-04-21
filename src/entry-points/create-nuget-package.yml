@@ -3,14 +3,14 @@ parameters:
     displayName: Virtual Machine Image
     type: string
     default: 'ubuntu-latest' # windows-latest, macos-latest
-  - name: configuration
-    displayName: Configuration
+  - name: buildConfiguration
+    displayName: BuildConfiguration
     type: string
     default: Release
-  - name: platform
-    displayName: Platform
+  - name: buildPlatform
+    displayName: BuildPlatform
     type: string
-    default: 'Any CPU' # x86, x64, ARM
+    default: 'AnyCPU' # x86, x64, ARM
   - name: projectName
     displayName: Project Name
     type: string
@@ -69,10 +69,10 @@ parameters:
 variables:
   - name: VirtualMachineImage
     value: ${{ parameters.vmImage }}
-  - name: Configuration
-    value: ${{ parameters.configuration }}
-  - name: Platform
-    value: ${{ parameters.platform }}
+  - name: BuildConfiguration
+    value: ${{ parameters.buildConfiguration }}
+  - name: BuildPlatform
+    value: ${{ parameters.buildPlatform }}
   - name: ProjectName
     value: ${{ parameters.projectName }}
   - name: TargetFramework

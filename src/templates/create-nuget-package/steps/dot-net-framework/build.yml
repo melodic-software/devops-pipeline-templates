@@ -1,24 +1,11 @@
 steps:
-- task: PowerShell@2
-  name: UpdatePlatform
-  displayName: Update Platform
-  condition: and(succeeded(), eq(variables['DotNetSDKVersion'], ''))
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Ensure platform is set to AnyCPU to prevent build errors
-      Write-Host "Updating the build platform to AnyCPU to prevent build errors."
-      Write-Host "##vso[task.setvariable variable=Platform]AnyCPU"
-      # TODO: do we need to handle other platforms? x86, x64, ARM, etc?
-    pwsh: true
-
 - task: MSBuild@1
   name: BuildDotNetFramework
   displayName: Build Project
   condition: and(succeeded(), eq(variables['DotNetSDKVersion'], ''))
   inputs:
-    solution: '**/*.sln' # here we just target a solution file instead of a specific project - this will build all projects in the solution (including tests)
-    msbuildArguments: '/p:Configuration=$(Configuration) /p:RestoreDuringBuild=false /p:OutputPath=bin\$(Configuration)\ /p:Platform=$(Platform) /p:SignAssembly=true /p:AssemblyOriginatorKeyFile="$(DownloadNuGetSigningKey.secureFilePath)" /p:Deterministic=true /p:DebugType=portable /v:Diagnostic'
-    # Setting default values directly in the task. If the variables are not set, these values will be used.
-    configuration: 'Release' # Default value is Release
-    platform: 'Any CPU' # Default value is Any CPU
+    solution: '**/*.sln' # This targets all solution files in the repository to build all included projects.
+    msbuildArguments: '/p:Configuration=$(BuildConfiguration) /p:RestoreDuringBuild=false /p:OutputPath=bin\$(BuildConfiguration)\ /p:Platform=$(BuildPlatform) /p:SignAssembly=true /p:AssemblyOriginatorKeyFile="$(DownloadNuGetSigningKey.secureFilePath)" /p:Deterministic=true /p:DebugType=portable /v:Diagnostic'
+    # Setting default values directly in the task. These values are used if the variables are not set.
+    configuration: $(BuildConfiguration)
+    platform: $(BuildPlatform)

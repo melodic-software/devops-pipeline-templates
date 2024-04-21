@@ -6,4 +6,4 @@ steps:
   inputs:
     command: 'build'
     projects: '**/$(ProjectName).csproj'
-    arguments: '--configuration $(Configuration) --no-restore'
+    arguments: '--configuration $(BuildConfiguration) --no-restore'
