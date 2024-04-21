@@ -8,7 +8,7 @@ variables:
   - name: AzureDevOpsPackageFeed
     value: 'melodic-main/main-nuget'
   - name: AzureDevopsPackageSymbolsFilePath
-    value: '' # This is a test. Just checking SSH and GPG key usage.
+    value: ''
   - name: GitHubPackageServiceIndex
     value: 'https://nuget.pkg.github.com/melodic-software/index.json'
   - name: ProGetPackageServiceIndex
