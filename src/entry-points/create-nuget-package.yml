@@ -26,8 +26,8 @@ parameters:
     displayName: Use Global JSON
     type: boolean
     default: false
-  - name: useNuspecFile
-    displayName: Use Nuspec File
+  - name: noBuildBeforePack
+    displayName: NoBuildBeforePack
     type: boolean
     default: false
   - name: releaseNotes
@@ -79,8 +79,8 @@ variables:
     value: ${{ parameters.targetFramework }}
   - name: DotNetSDKVersion
     value: ${{ parameters.dotNetSDKVersion }}
-  - name: UseNuspecFile
-    value: ${{ parameters.useNuspecFile }}
+  - name: NoBuildBeforePack
+    value: ${{ parameters.noBuildBeforePack }}
   - name: ReleaseNotes
     value: ${{ parameters.releaseNotes }}
   - name: RunTests

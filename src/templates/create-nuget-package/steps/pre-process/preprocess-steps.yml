@@ -4,8 +4,6 @@ parameters:
   includeLogSteps: false
 
 steps:
-- template: ./assign-variables.yml
-
 - template: ./override-variables.yml
   parameters:
     azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}

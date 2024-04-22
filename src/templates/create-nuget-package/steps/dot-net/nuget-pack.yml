@@ -2,15 +2,16 @@ steps:
   # https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/dotnet-core-cli-v2
   # https://learn.microsoft.com/en-us/nuget/reference/msbuild-targets#pack-target
   # https://www.frakkingsweet.com/adding-metadata-to-nuget-packages-in-azure-devops-pipelines/
+  
   - task: DotNetCoreCLI@2
     displayName: NuGet Pack
     condition: and(succeeded(), ne(variables['DotNetSDKVersion'], ''))
     inputs:
       command: pack
-      packagesToPack: '$(PackagesToPack)'
-      packDirectory: '$(Build.ArtifactStagingDirectory)' # This is the default. The alias "outputDir" can also be used.
+      packagesToPack: $(SelfRepositoryFolder)/**/$(ProjectName).csproj
+      packDirectory: $(Build.ArtifactStagingDirectory) # This is the default. The alias "outputDir" can also be used.
       configuration: $(BuildConfiguration)
-      nobuild: true # The project has already been built in a previous step.
+      nobuild: $(NoBuildBeforePack)
       includesymbols: true # Creates symbol NuGet packages.
       includesource: false
       versioningScheme: byEnvVar
@@ -19,3 +20,7 @@ steps:
   # Regarding the "versionEnvVar":
   # The alternative syntax is GITVERSION_SEMVER (the former gets converted into the latter internally)
   # Here's another older format: GitVersion.NuGetVersionV2
+
+  # Regarding the $(NoBuildBeforePack) and "nobuild".
+  # In most cases, this can be true since we've already built the project at this point.
+  # This might need to be set to false for a package built from a proejct that has internal project references.
