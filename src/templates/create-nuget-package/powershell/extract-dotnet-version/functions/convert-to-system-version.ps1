@@ -5,10 +5,10 @@ Converts a version string into a System.Version object.
 This function takes a version string and converts it into a `System.Version` object.
 If an 'x' is present in the version string, it's substituted with '0' for compatibility with `System.Version`.
 .PARAMETER VersionString
-The version string intended for conversion, accommodating formats like "7.x" or "3.1".
+The version string intended for conversion, accommodating formats like "8.x" or "3.1".
 .EXAMPLE
-ConvertTo-SystemVersion -VersionString "7.x" 
-# Returns: Version "7.0"
+ConvertTo-SystemVersion -VersionString "8.x" 
+# Returns: Version "8.0"
 .EXAMPLE
 ConvertTo-SystemVersion -VersionString "3.1" 
 # Returns: Version "3.1"

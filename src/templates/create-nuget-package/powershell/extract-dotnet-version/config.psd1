@@ -1,3 +1,3 @@
 @{
-    FallbackDotNetVersion = '7.x'
+    FallbackDotNetVersion = '8.x'
 }

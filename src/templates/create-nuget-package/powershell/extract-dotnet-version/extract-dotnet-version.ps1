@@ -19,7 +19,7 @@ A switch to toggle verbose logs.
 .PARAMETER Debug
 A switch to toggle debug logs.
 .EXAMPLE
-.\extract-dotnet-version.ps1 -ProjectPath "C:/path/to/projects" -FallbackDotNetVersion "7.x"
+.\extract-dotnet-version.ps1 -ProjectPath "C:/path/to/projects" -FallbackDotNetVersion "8.x"
 .NOTES
 The script employs various helper functions to validate inputs, resolve paths, and ascertain the highest SDK version.
 It then displays and returns the highest SDK version discovered or the fallback version if necessary.

@@ -10,7 +10,7 @@ The string content of the project file.
 The default .NET version to use if the project content does not specify the SDK version.
 .EXAMPLE
 $Project = Get-Content -Path "C:\path\to\project.csproj"
-$SdkVersion = Get-ProjectSdkVersion -ProjectContent $Project -FallbackDotNetVersion "7.x"
+$SdkVersion = Get-ProjectSdkVersion -ProjectContent $Project -FallbackDotNetVersion "8.x"
 .NOTES
 This function utilizes `ConvertTo-SystemVersion` for version string processing.
 #>

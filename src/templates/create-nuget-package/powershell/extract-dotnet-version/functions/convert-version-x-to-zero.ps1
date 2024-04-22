@@ -5,10 +5,10 @@ Substitutes 'x' characters in a version string with '0'.
 Processes a version string, and if it contains an 'x', replaces it with '0'.
 This is often used to standardize version strings.
 .PARAMETER VersionString
-The version string that might contain an 'x', intended for transformation, e.g., "7.x".
+The version string that might contain an 'x', intended for transformation, e.g., "8.x".
 .EXAMPLE
-Convert-VersionXToZero -VersionString "7.x" 
-# Returns: "7.0"
+Convert-VersionXToZero -VersionString "8.x" 
+# Returns: "8.0"
 .NOTES
 If the version string does not contain 'x', it will be returned unchanged.
 #>

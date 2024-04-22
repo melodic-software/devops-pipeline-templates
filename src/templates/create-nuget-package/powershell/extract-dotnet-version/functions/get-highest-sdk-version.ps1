@@ -9,7 +9,7 @@ An array containing paths of the `.csproj` files to be analyzed.
 Fallback .NET version to utilize if no SDK version is detected in the project files.
 .EXAMPLE
 $projects = Get-ChildItem -Path "C:\path\to\projects" -Filter "*.csproj"
-Get-HighestSdkVersion -ProjectFiles $projects.FullName -FallbackDotNetVersion "7.x"
+Get-HighestSdkVersion -ProjectFiles $projects.FullName -FallbackDotNetVersion "8.x"
 .NOTES
 This function relies on `Get-ProjectSdkVersion` and related helper functions to compute the highest SDK version.
 #>

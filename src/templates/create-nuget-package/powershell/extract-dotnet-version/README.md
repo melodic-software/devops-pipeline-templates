@@ -62,6 +62,6 @@ This primary script serves as the executor for all other utility scripts, managi
 
 ## Edge Cases and Handling
 
-1. **Fallback Version**: Should no `.csproj` files be located, or if there's an error during parsing, the script defaults to a predetermined fallback version (defaults to '7.x' if not supplied).
+1. **Fallback Version**: Should no `.csproj` files be located, or if there's an error during parsing, the script defaults to a predetermined fallback version (defaults to '8.x' if not supplied).
 2. **Wildcard Handling**: Supports paths containing single (`*`) or double (`**`) wildcards, leading to the corresponding directory or file.
 3. **Missing Paths**: Non-existent paths or files will result in an error, terminating the script.
