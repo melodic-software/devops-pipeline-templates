@@ -88,9 +88,6 @@ variables:
     value: ${{ parameters.releaseNotes }}
   - name: RunTests
     value: ${{ parameters.runTests }}
-  - name: TestProjects
-    # This is a convention. All tests are placed in a "test" or "tests" folder at the root of the main repository.
-    value: ${{ join(';', each(format('$(SelfRepositoryFolder)/test*/**/{0}', trim(' ', item)), parameters.testProjects)) }}
   - name: TestMode
     value: ${{ parameters.testMode }}
   - group: GlobalSecrets # Must be defined as a variable group in the Azure DevOps UI
@@ -112,4 +109,5 @@ jobs:
           includeGitHubPush: ${{ parameters.includeGitHubPush }}
           includeProGetPush: ${{ parameters.includeProGetPush }}
           proGetPackageServiceIndex: ${{ parameters.proGetPackageServiceIndex }}
+          testProjects: ${{ parameters.testProjects }}
           includeLogSteps: ${{ parameters.includeLogSteps }}

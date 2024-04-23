@@ -1,0 +1,35 @@
+parameters:
+  testProjects: ['*.csproj']
+
+steps:
+- task: PowerShell@2
+  name: AssignVariables
+  displayName: Assign Variables
+  condition: succeeded()
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Define the path prefix
+      $PathPrefix = "$(SelfRepositoryFolder)/test*/**/"
+
+      # Read the parameter directly, assuming it's passed as an array
+      $TestProjects = @('${{ parameters.testProjects }}' -split ',')
+
+      # Initialize the array to hold formatted paths
+      $FormattedProjects = @()
+      
+      # Prefix each project path with the specific directory structure
+      foreach ($Project in $TestProjects) {
+        # Trim any extra spaces and remove single quotes that might have come from YAML to PowerShell
+        $CleanProject = $Project.Trim().Trim("'")
+        $FormattedPath = $PathPrefix + $CleanProject
+        $FormattedProjects += $FormattedPath
+      }
+      
+      # Combine all formatted project paths into a single string for output.
+      $TestProjectsString = $FormattedProjects -join ';'
+      
+      # Set the formatted project paths as a pipeline variable
+      Write-Host "Formatted Test Projects String: $TestProjectsString"
+      Write-Host "##vso[task.setvariable variable=TestProjects;]$TestProjectsString"
+    pwsh: true

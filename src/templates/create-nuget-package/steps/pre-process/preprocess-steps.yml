@@ -1,9 +1,14 @@
 parameters:
   azureDevOpsPackageFeed: ''
   proGetPackageServiceIndex: ''
+  testProjects: ['*.csproj']
   includeLogSteps: false
 
 steps:
+- template: ./assign-variables.yml
+  parameters:
+    testProjects: ${{ parameters.testProjects }}
+
 - template: ./override-variables.yml
   parameters:
     azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}
