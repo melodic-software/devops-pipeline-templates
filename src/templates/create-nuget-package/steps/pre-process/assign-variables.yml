@@ -1,7 +1,7 @@
 parameters:
 - name: testProjects
   type: object
-  default: ['*.csproj']  # Default project pattern
+  default: ['*.csproj']
 
 steps:
 - task: PowerShell@2
@@ -11,18 +11,19 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
+      # Directly pass the parameter as an environment variable using Azure DevOps formatting
+      $TestProjects = @('${{ parameters.testProjects }}' -split ',')
+
       # Define the path prefix
       $PathPrefix = "$(System.DefaultWorkingDirectory)/test*/**/"
-
-      # Read the parameter directly, assuming it's passed as an array from Azure DevOps
-      $TestProjects = @( $(TestProjects) )
 
       # Initialize the array to hold formatted paths
       $FormattedProjects = @()
       
       # Prefix each project path with the specific directory structure
       foreach ($Project in $TestProjects) {
-        $FormattedPath = $PathPrefix + $Project
+        $ProjectTrimmed = $Project.Trim().Trim("'")
+        $FormattedPath = $PathPrefix + $ProjectTrimmed
         $FormattedProjects += $FormattedPath
       }
       

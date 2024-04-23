@@ -13,13 +13,13 @@ steps:
   parameters:
     azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}
     proGetPackageServiceIndex: ${{ parameters.proGetPackageServiceIndex }}
-    # Add any additional variables (via parameter pass-through) that can optionally be overridden
+    # Add any additional variables (via parameter pass-through) that can optionally be overridden.
 
 - template: ../../../shared/steps/update-global-variables.yml
 
 - ${{ if eq(parameters.includeLogSteps, true) }}:
   - template: ../../../shared/steps/log-global-variables.yml
-  - template: ./log-variables.yml # These are specific to this pipeline template
+  - template: ./log-variables.yml # These are specific to this pipeline template.
   - template: ../../../shared/steps/log-git-info.yml
   - template: ../../../shared/steps/log-powershell-version.yml
 
@@ -27,7 +27,7 @@ steps:
 - template: ./checkout.yml
 
 - ${{ if eq(parameters.includeLogSteps, true) }}:
-  - template: ../../../shared/steps/log-predefined-variables.yml # Must run AFTER the checkout step
+  - template: ../../../shared/steps/log-predefined-variables.yml # Must run AFTER the checkout step.
 
 - template: ./git-version.yml
 - template: ./update-release-notes.yml
