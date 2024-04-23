@@ -1,5 +1,7 @@
 parameters:
-  testProjects: ['*.csproj']
+- name: testProjects
+  type: object
+  default: ['*.csproj']  # Default project pattern
 
 steps:
 - task: PowerShell@2
@@ -10,26 +12,26 @@ steps:
     targetType: 'inline'
     script: |
       # Define the path prefix
-      $PathPrefix = "$(SelfRepositoryFolder)/test*/**/"
+      $PathPrefix = "$(System.DefaultWorkingDirectory)/test*/**/"
 
-      # Read the parameter directly, assuming it's passed as an array
-      $TestProjects = @('${{ parameters.testProjects }}' -split ',')
+      # Read the parameter directly, assuming it's passed as an array from Azure DevOps
+      $TestProjects = @( $(TestProjects) )
 
       # Initialize the array to hold formatted paths
       $FormattedProjects = @()
       
       # Prefix each project path with the specific directory structure
       foreach ($Project in $TestProjects) {
-        # Trim any extra spaces and remove single quotes that might have come from YAML to PowerShell
-        $CleanProject = $Project.Trim().Trim("'")
-        $FormattedPath = $PathPrefix + $CleanProject
+        $FormattedPath = $PathPrefix + $Project
         $FormattedProjects += $FormattedPath
       }
       
-      # Combine all formatted project paths into a single string for output.
+      # Combine all formatted project paths into a single string for output
       $TestProjectsString = $FormattedProjects -join ';'
       
-      # Set the formatted project paths as a pipeline variable
+      # Output the formatted test projects string to the host
       Write-Host "Formatted Test Projects String: $TestProjectsString"
+      
+      # Set the formatted project paths as a pipeline variable
       Write-Host "##vso[task.setvariable variable=TestProjects;]$TestProjectsString"
     pwsh: true
