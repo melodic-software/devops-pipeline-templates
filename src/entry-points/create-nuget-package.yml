@@ -14,7 +14,7 @@ parameters:
   - name: projectName
     displayName: Project Name
     type: string
-  - name: targetFramework # When specified, irrelevant tasks will be not be shown in the pipeline
+  - name: targetFramework # When specified, irrelevant tasks will be not be shown in the pipeline.
     displayName: Target Framework
     type: string
     default: NotSpecified # DotNet, DotNetCore, DotNetStandard, DotNetFramework, MultiTarget
@@ -37,11 +37,11 @@ parameters:
   - name: includeAzureDevOpsPush # Push package to an Azure DevOps feed?
     displayName: Include Azure DevOps Push
     type: boolean
-    default: false
+    default: true
   - name: azureDevOpsPackageFeed
     displayName: Azure DevOps Package Feed
     type: string
-    default: '' # If specified, the default AzureDevOpsPackageFeed global variable will be overwritten
+    default: '' # If specified, the default AzureDevOpsPackageFeed global variable will be overwritten.
   - name: includeGitHubPush # Push to GitHub packages?
     displayName: Include GitHub Push
     type: boolean
@@ -49,15 +49,18 @@ parameters:
   - name: includeProGetPush # Push packages to ProGet server?
     displayName: Include ProGet Push
     type: boolean
-    default: true
+    default: false
   - name: proGetPackageServiceIndex
     displayName: ProGet Package Service Index
     type: string
-    default: '' # If specified, the default ProGetPackageServiceIndex global variable will be overwritten
+    default: '' # If specified, the default ProGetPackageServiceIndex global variable will be overwritten.
   - name: runTests
     displayName: Run Tests
     type: boolean
     default: true
+  - name: testProjects
+    type: object
+    default: ['*.csproj'] # Allow for providing specific .csproj names in the standard "test"/"tests" folder in the main repo root.
   - name: testMode # Allow for skipping package push steps, symbol publication, etc.
     displayName: Test Mode
     type: boolean
@@ -85,6 +88,9 @@ variables:
     value: ${{ parameters.releaseNotes }}
   - name: RunTests
     value: ${{ parameters.runTests }}
+  - name: TestProjects
+    # This is a convention. All tests are placed in a "test" or "tests" folder at the root of the main repository.
+    value: ${{ join(';', each(format('$(SelfRepositoryFolder)/test*/**/{0}', trim(' ', item)), parameters.testProjects)) }}
   - name: TestMode
     value: ${{ parameters.testMode }}
   - group: GlobalSecrets # Must be defined as a variable group in the Azure DevOps UI

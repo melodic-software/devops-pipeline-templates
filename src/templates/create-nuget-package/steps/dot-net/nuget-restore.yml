@@ -34,8 +34,13 @@ steps:
 #   inputs:
 #     targetType: 'inline'
 #     script: |
-#       dotnet nuget locals all --clear
-#       Write-Host "NuGet cache cleared"
+#       try {
+#         dotnet nuget locals all --clear
+#         Write-Host "NuGet cache cleared"
+#       } catch {
+#         Write-Host "Failed to clear NuGet cache: $_"
+#       }
+#     pwsh: true
 
 - task: DotNetCoreCLI@2
   name: NuGetRestoreDotNet
@@ -43,7 +48,9 @@ steps:
   condition: and(succeeded(), ne(variables['DotNetSDKVersion'], ''))
   inputs:
     command: restore
-    projects: '$(SelfRepositoryFolder)/**/*.csproj'
+    projects: |
+      $(SelfRepositoryFolder)/**/*.csproj
+      $(TestProjects)
     feedsToUse: $(FeedsToUse)
     nugetConfigPath: $(NuGetConfigPath)
     noCache: true

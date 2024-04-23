@@ -5,8 +5,8 @@ steps:
   condition: and(succeeded(), ne(variables['DotNetSDKVersion'], ''), eq(variables['RunTests'], true))
   inputs:
     command: 'test'
-    # this is a convention - all tests are placed in a "tests" folder at the root
-    projects: '$(SelfRepositoryFolder)/test*/**/*.csproj'
+    
+    projects: $(TestProjects)
     arguments: '--configuration $(BuildConfiguration) --collect "$(CodeCoverageFramework)" --verbosity detailed /p:AssemblyOriginatorKeyFile=$(DownloadNuGetSigningKey.secureFilePath)'
     publishTestResults: true  # This is optional but recommended for better tracking of test results
 
