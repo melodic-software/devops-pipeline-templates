@@ -5,7 +5,6 @@ steps:
   condition: and(succeeded(), ne(variables['DotNetSDKVersion'], ''), eq(variables['RunTests'], true))
   inputs:
     command: 'test'
-    
     projects: $(TestProjects)
     arguments: '--configuration $(BuildConfiguration) --collect "$(CodeCoverageFramework)" --verbosity detailed /p:AssemblyOriginatorKeyFile=$(DownloadNuGetSigningKey.secureFilePath)'
     publishTestResults: true  # This is optional but recommended for better tracking of test results
