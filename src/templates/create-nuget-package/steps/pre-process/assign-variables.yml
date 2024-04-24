@@ -11,8 +11,8 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      # Directly pass the parameter as an environment variable using Azure DevOps formatting
-      $TestProjects = @('${{ parameters.testProjects }}' -split ',')
+      # Convert the comma-separated parameter to an array in PowerShell
+      $TestProjects = "${{ join(',', parameters.testProjects) }}".Split(',')
 
       # Define the path prefix
       $PathPrefix = "$(System.DefaultWorkingDirectory)/test*/**/"
@@ -22,8 +22,7 @@ steps:
       
       # Prefix each project path with the specific directory structure
       foreach ($Project in $TestProjects) {
-        $ProjectTrimmed = $Project.Trim().Trim("'")
-        $FormattedPath = $PathPrefix + $ProjectTrimmed
+        $FormattedPath = $PathPrefix + $Project.Trim()
         $FormattedProjects += $FormattedPath
       }
       
