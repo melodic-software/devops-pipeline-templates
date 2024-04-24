@@ -49,7 +49,7 @@ steps:
   inputs:
     command: restore
     projects: |
-      $(SelfRepositoryFolder)/**/*.csproj
+      $(SelfRepositoryFolder)/**/$(ProjectName).csproj
       $(TestProjects)
     feedsToUse: $(FeedsToUse)
     nugetConfigPath: $(NuGetConfigPath)
