@@ -30,7 +30,7 @@ steps:
       $TestProjectsString = $FormattedProjects -join ';'
       
       # Output the formatted test projects string to the host
-      Write-Host "Formatted Test Projects String: $TestProjectsString"
+      Write-Host "TestProjects: $TestProjectsString"
       
       # Set the formatted project paths as a pipeline variable
       Write-Host "##vso[task.setvariable variable=TestProjects;]$TestProjectsString"
