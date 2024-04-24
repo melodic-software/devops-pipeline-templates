@@ -14,7 +14,7 @@ steps:
       # --------------------------------------------------
       # -- ASSEMBLY ORIGINATOR KEY FILE ------------------
       # --------------------------------------------------
-      $AssemblyOriginatorKeyFile "$(DownloadNuGetSigningKey.secureFilePath)"
+      $AssemblyOriginatorKeyFile = "$(DownloadNuGetSigningKey.secureFilePath)"
       Write-Host "AssemblyOriginatorKeyFile: $AssemblyOriginatorKeyFile"
       Write-Host "##vso[task.setvariable variable=AssemblyOriginatorKeyFile;]$AssemblyOriginatorKeyFile"
 
