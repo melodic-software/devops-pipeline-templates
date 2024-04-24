@@ -3,6 +3,7 @@ param(
     [string]$ProjectName,
     [string]$RepositoryCommit,
     [string]$RepositoryBranch,
+    [bool]$SignAssembly = $true,
     [string]$AssemblyOriginatorKeyFile,
     [string]$PathMap = $null,
     [bool]$IsDotNetFrameworkTarget = $false,
@@ -29,7 +30,7 @@ if ($IsDotNetFrameworkTarget) {
 
 # Add 'AssemblyOriginatorKeyFile' only if it has a value.
 if ($AssemblyOriginatorKeyFile) {
-    $Properties["SignAssembly"] = "true"
+    $Properties["SignAssembly"] = $SignAssembly
     $Properties["AssemblyOriginatorKeyFile"] = $AssemblyOriginatorKeyFile
 }
 

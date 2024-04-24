@@ -11,6 +11,16 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
+      # --------------------------------------------------
+      # -- ASSEMBLY ORIGINATOR KEY FILE ------------------
+      # --------------------------------------------------
+      $AssemblyOriginatorKeyFile "$(DownloadNuGetSigningKey.secureFilePath)"
+      Write-Host "AssemblyOriginatorKeyFile: $AssemblyOriginatorKeyFile"
+      Write-Host "##vso[task.setvariable variable=AssemblyOriginatorKeyFile;]$AssemblyOriginatorKeyFile"
+
+      # --------------------------------------------------
+      # -- TEST PROJECTS ---------------------------------
+      # --------------------------------------------------
       # Convert the comma-separated parameter to an array in PowerShell
       $TestProjects = "${{ join(',', parameters.testProjects) }}".Split(',')
 

@@ -5,7 +5,7 @@ steps:
   condition: and(succeeded(), eq(variables['DotNetSDKVersion'], ''))
   inputs:
     solution: '**/*.sln' # This targets all solution files in the repository to build all included projects.
-    msbuildArguments: '/p:Configuration=$(BuildConfiguration) /p:RestoreDuringBuild=false /p:OutputPath=bin\$(BuildConfiguration)\ /p:Platform=$(BuildPlatform) /p:SignAssembly=true /p:AssemblyOriginatorKeyFile="$(DownloadNuGetSigningKey.secureFilePath)" /p:Deterministic=true /p:DebugType=portable /v:Diagnostic'
+    msbuildArguments: '/p:Configuration=$(BuildConfiguration) /p:RestoreDuringBuild=false /p:OutputPath=bin\$(BuildConfiguration)\ /p:Platform=$(BuildPlatform) /p:SignAssembly=$(SignAssembly) /p:AssemblyOriginatorKeyFile="$(DownloadNuGetSigningKey.secureFilePath)" /p:Deterministic=true /p:DebugType=portable /v:Diagnostic'
     # Setting default values directly in the task. These values are used if the variables are not set.
     configuration: $(BuildConfiguration)
     platform: $(BuildPlatform)

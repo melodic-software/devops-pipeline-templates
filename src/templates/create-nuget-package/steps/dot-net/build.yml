@@ -6,4 +6,4 @@ steps:
   inputs:
     command: 'build'
     projects: '**/$(ProjectName).csproj'
-    arguments: '--configuration $(BuildConfiguration) --no-restore'
+    arguments: '--configuration $(BuildConfiguration) --no-restore /p:SignAssembly=$(SignAssembly) /p:AssemblyOriginatorKeyFile=$(AssemblyOriginatorKeyFile)'

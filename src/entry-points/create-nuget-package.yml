@@ -82,6 +82,8 @@ variables:
     value: ${{ parameters.targetFramework }}
   - name: DotNetSDKVersion
     value: ${{ parameters.dotNetSDKVersion }}
+  - name: SignAssembly
+    value: true
   - name: NoBuildBeforePack
     value: ${{ parameters.noBuildBeforePack }}
   - name: ReleaseNotes
