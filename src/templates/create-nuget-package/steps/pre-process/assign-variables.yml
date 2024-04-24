@@ -15,7 +15,7 @@ steps:
       $TestProjects = "${{ join(',', parameters.testProjects) }}".Split(',')
 
       # Define the path prefix
-      $PathPrefix = "$($(SelfRepositoryFolder)/test*/**/"
+      $PathPrefix = "$(SelfRepositoryFolder)/test*/**/"
 
       # Initialize the array to hold formatted paths
       $FormattedProjects = @()
