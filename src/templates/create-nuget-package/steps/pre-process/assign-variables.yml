@@ -14,20 +14,25 @@ steps:
       # Convert the comma-separated parameter to an array in PowerShell
       $TestProjects = "${{ join(',', parameters.testProjects) }}".Split(',')
 
-      # Define the path prefix
-      $PathPrefix = "$(SelfRepositoryFolder)/test*/**/"
+      # If the array is empty or contains only empty strings, set TestProjects to an empty string.
+      if (-not ($TestProjects -join '').Trim()) {
+        $TestProjectsString = ''
+      } else {
+        # Define the path prefix
+        $PathPrefix = "$(SelfRepositoryFolder)/test*/**/"
 
-      # Initialize the array to hold formatted paths
-      $FormattedProjects = @()
-      
-      # Prefix each project path with the specific directory structure
-      foreach ($Project in $TestProjects) {
-        $FormattedPath = $PathPrefix + $Project.Trim()
-        $FormattedProjects += $FormattedPath
+        # Initialize the array to hold formatted paths
+        $FormattedProjects = @()
+        
+        # Prefix each project path with the specific directory structure
+        foreach ($Project in $TestProjects) {
+          $FormattedPath = $PathPrefix + $Project.Trim()
+          $FormattedProjects += $FormattedPath
+        }
+        
+        # Combine all formatted project paths into a single string for output
+        $TestProjectsString = $FormattedProjects -join ';'
       }
-      
-      # Combine all formatted project paths into a single string for output
-      $TestProjectsString = $FormattedProjects -join ';'
       
       # Output the formatted test projects string to the host
       Write-Host "TestProjects: $TestProjectsString"
