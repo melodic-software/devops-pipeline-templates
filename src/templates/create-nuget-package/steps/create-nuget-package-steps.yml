@@ -6,6 +6,7 @@ parameters:
   azureDevOpsPackageFeed: ''
   includeGitHubPush: false
   includeProGetPush: false
+  testProjects: ['*.csproj']
   includeLogSteps: false
 
 steps:
@@ -13,6 +14,7 @@ steps:
   parameters:
     azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}
     proGetPackageServiceIndex: ${{ parameters.proGetPackageServiceIndex }}
+    testProjects: ${{ parameters.testProjects }}
     includeLogSteps: ${{ parameters.includeLogSteps }}
 
 - ${{ if or(eq(parameters.targetFramework, 'DotNet'), eq(parameters.targetFramework, 'DotNetCore'), eq(parameters.targetFramework, 'DotNetStandard'), eq(parameters.targetFramework, 'NotSpecified')) }}:
