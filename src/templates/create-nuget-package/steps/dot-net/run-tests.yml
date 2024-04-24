@@ -2,7 +2,7 @@ steps:
 - task: DotNetCoreCLI@2
   name: RunTestsDotNet
   displayName: Run Tests
-  condition: and(succeeded(), ne(variables['DotNetSDKVersion'], ''), eq(variables['RunTests'], true))
+  condition: and(succeeded(), ne(variables['DotNetSDKVersion'], ''), eq(variables['RunTests'], true), ne(variables['TestProjects', '']))
   inputs:
     command: 'test'
     projects: $(TestProjects)
