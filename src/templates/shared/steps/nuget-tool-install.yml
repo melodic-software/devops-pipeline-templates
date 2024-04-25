@@ -11,3 +11,4 @@ steps:
   inputs:
     versionSpec: ${{ parameters.versionSpec }}
     checkLatest: true
+  retryCountOnTaskFailure: 3

@@ -33,8 +33,9 @@ steps:
     versionSpec: ${{ parameters.gitVersionSpec }}
     preferLatestVersion: true
     includePrerelease: false
+  retryCountOnTaskFailure: 3
 
-# This is a fallback in case the GitVersion tool failed to install
+# This is a fallback in case the GitVersion tool failed to install.
 - script: dotnet tool install --global GitVersion.Tool --version ${{ parameters.gitVersionSpec }}
   name: InstallGitVersionFallback
   displayName: 'Fallback: Install GitVersion'
