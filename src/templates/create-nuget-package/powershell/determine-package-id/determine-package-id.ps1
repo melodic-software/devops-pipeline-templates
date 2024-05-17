@@ -29,7 +29,7 @@ if ($CsProjPaths.Count -gt 0) {
         $ExtractedPackageId = $ProjectXml.Project.PropertyGroup.PackageId
         if (-not [string]::IsNullOrWhiteSpace($ExtractedPackageId)) {
             $NugetPackageId = $ExtractedPackageId
-            Write-Host "Extracted PackageId from .csproj: $NugetPackageId"
+            Write-Host "Extracted PackageId from .csproj: '$NugetPackageId'"
         } else {
             Write-Host "No PackageId specified in .csproj or it's an empty value. Using ProjectName as fallback."
             $NugetPackageId = $ProjectName
@@ -44,7 +44,9 @@ if ($CsProjPaths.Count -gt 0) {
 
 # Adjust package name with prefix
 try {
+    Write-Host "PackageId before adjustment: '$NugetPackageId'"
     if (-not [string]::IsNullOrEmpty($PackagePrefix)) {
+        Write-Host "PackagePrefix: '$PackagePrefix'"
         if (-not $NugetPackageId.ToLower().StartsWith($PackagePrefix.ToLower())) {
             Write-Host "Adjusting PackageId with provided prefix: $PackagePrefix"
             $NugetPackageId = "$PackagePrefix.$NugetPackageId"
@@ -59,7 +61,7 @@ try {
 
 # Logging the project name and package ID for clarity and debugging
 Write-Host "Final Project Name: $ProjectName"
-Write-Host "Final NuGet Package ID: $NugetPackageId"
+Write-Host "Final NuGet Package ID: '$NugetPackageId'"
 
 # Set the NugetPackageId in the pipeline variable for use in subsequent tasks
 try {
