@@ -36,6 +36,7 @@ if ($CsProjPaths.Count -gt 0) {
         }
     } catch {
         Write-Host "Warning: An error occurred while attempting to extract PackageId from .csproj. Using ProjectName as fallback."
+        Write-Host "Error details: $_"
     }
 } else {
     Write-Host "Couldn't locate .csproj file for project $ProjectName. Using ProjectName as fallback."
@@ -44,7 +45,7 @@ if ($CsProjPaths.Count -gt 0) {
 # Adjust package name with prefix
 try {
     if (-not [string]::IsNullOrEmpty($PackagePrefix)) {
-        if (-not $NugetPackageId.StartsWith($PackagePrefix)) {
+        if (-not $NugetPackageId.ToLower().StartsWith($PackagePrefix.ToLower())) {
             Write-Host "Adjusting PackageId with provided prefix: $PackagePrefix"
             $NugetPackageId = "$PackagePrefix.$NugetPackageId"
         } else {
@@ -53,6 +54,7 @@ try {
     }
 } catch {
     Write-Host "Warning: Issue occurred while adjusting with prefix. Keeping the extracted/fallback package ID."
+    Write-Host "Error details: $_"
 }
 
 # Logging the project name and package ID for clarity and debugging
@@ -65,5 +67,6 @@ try {
     Write-Host "##vso[task.setvariable variable=NugetPackageId]$NugetPackageId"
 } catch {
     Write-Error "Error: Failed to set the NugetPackageId variable for subsequent tasks."
+    Write-Error "Error details: $_"
     exit 1
 }
