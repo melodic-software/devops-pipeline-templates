@@ -26,14 +26,31 @@ if ($CsProjPaths.Count -gt 0) {
 
     try {
         $ProjectXml = [xml](Get-Content -Path $CsProjPath)
-        $ExtractedPackageId = $ProjectXml.Project.PropertyGroup.PackageId
-        if (-not [string]::IsNullOrWhiteSpace($ExtractedPackageId)) {
-            $NugetPackageId = $ExtractedPackageId.Trim()
-            Write-Host "Extracted PackageId from .csproj: '$NugetPackageId'"
-        } else {
+        
+        # Log the XML structure to understand its content
+        Write-Host "Project XML structure: $($ProjectXml.OuterXml)"
+        
+        # Iterate through all PropertyGroup elements to find the PackageId
+        $PropertyGroups = $ProjectXml.Project.PropertyGroup
+        $PackageIdFound = $false
+        
+        foreach ($PropertyGroup in $PropertyGroups) {
+            if ($PropertyGroup.PackageId) {
+                $ExtractedPackageId = $PropertyGroup.PackageId
+                if (-not [string]::IsNullOrWhiteSpace($ExtractedPackageId)) {
+                    $NugetPackageId = $ExtractedPackageId.Trim()  # Trim any leading or trailing whitespace
+                    Write-Host "Extracted PackageId from .csproj: '$NugetPackageId'"
+                    $PackageIdFound = $true
+                    break
+                }
+            }
+        }
+
+        if (-not $PackageIdFound) {
             Write-Host "No PackageId specified in .csproj or it's an empty value. Using ProjectName as fallback."
             $NugetPackageId = $ProjectName
         }
+        
     } catch {
         Write-Host "Warning: An error occurred while attempting to extract PackageId from .csproj. Using ProjectName as fallback."
         Write-Host "Error details: $_"
@@ -47,7 +64,7 @@ try {
     Write-Host "PackageId before adjustment: '$NugetPackageId'"
     if (-not [string]::IsNullOrEmpty($PackagePrefix)) {
         Write-Host "PackagePrefix: '$PackagePrefix'"
-        if (-not $NugetPackageId.ToLower().StartsWith($PackagePrefix.ToLower())) {
+        if ($NugetPackageId -and -not $NugetPackageId.ToLower().StartsWith($PackagePrefix.ToLower())) {
             Write-Host "Adjusting PackageId with provided prefix: $PackagePrefix"
             $NugetPackageId = "$PackagePrefix.$NugetPackageId"
         } else {
