@@ -97,6 +97,8 @@ steps:
         RepositoryCommit = "$(Build.SourceVersion)"
         RepositoryBranch = "$(Build.SourceBranchName)"
         SignAssembly = [System.Convert]::ToBoolean("$(SignAssembly)")
+        IncludeSymbols = [System.Convert]::ToBoolean("$(IncludeSymbols)")
+        SymbolPackageFormat = "$(SymbolPackageFormat)"
         AssemblyOriginatorKeyFile = "$(DownloadNuGetSigningKey.secureFilePath)"
         PathMap = $null
         IsDotNetFrameworkTarget = $false

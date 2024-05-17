@@ -4,6 +4,8 @@ param(
     [string]$RepositoryCommit,
     [string]$RepositoryBranch,
     [bool]$SignAssembly = $true,
+    [bool]$IncludeSymbols = $true,
+    [string]$SymbolPackageFormat = 'snupkg',
     [string]$AssemblyOriginatorKeyFile,
     [string]$PathMap = $null,
     [bool]$IsDotNetFrameworkTarget = $false,
@@ -18,8 +20,8 @@ $Properties = @{
     "Deterministic" = "true"
     "DebugType" = "portable" # "none", "portable", "embedded", "full", or "pdbonly"
     "EmbedUntrackedSources" = "true"
-    "IncludeSymbols" = "true"
-    "SymbolPackageFormat" = "snupkg"
+    "IncludeSymbols" = $IncludeSymbols
+    "SymbolPackageFormat" = $SymbolPackageFormat
     "SourceLinkEnabled" = "true"
 }
 

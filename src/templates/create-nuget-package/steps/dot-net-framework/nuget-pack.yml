@@ -8,5 +8,5 @@ steps:
       configuration: $(BuildConfiguration)
       versioningScheme: byEnvVar
       versionEnvVar: GitVersion_SemVer
-      includeSymbols: true
+      includeSymbols: $(IncludeSymbols)
       symbolPackageFormat: snupkg

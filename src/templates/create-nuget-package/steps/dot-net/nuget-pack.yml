@@ -12,7 +12,7 @@ steps:
       packDirectory: $(Build.ArtifactStagingDirectory) # This is the default. The alias "outputDir" can also be used.
       configuration: $(BuildConfiguration)
       nobuild: $(NoBuildBeforePack)
-      includesymbols: true # Creates symbol NuGet packages.
+      includesymbols: $(IncludeSymbols) # Creates symbol NuGet packages.
       includesource: false
       versioningScheme: byEnvVar
       versionEnvVar: GitVersion_SemVer

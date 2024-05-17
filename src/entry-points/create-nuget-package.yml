@@ -26,6 +26,18 @@ parameters:
     displayName: Use Global JSON
     type: boolean
     default: false
+  - name: signAssembly
+    displayName: Sign Assembly
+    type: boolean
+    default: true
+  - name: includeSymbols
+    displayName: Include Symbols
+    type: boolean
+    default: true
+  - name: symbolPackageFormat
+    diplayName: Symbol Package Format
+    type: string
+    default: 'snupkg' # TODO: This should be a bound list instead of free text.
   - name: noBuildBeforePack
     displayName: NoBuildBeforePack
     type: boolean
@@ -83,7 +95,11 @@ variables:
   - name: DotNetSDKVersion
     value: ${{ parameters.dotNetSDKVersion }}
   - name: SignAssembly
-    value: true
+    value: ${{ parameters.signAssembly }}
+  - name: IncludeSymbols
+    value: ${{ parameters.includeSymbols }}
+  - name: SymbolPackageFormat
+    value: ${{ parameters.symbolPackageFormat }}
   - name: NoBuildBeforePack
     value: ${{ parameters.noBuildBeforePack }}
   - name: ReleaseNotes
