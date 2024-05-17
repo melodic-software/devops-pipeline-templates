@@ -35,7 +35,7 @@ parameters:
     type: boolean
     default: true
   - name: symbolPackageFormat
-    diplayName: Symbol Package Format
+    displayName: Symbol Package Format
     type: string
     default: 'snupkg' # TODO: This should be a bound list instead of free text.
   - name: noBuildBeforePack
