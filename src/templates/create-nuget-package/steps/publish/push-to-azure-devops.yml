@@ -33,7 +33,7 @@ steps:
     and(
       succeeded(),
       ne(variables['AzureDevOpsPackageFeed'], ''),
-      eq(variables['IncludeSymbols'], 'true')
+      eq(variables['IncludeSymbols'], 'true'),
       eq(variables['TestMode'], 'false'),
       ne(variables['Build.Reason'], 'PullRequest')
     )
