@@ -9,4 +9,4 @@ steps:
       versioningScheme: byEnvVar
       versionEnvVar: GitVersion_SemVer
       includeSymbols: $(IncludeSymbols)
-      symbolPackageFormat: snupkg
+      symbolPackageFormat: $(SymbolPackageFormat)
