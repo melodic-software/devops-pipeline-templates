@@ -28,7 +28,7 @@ if ($CsProjPaths.Count -gt 0) {
         $ProjectXml = [xml](Get-Content -Path $CsProjPath)
         $ExtractedPackageId = $ProjectXml.Project.PropertyGroup.PackageId
         if (-not [string]::IsNullOrWhiteSpace($ExtractedPackageId)) {
-            $NugetPackageId = $ExtractedPackageId
+            $NugetPackageId = $ExtractedPackageId.Trim()
             Write-Host "Extracted PackageId from .csproj: '$NugetPackageId'"
         } else {
             Write-Host "No PackageId specified in .csproj or it's an empty value. Using ProjectName as fallback."
@@ -51,7 +51,7 @@ try {
             Write-Host "Adjusting PackageId with provided prefix: $PackagePrefix"
             $NugetPackageId = "$PackagePrefix.$NugetPackageId"
         } else {
-            Write-Host "PackageId already contains the prefix. No adjustment needed."
+            Write-Host "PackageId already contains the prefix or is null. No adjustment needed."
         }
     }
 } catch {
