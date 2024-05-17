@@ -22,7 +22,7 @@ parameters:
   - name: projectName
     displayName: Project Name
     type: string
-  - name: targetFramework
+  - name: targetFramework # When specified, irrelevant tasks will be not be shown in the pipeline.
     displayName: Target Framework
     type: string
     default: 'NotSpecified'
