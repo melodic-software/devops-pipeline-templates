@@ -28,14 +28,14 @@ steps:
 
       $VariableDisplayNames = [ordered]@{
         # Predefined variables
-        "NUGETASSEMBLYSNKFILE" = "NuGetAssemblySnkFile"
-        "NUGETASSEMBLYSNKPUBLICKEY" = "NuGetAssemblySnkPublicKey"
-        "PACKAGEPREFIX" = "PackagePrefix"
         "AZUREDEVOPSPACKAGEFEED" = "AzureDevOpsPackageFeed"
         "AZUREDEVOPSPACKAGESYMBOLSFILEPATH" = "AzureDevopsPackageSymbolsFilePath"
         "GITHUBPACKAGESERVICEINDEX" = "GitHubPackageServiceIndex"
-        "PROGETPACKAGESERVICEINDEX" = "ProGetPackageServiceIndex"
+        "NUGETASSEMBLYSNKFILE" = "NuGetAssemblySnkFile"
+        "NUGETASSEMBLYSNKPUBLICKEY" = "NuGetAssemblySnkPublicKey"
+        "PACKAGEPREFIX" = "PackagePrefix"
         "POWERSHELLSCRIPTSDIRECTORY" = "PowerShellScriptsDirectory"
+        "PROGETPACKAGESERVICEINDEX" = "ProGetPackageServiceIndex"
       }
 
       $SecretVariableDisplayNames = [ordered]@{
