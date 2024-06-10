@@ -21,10 +21,8 @@ steps:
       # --------------------------------------------------
       # -- TEST PROJECTS ---------------------------------
       # --------------------------------------------------
-      # Handle the testProjects parameter directly as an array.
-      $TestProjects = @(
-        $(testProjects) | ForEach-Object { $_.Trim() }
-      )
+      # Extract the parameter and split it into an array.
+      $TestProjects = "$(testProjects)".Trim('[]').Split(',') | ForEach-Object { $_.Trim(' "', "'") }
 
       # If the array is empty or contains only empty strings, set TestProjects to the default '*.csproj'
       if (-not ($TestProjects -join '').Trim()) {
@@ -39,7 +37,7 @@ steps:
       
       # Prefix each project path with the specific directory structure
       foreach ($Project in $TestProjects) {
-        $FormattedPath = $PathPrefix + $Project.Trim()
+        $FormattedPath = $PathPrefix + $Project
         $FormattedProjects += $FormattedPath
       }
       
