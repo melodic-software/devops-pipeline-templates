@@ -21,9 +21,6 @@ steps:
       # --------------------------------------------------
       # -- TEST PROJECTS ---------------------------------
       # --------------------------------------------------
-      # Debug: Output the original parameter
-      Write-Host "Original TestProjects Parameter: ${{ parameters.testProjects }}"
-
       $TestProjects = "${{ join(',', parameters.testProjects) }}".Split(',')
 
       # Debug: Output after splitting
