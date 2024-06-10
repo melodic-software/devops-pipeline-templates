@@ -63,6 +63,11 @@ steps:
       Write-Host "TestProjects:"
       $FormattedProjects | ForEach-Object { Write-Host $_ }
       
-      # Set the formatted project paths as a pipeline variable.
+      # Ensure no duplicates in the final string
+      if ($TestProjectsString -split "`n" | Sort-Object | Get-Unique | Measure-Object).Count -ne ($TestProjectsString -split "`n").Count {
+        Write-Host "Warning: Duplicates detected in the final output."
+      }
+      
+      # Set the formatted project paths as a pipeline variable
       Write-Host "##vso[task.setvariable variable=TestProjects;]$TestProjectsString"
     pwsh: true
