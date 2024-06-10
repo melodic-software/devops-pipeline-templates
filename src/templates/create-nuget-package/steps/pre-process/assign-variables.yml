@@ -59,11 +59,14 @@ steps:
       # This requires the use of the | separator in task inputs to handle multiple paths.
       $TestProjectsString = $FormattedProjects -join "`n"
       
+      # Output the formatted test projects string to the host
       Write-Host "TestProjects: Count=$($FormattedProjects.Count)"
       $FormattedProjects | ForEach-Object { Write-Host $_ }
       
       # Ensure no duplicates in the final string
-      if ($TestProjectsString -split "`n" | Sort-Object | Get-Unique | Measure-Object).Count -ne ($TestProjectsString -split "`n").Count {
+      $UniqueCount = ($TestProjectsString -split "`n" | Sort-Object | Get-Unique | Measure-Object).Count
+      $OriginalCount = ($TestProjectsString -split "`n").Count
+      if ($UniqueCount -ne $OriginalCount) {
         Write-Host "Warning: Duplicates detected in the final output."
       }
       
