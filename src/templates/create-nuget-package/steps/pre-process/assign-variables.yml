@@ -61,5 +61,6 @@ steps:
       Write-Host "##vso[task.setvariable variable=TestProjects;]$TestProjectsString"
 
       # TEST OUTPUT
-      Write-Host "$(TestProjects)"
+      $TestOutput = "$(TestProjects)"
+      Write-Host $TestOutput
     pwsh: true
