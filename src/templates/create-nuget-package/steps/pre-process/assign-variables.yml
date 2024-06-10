@@ -22,39 +22,54 @@ steps:
       # -- TEST PROJECTS ---------------------------------
       # --------------------------------------------------
       $TestProjects = "${{ join(',', parameters.testProjects) }}".Split(',')
+      # Debug: Output after splitting
+      Write-Host "TestProjects after Split: $($TestProjects -join ', ')"
 
-      # Trim each project path in the array.
+      # Trim each project path in the array
       $TestProjects = $TestProjects | ForEach-Object { $_.Trim() }
+      # Debug: Output after trimming
+      Write-Host "TestProjects after Trim: $($TestProjects -join ', ')"
 
-      # If the array is empty or contains only empty strings, set TestProjects to the default '*.csproj'.
+      # If the array is empty or contains only empty strings, set TestProjects to the default '*.csproj'
       if (-not ($TestProjects -join '').Trim()) {
         $TestProjects = @('*.csproj')
       }
+      # Debug: Output after checking for empty array
+      Write-Host "TestProjects after checking for empty: $($TestProjects -join ', ')"
       
-      # Define the path prefix.
+      # Define the path prefix
       $PathPrefix = "$(SelfRepositoryFolder)/test*/**/"
 
-      # Initialize the array to hold formatted paths.
+      # Initialize the array to hold formatted paths
       $FormattedProjects = @()
       
-      # Prefix each project path with the specific directory structure.
+      # Prefix each project path with the specific directory structure
       foreach ($Project in $TestProjects) {
         $FormattedPath = $PathPrefix + $Project
         $FormattedProjects += $FormattedPath
       }
+      # Debug: Output before removing duplicates
+      Write-Host "FormattedProjects before removing duplicates: $($FormattedProjects -join ', ')"
 
-      # Remove duplicates.
+      # Remove duplicates
       $FormattedProjects = $FormattedProjects | Select-Object -Unique
-      
-      # Combine all formatted project paths into a single string for output.
-      # Use a newline to separate each path for proper interpretation in Azure DevOps tasks.
-      # This requires the use of the | separator in task inputs to handle multiple paths.
-      $TestProjectsString = $FormattedProjects -join "`n"
+      # Debug: Output after removing duplicates
+      Write-Host "FormattedProjects after removing duplicates: $($FormattedProjects -join ', ')"
 
-      # Output the formatted test projects string to the host.
-      Write-Host "TestProjects:"
-      $FormattedProjects | ForEach-Object { Write-Host $_ }
+      # Final check for duplicates
+      $UniqueFormattedProjects = $FormattedProjects | Select-Object -Unique
+      if ($UniqueFormattedProjects.Count -ne $FormattedProjects.Count) {
+        Write-Host "Duplicate entries found after deduplication."
+      }
+
+      # Combine all formatted project paths into a single string for output
+      # Use a newline to separate each path for proper interpretation in Azure DevOps tasks
+      $TestProjectsString = $UniqueFormattedProjects -join "`n"
       
-      # Set the formatted project paths as a pipeline variable.
+      # Output the formatted test projects string to the host
+      Write-Host "TestProjects:"
+      $UniqueFormattedProjects | ForEach-Object { Write-Host $_ }
+      
+      # Set the formatted project paths as a pipeline variable
       Write-Host "##vso[task.setvariable variable=TestProjects;]$TestProjectsString"
     pwsh: true
