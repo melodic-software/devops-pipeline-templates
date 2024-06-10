@@ -27,56 +27,56 @@ steps:
       # -- ASSEMBLY ORIGINATOR KEY FILE ------------------
       # --------------------------------------------------
       $AssemblyOriginatorKeyFile = "$(DownloadNuGetSigningKey.secureFilePath)"
-      Add-Content -Path $LogFile -Value "AssemblyOriginatorKeyFile: $AssemblyOriginatorKeyFile"
+      Add-Content -Path $LogFile -Value "AssemblyOriginatorKeyFile: $AssemblyOriginatorKeyFile" -Force
       Write-Host "##vso[task.setvariable variable=AssemblyOriginatorKeyFile;]$AssemblyOriginatorKeyFile"
 
       # --------------------------------------------------
       # -- TEST PROJECTS ---------------------------------
       # --------------------------------------------------
-      # Convert the input parameter to a PowerShell array.
+      # Convert the input parameter to a PowerShell array
       $TestProjects = "${{ join(',', parameters.testProjects) }}".Split(',')
 
-      # Trim each project path in the array.
+      # Trim each project path in the array
       $TestProjects = $TestProjects | ForEach-Object { $_.Trim() }
 
-      # If the array is empty or contains only empty strings, set TestProjects to the default '*.csproj'.
+      # If the array is empty or contains only empty strings, set TestProjects to the default '*.csproj'
       if (-not ($TestProjects -join '').Trim()) {
         $TestProjects = @('*.csproj')
       }
       
-      # Define the path prefix.
+      # Define the path prefix
       $PathPrefix = "$(SelfRepositoryFolder)/test*/**/"
 
-      # Initialize the hash table to enforce unique formatted paths.
+      # Initialize the hash table to enforce unique formatted paths
       $FormattedProjectsHashTable = @{}
       
-      # Prefix each project path with the specific directory structure.
+      # Prefix each project path with the specific directory structure
       foreach ($Project in $TestProjects) {
         $FormattedPath = $PathPrefix + $Project
         $FormattedProjectsHashTable[$FormattedPath] = $true
       }
 
-      # Convert the keys of the hash table to an array to remove any duplicates.
+      # Convert the keys of the hash table to an array to remove any duplicates
       $FormattedProjects = $FormattedProjectsHashTable.Keys
 
-      # Combine all formatted project paths into a single string for output.
-      # Use a newline to separate each path for proper interpretation in Azure DevOps tasks.
-      # This requires the use of the | separator in task inputs to handle multiple paths.
+      # Combine all formatted project paths into a single string for output
+      # Use a newline to separate each path for proper interpretation in Azure DevOps tasks
+      # This requires the use of the | separator in task inputs to handle multiple paths
       $TestProjectsString = $FormattedProjects -join "`n"
       $TestProjectsOutputString = $FormattedProjects -join "; "
       
-      # Output the formatted test projects to the log file.
-      Add-Content -Path $LogFile -Value "TestProjects: $TestProjectsOutputString"
+      # Output the formatted test projects to the log file
+      Add-Content -Path $LogFile -Value "TestProjects: $TestProjectsOutputString" -Force
       
-      # Set the formatted project paths as a pipeline variable.
+      # Set the formatted project paths as a pipeline variable
       Write-Host "##vso[task.setvariable variable=TestProjects;]$TestProjectsString"
 
       # --------------------------------------------------
       # -- LOG OUTPUT ------------------------------------
       # --------------------------------------------------
-      # Read the log file and output its contents to the console.
-      Get-Content -Path $LogFile | ForEach-Object { Write-Host $_ }
+      # Read the log file and output its contents to the console
+      Get-Content -Path $LogFile | ForEach-Object { Write-Output $_ }
 
-      # Clean up the log file.
+      # Clean up the log file
       Remove-Item -Path $LogFile -Force
     pwsh: true
