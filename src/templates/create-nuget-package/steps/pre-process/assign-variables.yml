@@ -83,7 +83,7 @@ steps:
       
       # Set the formatted project paths as a pipeline variable
       Write-Host "Step: Setting pipeline variable TestProjects"
-      Write-Host "##vso[task.setvariable variable=TestProjects;]$TestProjectsString"
+      [System.Environment]::SetEnvironmentVariable("TestProjects", $TestProjectsString, [System.EnvironmentVariableTarget]::Process)
 
       # --------------------------------------------------
       # -- LOG OUTPUT ------------------------------------

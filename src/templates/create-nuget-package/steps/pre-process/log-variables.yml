@@ -28,14 +28,29 @@ steps:
 
       $VariableDisplayNames = [ordered]@{
         # Predefined variables
+        "ASSEMBLYORIGINATORKEYFILE" = "AssemblyOriginatorKeyFile"
         "AZUREDEVOPSPACKAGEFEED" = "AzureDevOpsPackageFeed"
         "AZUREDEVOPSPACKAGESYMBOLSFILEPATH" = "AzureDevopsPackageSymbolsFilePath"
+        "BUILDCONFIGURATION" = "BuildConfiguration"
+        "BUILDPLATFORM" = "BuildPlatform"
+        "DOTNETSDKVERSION" = "DotNetSDKVersion"
         "GITHUBPACKAGESERVICEINDEX" = "GitHubPackageServiceIndex"
+        "INCLUDESYMBOLS" = "IncludeSymbols"
+        "NOBUILDBEFOREPACK" = "NoBuildBeforePack"
         "NUGETASSEMBLYSNKFILE" = "NuGetAssemblySnkFile"
         "NUGETASSEMBLYSNKPUBLICKEY" = "NuGetAssemblySnkPublicKey"
         "PACKAGEPREFIX" = "PackagePrefix"
         "POWERSHELLSCRIPTSDIRECTORY" = "PowerShellScriptsDirectory"
         "PROGETPACKAGESERVICEINDEX" = "ProGetPackageServiceIndex"
+        "PROJECTNAME" = "ProjectName"
+        "RELEASENOTES" = "ReleaseNotes"
+        "RUNTESTS" = "RunTests"
+        "SIGNASSEMBLY" = "SignAssembly"
+        "SYMBOLPACKAGEFORMAT" = "SymbolPackageFormat"
+        "TARGETFRAMEWORK" = "TargetFramework"
+        "TESTMODE" = "TestMode"
+        "TESTPROJECTS" = "TestProjects"
+        "VIRTUALMACHINEIMAGE" = "VirtualMachineImage"
       }
 
       $SecretVariableDisplayNames = [ordered]@{
