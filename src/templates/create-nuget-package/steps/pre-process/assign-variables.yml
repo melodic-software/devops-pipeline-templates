@@ -21,9 +21,13 @@ steps:
       # --------------------------------------------------
       # -- TEST PROJECTS ---------------------------------
       # --------------------------------------------------
-      # Retrieve the testProjects parameter from the environment variable and convert it to a PowerShell array
-      $TestProjects = $(ConvertFrom-Json -InputObject '$(testProjects)')
+      # Retrieve the testProjects parameter as a JSON string and convert it to an array
+      $TestProjectsJson = '$(testProjects)'
+      Write-Host "TestProjectsJson: $TestProjectsJson"
 
+      # Convert the JSON string to a PowerShell array
+      $TestProjects = @($TestProjectsJson | ConvertFrom-Json)
+      
       # Trim each project path in the array
       $TestProjects = $TestProjects | ForEach-Object { $_.Trim() }
 
