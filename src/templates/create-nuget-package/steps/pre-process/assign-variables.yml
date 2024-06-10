@@ -59,8 +59,7 @@ steps:
       # This requires the use of the | separator in task inputs to handle multiple paths.
       $TestProjectsString = $FormattedProjects -join "`n"
       
-      # Output the formatted test projects string to the host.
-      Write-Host "TestProjects:"
+      Write-Host "TestProjects: Count=$($FormattedProjects.Count)"
       $FormattedProjects | ForEach-Object { Write-Host $_ }
       
       # Ensure no duplicates in the final string
