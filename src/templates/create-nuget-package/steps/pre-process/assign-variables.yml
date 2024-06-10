@@ -55,6 +55,7 @@ steps:
       # Use a newline to separate each path for proper interpretation in Azure DevOps tasks.
       # This requires the use of the | separator in task inputs to handle multiple paths.
       $TestProjectsString = $FormattedProjects -join "`n"
+      $TestProjectsOutputString = $FormattedProjects -join "; "
       
       # Output the formatted test projects to the log file.
       Add-Content -Path $LogFile -Value "TestProjects: $TestProjectsOutputString"
@@ -63,11 +64,11 @@ steps:
       Write-Host "##vso[task.setvariable variable=TestProjects;]$TestProjectsString"
 
       # --------------------------------------------------
-      # -- CLEANUP ---------------------------------------
+      # -- LOG OUTPUT ------------------------------------
       # --------------------------------------------------
       # Read the log file and output its contents to the console.
-      Get-Content -Path $logFile | ForEach-Object { Write-Output $_ }
+      Get-Content -Path $LogFile | ForEach-Object { Write-Output $_ }
 
       # Clean up the log file.
-      Remove-Item -Path $logFile -Force
+      Remove-Item -Path $LogFile -Force
     pwsh: true
