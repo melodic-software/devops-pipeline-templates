@@ -45,22 +45,16 @@ steps:
 
       # Remove duplicates.
       $FormattedProjects = $FormattedProjects | Select-Object -Unique
-
-      # Debug: Output before removing duplicates.
-      Write-Host $FormattedProjects -join "`n"
       
       # Combine all formatted project paths into a single string for output.
       # Use a newline to separate each path for proper interpretation in Azure DevOps tasks.
       # This requires the use of the | separator in task inputs to handle multiple paths.
       $TestProjectsString = $FormattedProjects -join "`n"
-      
+
       # Output the formatted test projects string to the host.
-      Write-Host "TestProjects: $TestProjectsString"
+      Write-Host "TestProjects:"
+      $FormattedProjects | ForEach-Object { Write-Host $_ }
       
       # Set the formatted project paths as a pipeline variable.
       Write-Host "##vso[task.setvariable variable=TestProjects;]$TestProjectsString"
-
-      # TEST OUTPUT
-      $TestOutput = "$(TestProjects)"
-      Write-Host $TestOutput
     pwsh: true
