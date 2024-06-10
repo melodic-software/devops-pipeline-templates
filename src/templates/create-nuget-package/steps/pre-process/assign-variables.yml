@@ -54,7 +54,7 @@ steps:
       
       # Output the formatted test projects to the host using a workaround to avoid the Azure DevOps bug.
       $TestProjectsOutputString = $FormattedProjects -join "; "
-      Write-Host "TestProjects: $TestProjectsOutputString"
+      Write-Output "TestProjects: $TestProjectsOutputString"
       
       # Set the formatted project paths as a pipeline variable.
       Write-Host "##vso[task.setvariable variable=TestProjects;]$TestProjectsString"
