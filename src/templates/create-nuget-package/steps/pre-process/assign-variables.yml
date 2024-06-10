@@ -21,21 +21,16 @@ steps:
       # --------------------------------------------------
       # -- TEST PROJECTS ---------------------------------
       # --------------------------------------------------
+      # Convert the input parameter to a PowerShell array.
       $TestProjects = "${{ join(',', parameters.testProjects) }}".Split(',')
-      # Debug: Output after splitting
-      Write-Host "TestProjects after Split: $($TestProjects -join ', ')"
 
-      # Trim each project path in the array
+      # Trim each project path in the array.
       $TestProjects = $TestProjects | ForEach-Object { $_.Trim() }
-      # Debug: Output after trimming
-      Write-Host "TestProjects after Trim: $($TestProjects -join ', ')"
 
-      # If the array is empty or contains only empty strings, set TestProjects to the default '*.csproj'
+      # If the array is empty or contains only empty strings, set TestProjects to the default '*.csproj'.
       if (-not ($TestProjects -join '').Trim()) {
         $TestProjects = @('*.csproj')
       }
-      # Debug: Output after checking for empty array.
-      Write-Host "TestProjects after checking for empty: $($TestProjects -join ', ')"
       
       # Define the path prefix.
       $PathPrefix = "$(SelfRepositoryFolder)/test*/**/"
@@ -48,28 +43,21 @@ steps:
         $FormattedPath = $PathPrefix + $Project
         $FormattedProjectsHashTable[$FormattedPath] = $true
       }
-      # Debug: Output after adding to hash table.
-      Write-Host "FormattedProjects in hash table: $($FormattedProjectsHashTable.Keys -join ', ')"
 
-      # Convert the keys of the hash table to an array to remove duplicates.
+      # Convert the keys of the hash table to an array to remove any duplicates.
       $FormattedProjects = $FormattedProjectsHashTable.Keys
 
       # Combine all formatted project paths into a single string for output.
       # Use a newline to separate each path for proper interpretation in Azure DevOps tasks.
       # This requires the use of the | separator in task inputs to handle multiple paths.
       $TestProjectsString = $FormattedProjects -join "`n"
+      $TestProjectsOutputString = $FormattedProjects -join ";"
       
-      # Output the formatted test projects string to the host
-      Write-Host "TestProjects: Count=$($FormattedProjects.Count)"
-      $FormattedProjects | ForEach-Object { Write-Host $_ }
+      # Output the formatted test projects string to the host.
+      # Logging using the variable with new lines causes the last line of output to be duplicated.
+      # This seems to be a bug in Azure DevOps, so for now we're just logging a separate variable.
+      Write-Host "TestProjects: $TestProjectsOutputString"
       
-      # Ensure no duplicates in the final string
-      $UniqueCount = ($TestProjectsString -split "`n" | Sort-Object | Get-Unique | Measure-Object).Count
-      $OriginalCount = ($TestProjectsString -split "`n").Count
-      if ($UniqueCount -ne $OriginalCount) {
-        Write-Host "Warning: Duplicates detected in the final output."
-      }
-      
-      # Set the formatted project paths as a pipeline variable
+      # Set the formatted project paths as a pipeline variable.
       Write-Host "##vso[task.setvariable variable=TestProjects;]$TestProjectsString"
     pwsh: true
