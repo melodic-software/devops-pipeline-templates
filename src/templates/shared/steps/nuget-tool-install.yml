@@ -1,8 +1,8 @@
 parameters:
-- name: versionSpec
-  type: string
-  displayName: Version Spec
-  default: $(NugetToolInstallVersionSpec)
+  - name: versionSpec
+    type: string
+    displayName: Version Spec
+    default: $(NugetToolInstallVersionSpec)
 
 steps:
 - task: NuGetToolInstaller@1

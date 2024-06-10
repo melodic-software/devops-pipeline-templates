@@ -1,13 +1,13 @@
 parameters:
-- name: workingDirectory
-  type: string
-  default: $(Build.SourcesDirectory)/$(SelfRepositoryFolder)
-- name: configFilePath
-  type: string
-  default: $(Build.SourcesDirectory)/$(BuildTemplateRepositoryFolder)/src/templates/create-nuget-package/git-version/GitVersion.yml
-- name: gitVersionSpec
-  type: string
-  default: 5.x # latest
+  - name: workingDirectory
+    type: string
+    default: $(Build.SourcesDirectory)/$(SelfRepositoryFolder)
+  - name: configFilePath
+    type: string
+    default: $(Build.SourcesDirectory)/$(BuildTemplateRepositoryFolder)/src/templates/create-nuget-package/git-version/GitVersion.yml
+  - name: gitVersionSpec
+    type: string
+    default: 5.x # latest
 
 steps:
 - task: PowerShell@2

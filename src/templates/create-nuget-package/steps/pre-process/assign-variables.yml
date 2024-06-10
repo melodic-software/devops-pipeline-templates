@@ -1,7 +1,7 @@
 parameters:
-- name: testProjects
-  type: object
-  default: ['*.csproj']
+  - name: testProjects
+    type: object
+    default: ['*.csproj']
 
 steps:
 - task: PowerShell@2
@@ -22,9 +22,10 @@ steps:
       # -- TEST PROJECTS ---------------------------------
       # --------------------------------------------------
       # Convert the parameter to an array in PowerShell
-      $TestProjects = @(
-        ${{ parameters.testProjects }} | ForEach-Object { $_.Trim() }
-      )
+      $TestProjects = @(ConvertFrom-Json '$(testProjects)')
+      
+      # Trim each project path in the array
+      $TestProjects = $TestProjects | ForEach-Object { $_.Trim() }
 
       # If the array is empty or contains only empty strings, set TestProjects to an empty string.
       if (-not ($TestProjects -join '').Trim()) {
@@ -43,8 +44,8 @@ steps:
         }
         
         # Combine all formatted project paths into a single string for output
-        # Use a newline to separate each path
-        # This requires the use of the | separator before value assignments to handle multiple paths
+        # Use a newline to separate each path for proper interpretation in Azure DevOps tasks
+        # This requires the use of the | separator in task inputs to handle multiple paths
         $TestProjectsString = $FormattedProjects -join "`n"
       }
       
