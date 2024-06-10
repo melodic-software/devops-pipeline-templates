@@ -21,33 +21,32 @@ steps:
       # --------------------------------------------------
       # -- TEST PROJECTS ---------------------------------
       # --------------------------------------------------
-      # Convert the parameter to an array in PowerShell
-      $TestProjects = @(ConvertFrom-Json '$(testProjects)')
-      
-      # Trim each project path in the array
-      $TestProjects = $TestProjects | ForEach-Object { $_.Trim() }
+      # Extract the testProjects parameter and handle it directly as an array.
+      $TestProjects = @(
+        @(parameters.testProjects) | ForEach-Object { $_.Trim() }
+      )
 
-      # If the array is empty or contains only empty strings, set TestProjects to an empty string.
+      # If the array is empty or contains only empty strings, set TestProjects to the default '*.csproj'.
       if (-not ($TestProjects -join '').Trim()) {
-        $TestProjectsString = ''
-      } else {
-        # Define the path prefix
-        $PathPrefix = "$(SelfRepositoryFolder)/test*/**/"
-
-        # Initialize the array to hold formatted paths
-        $FormattedProjects = @()
-        
-        # Prefix each project path with the specific directory structure
-        foreach ($Project in $TestProjects) {
-          $FormattedPath = $PathPrefix + $Project.Trim()
-          $FormattedProjects += $FormattedPath
-        }
-        
-        # Combine all formatted project paths into a single string for output
-        # Use a newline to separate each path for proper interpretation in Azure DevOps tasks
-        # This requires the use of the | separator in task inputs to handle multiple paths
-        $TestProjectsString = $FormattedProjects -join "`n"
+        $TestProjects = @('*.csproj')
       }
+      
+      # Define the path prefix
+      $PathPrefix = "$(SelfRepositoryFolder)/test*/**/"
+
+      # Initialize the array to hold formatted paths
+      $FormattedProjects = @()
+      
+      # Prefix each project path with the specific directory structure
+      foreach ($Project in $TestProjects) {
+        $FormattedPath = $PathPrefix + $Project.Trim()
+        $FormattedProjects += $FormattedPath
+      }
+      
+      # Combine all formatted project paths into a single string for output
+      # Use a newline to separate each path for proper interpretation in Azure DevOps tasks
+      # This requires the use of the | separator in task inputs to handle multiple paths
+      $TestProjectsString = $FormattedProjects -join "`n"
       
       # Output the formatted test projects string to the host
       Write-Host "TestProjects: $TestProjectsString"
