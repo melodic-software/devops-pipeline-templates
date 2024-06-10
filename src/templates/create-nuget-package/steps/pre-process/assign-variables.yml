@@ -21,8 +21,10 @@ steps:
       # --------------------------------------------------
       # -- TEST PROJECTS ---------------------------------
       # --------------------------------------------------
-      # Convert the comma-separated parameter to an array in PowerShell
-      $TestProjects = "${{ join(',', parameters.testProjects) }}".Split(',')
+      # Convert the parameter to an array in PowerShell
+      $TestProjects = @(
+        ${{ parameters.testProjects }} | ForEach-Object { $_.Trim() }
+      )
 
       # If the array is empty or contains only empty strings, set TestProjects to an empty string.
       if (-not ($TestProjects -join '').Trim()) {
@@ -41,7 +43,9 @@ steps:
         }
         
         # Combine all formatted project paths into a single string for output
-        $TestProjectsString = $FormattedProjects -join ';'
+        # Use a newline to separate each path
+        # This requires the use of the | separator before value assignments to handle multiple paths
+        $TestProjectsString = $FormattedProjects -join "`n"
       }
       
       # Output the formatted test projects string to the host
