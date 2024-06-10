@@ -11,9 +11,17 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      # There were some issues with log duplication using Write-Host.
-      # To remedy this, we're writing to a temporary file, and logging the contents at the end.
-      $LogFile = "$(Agent.TempDirectory)/assigned-variables.txt"
+      # Generate a unique log file name using the build ID
+      $BuildId = "$(Build.BuildId)"
+      $LogFile = "$(Agent.TempDirectory)/assigned-variables-$BuildId.txt"
+
+      Write-Host "Writing to $LogFile"
+
+      # Ensure the log file is clean
+      if (Test-Path $LogFile) {
+          Remove-Item -Path $LogFile -Force
+      }
+      New-Item -Path $LogFile -ItemType File -Force | Out-Null
 
       # --------------------------------------------------
       # -- ASSEMBLY ORIGINATOR KEY FILE ------------------
@@ -67,7 +75,7 @@ steps:
       # -- LOG OUTPUT ------------------------------------
       # --------------------------------------------------
       # Read the log file and output its contents to the console.
-      Get-Content -Path $LogFile | ForEach-Object { Write-Output $_ }
+      Get-Content -Path $LogFile | ForEach-Object { Write-Host $_ }
 
       # Clean up the log file.
       Remove-Item -Path $LogFile -Force
