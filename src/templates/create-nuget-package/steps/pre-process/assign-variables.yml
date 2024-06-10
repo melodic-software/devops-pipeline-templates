@@ -11,11 +11,15 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
+      # There were some issues with log duplication using Write-Host.
+      # To remedy this, we're writing to a temporary file, and logging the contents at the end.
+      $LogFile = "$(Agent.TempDirectory)/assigned-variables.txt"
+
       # --------------------------------------------------
       # -- ASSEMBLY ORIGINATOR KEY FILE ------------------
       # --------------------------------------------------
       $AssemblyOriginatorKeyFile = "$(DownloadNuGetSigningKey.secureFilePath)"
-      Write-Host "AssemblyOriginatorKeyFile: $AssemblyOriginatorKeyFile"
+      Add-Content -Path $LogFile -Value "AssemblyOriginatorKeyFile: $AssemblyOriginatorKeyFile"
       Write-Host "##vso[task.setvariable variable=AssemblyOriginatorKeyFile;]$AssemblyOriginatorKeyFile"
 
       # --------------------------------------------------
@@ -52,10 +56,18 @@ steps:
       # This requires the use of the | separator in task inputs to handle multiple paths.
       $TestProjectsString = $FormattedProjects -join "`n"
       
-      # Output the formatted test projects to the host using a workaround to avoid the Azure DevOps bug.
-      $TestProjectsOutputString = $FormattedProjects -join "; "
-      Write-Output "TestProjects: $TestProjectsOutputString"
+      # Output the formatted test projects to the log file.
+      Add-Content -Path $LogFile -Value "TestProjects: $TestProjectsOutputString"
       
       # Set the formatted project paths as a pipeline variable.
       Write-Host "##vso[task.setvariable variable=TestProjects;]$TestProjectsString"
+
+      # --------------------------------------------------
+      # -- CLEANUP ---------------------------------------
+      # --------------------------------------------------
+      # Read the log file and output its contents to the console.
+      Get-Content -Path $logFile | ForEach-Object { Write-Output $_ }
+
+      # Clean up the log file.
+      Remove-Item -Path $logFile -Force
     pwsh: true
