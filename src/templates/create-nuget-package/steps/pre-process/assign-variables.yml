@@ -23,52 +23,43 @@ steps:
       # --------------------------------------------------
       $TestProjects = "${{ join(',', parameters.testProjects) }}".Split(',')
 
-      # Debug: Output after splitting
-      Write-Host $TestProjects -join "`n"
-
-      # Trim each project path in the array
+      # Trim each project path in the array.
       $TestProjects = $TestProjects | ForEach-Object { $_.Trim() }
 
-      # Debug: Output after trimming
-      Write-Host $TestProjects -join "`n"
-
-      # If the array is empty or contains only empty strings, set TestProjects to the default '*.csproj'
+      # If the array is empty or contains only empty strings, set TestProjects to the default '*.csproj'.
       if (-not ($TestProjects -join '').Trim()) {
         $TestProjects = @('*.csproj')
       }
-
-      # Debug: Output after checking for empty array
-      Write-Host $TestProjects -join "`n"
       
-      # Define the path prefix
+      # Define the path prefix.
       $PathPrefix = "$(SelfRepositoryFolder)/test*/**/"
 
-      # Initialize the array to hold formatted paths
+      # Initialize the array to hold formatted paths.
       $FormattedProjects = @()
       
-      # Prefix each project path with the specific directory structure
+      # Prefix each project path with the specific directory structure.
       foreach ($Project in $TestProjects) {
         $FormattedPath = $PathPrefix + $Project
         $FormattedProjects += $FormattedPath
       }
 
-      # Debug: Output before removing duplicates
-      Write-Host $FormattedProjects -join "`n"
-
       # Remove duplicates.
       $FormattedProjects = $FormattedProjects | Select-Object -Unique
 
-      # Debug: Output before removing duplicates
+      # Debug: Output before removing duplicates.
       Write-Host $FormattedProjects -join "`n"
       
-      # Combine all formatted project paths into a single string for output
-      # Use a newline to separate each path for proper interpretation in Azure DevOps tasks
-      # This requires the use of the | separator in task inputs to handle multiple paths
+      # Combine all formatted project paths into a single string for output.
+      # Use a newline to separate each path for proper interpretation in Azure DevOps tasks.
+      # This requires the use of the | separator in task inputs to handle multiple paths.
       $TestProjectsString = $FormattedProjects -join "`n"
       
-      # Output the formatted test projects string to the host
+      # Output the formatted test projects string to the host.
       Write-Host "TestProjects: $TestProjectsString"
       
-      # Set the formatted project paths as a pipeline variable
+      # Set the formatted project paths as a pipeline variable.
       Write-Host "##vso[task.setvariable variable=TestProjects;]$TestProjectsString"
+
+      # TEST OUTPUT
+      Write-Host "$(TestProjects)"
     pwsh: true
