@@ -27,13 +27,13 @@ steps:
       $TestProjects = "${{ join(',', parameters.testProjects) }}".Split(',')
 
       # Debug: Output after splitting
-      Write-Host "TestProjects after Split: $($TestProjects -join ', ')"
+      Write-Host $TestProjects -join "`n"
 
       # Trim each project path in the array
       $TestProjects = $TestProjects | ForEach-Object { $_.Trim() }
 
       # Debug: Output after trimming
-      Write-Host "TestProjects after Trim: $($TestProjects -join ', ')"
+      Write-Host $TestProjects -join "`n"
 
       # If the array is empty or contains only empty strings, set TestProjects to the default '*.csproj'
       if (-not ($TestProjects -join '').Trim()) {
@@ -41,7 +41,7 @@ steps:
       }
 
       # Debug: Output after checking for empty array
-      Write-Host "TestProjects after checking for empty: $($TestProjects -join ', ')"
+      Write-Host $TestProjects -join "`n"
       
       # Define the path prefix
       $PathPrefix = "$(SelfRepositoryFolder)/test*/**/"
@@ -56,13 +56,13 @@ steps:
       }
 
       # Debug: Output before removing duplicates
-      Write-Host "FormattedProjects before removing duplicates: $($FormattedProjects -join ', ')"
+      Write-Host $FormattedProjects -join "`n"
 
       # Remove duplicates.
       $FormattedProjects = $FormattedProjects | Select-Object -Unique
 
       # Debug: Output before removing duplicates
-      Write-Host "FormattedProjects before removing duplicates: $($FormattedProjects -join ', ')"
+      Write-Host $FormattedProjects -join "`n"
       
       # Combine all formatted project paths into a single string for output
       # Use a newline to separate each path for proper interpretation in Azure DevOps tasks
