@@ -51,12 +51,10 @@ steps:
       # Use a newline to separate each path for proper interpretation in Azure DevOps tasks.
       # This requires the use of the | separator in task inputs to handle multiple paths.
       $TestProjectsString = $FormattedProjects -join "`n"
-      $TestProjectsOutputString = $FormattedProjects -join ";"
       
-      # Output the formatted test projects string to the host.
-      # Logging using the variable with new lines causes the last line of output to be duplicated.
-      # This seems to be a bug in Azure DevOps, so for now we're just logging a separate variable.
-      Write-Host "TestProjects: $TestProjectsOutputString"
+      # Output the formatted test projects to the host using a workaround to avoid the Azure DevOps bug.
+      $FormattedProjectsOutput = $FormattedProjects -join "; "
+      Write-Host "TestProjects: $FormattedProjectsOutput"
       
       # Set the formatted project paths as a pipeline variable.
       Write-Host "##vso[task.setvariable variable=TestProjects;]$TestProjectsString"
