@@ -13,11 +13,13 @@ steps:
     script: |
       if ($env:AGENT_OS -eq "Windows_NT") {
         # Windows-based agents will use "Code Coverage"
-        echo "##vso[task.setvariable variable=CodeCoverageFramework]Code Coverage"
+        Write-Host "##vso[task.setvariable variable=CodeCoverageFramework]Code Coverage"
+        Write-Host "##vso[task.setvariable variable=CoverletOutputFormat]Cobertura"
         Write-Host 'Running on Windows - using Code Coverage'
       } else {
         # Non-Windows agents (e.g., Linux) will use "Coverlet" / "XPlat Code Coverage"
-        echo "##vso[task.setvariable variable=CodeCoverageFramework]XPlat Code Coverage"
+        Write-Host "##vso[task.setvariable variable=CodeCoverageFramework]XPlat Code Coverage"
+        Write-Host "##vso[task.setvariable variable=CoverletOutputFormat]cobertura"
         Write-Host 'Running on Linux - using Coverlet (XPlat Code Coverage)'
       }
     pwsh: true
