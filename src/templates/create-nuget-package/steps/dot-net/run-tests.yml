@@ -9,11 +9,7 @@ steps:
     command: 'test'
     projects: |
       $(TestProjects)
-    arguments: |
-      --configuration $(BuildConfiguration)
-      --collect:"$(CodeCoverageFramework)"
-      --verbosity detailed
-      /p:AssemblyOriginatorKeyFile=$(DownloadNuGetSigningKey.secureFilePath)
+    arguments: --configuration $(BuildConfiguration) --collect:"$(CodeCoverageFramework)" --verbosity detailed /p:AssemblyOriginatorKeyFile=$(DownloadNuGetSigningKey.secureFilePath)
     publishTestResults: true  # This is optional but recommended for better tracking of test results.
 
 # The use of /p:AssemblyOriginatorKeyFile=$(DownloadNuGetSigningKey.secureFilePath)' is for specific test scenarios.
