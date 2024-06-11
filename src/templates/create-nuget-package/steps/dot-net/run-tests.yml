@@ -26,6 +26,6 @@ steps:
   condition: and(succeeded(), ne(variables['DotNetSDKVersion'], ''), eq(variables['RunTests'], true), ne(variables['TestProjects'], ''))
   inputs:
     codeCoverageTool: $(CodeCoverageTool)
-    summaryFileLocation: '$(SelfRepositoryFolder)/**/test*/**/coverage.cobertura.xml'
-    reportDirectory: '$(SelfRepositoryFolder)/**/test*/**/coverage'
+    summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
+    reportDirectory: '$(Agent.TempDirectory)/**/coverage'
     failIfCoverageEmpty: false
