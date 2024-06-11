@@ -11,8 +11,7 @@ steps:
       $(TestProjects)
     arguments: |
       --configuration $(BuildConfiguration)
-      --collect: "$(CodeCoverageFramework)"
-      --collectCoverage true
+      --collect:"$(CodeCoverageFramework)"
       --verbosity detailed
       /p:AssemblyOriginatorKeyFile=$(DownloadNuGetSigningKey.secureFilePath)
     publishTestResults: true  # This is optional but recommended for better tracking of test results.
