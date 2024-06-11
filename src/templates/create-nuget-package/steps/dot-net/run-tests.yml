@@ -20,7 +20,6 @@ steps:
 #  <AssemblyOriginatorKeyFile>$(AssemblyOriginatorKeyFile)</AssemblyOriginatorKeyFile>
 #</PropertyGroup>
 
-steps:
 # Publish code coverage results for Windows (Code Coverage)
 - task: PublishCodeCoverageResults@2
   displayName: 'Publish code coverage results (Windows)'
