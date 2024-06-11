@@ -1,4 +1,6 @@
 steps:
+# https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/dotnet-core-cli-v2?view=azure-pipelines
+# https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-test
 - task: DotNetCoreCLI@2
   name: RunTestsDotNet
   displayName: Run Tests
