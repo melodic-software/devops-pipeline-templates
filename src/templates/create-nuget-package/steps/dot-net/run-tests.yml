@@ -7,8 +7,13 @@ steps:
     command: 'test'
     projects: |
       $(TestProjects)
-    arguments: '--configuration $(BuildConfiguration) --collect "$(CodeCoverageFramework)" --verbosity detailed /p:AssemblyOriginatorKeyFile=$(DownloadNuGetSigningKey.secureFilePath)'
-    publishTestResults: true  # This is optional but recommended for better tracking of test results
+    arguments: |
+      --configuration $(BuildConfiguration)
+      --collect: "$(CodeCoverageFramework)"
+      --collectCoverage true
+      --verbosity detailed
+      /p:AssemblyOriginatorKeyFile=$(DownloadNuGetSigningKey.secureFilePath)
+    publishTestResults: true  # This is optional but recommended for better tracking of test results.
 
 # The use of /p:AssemblyOriginatorKeyFile=$(DownloadNuGetSigningKey.secureFilePath)' is for specific test scenarios.
 # BOTH the source AND the test project must be signed if a test project requires internal visibility to the source project, and the source is signed with a strong name key.
