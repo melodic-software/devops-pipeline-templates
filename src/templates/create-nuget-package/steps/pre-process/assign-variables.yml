@@ -34,33 +34,41 @@ steps:
       # --------------------------------------------------
       # -- TEST PROJECTS ---------------------------------
       # --------------------------------------------------
-      # Convert the input parameter to a PowerShell array
+      # Convert the input parameter to a PowerShell array.
       $TestProjects = "${{ join(',', parameters.testProjects) }}".Split(',')
 
-      # Trim each project path in the array
-      $TestProjects = $TestProjects | ForEach-Object { $_.Trim() }
-      
-      # Define the path prefix
-      $PathPrefix = "$(SelfRepositoryFolder)/test*/**/"
+      # If the array is empty or contains only empty strings, set TestProjects to an empty string.
+      if (-not ($TestProjects -join '').Trim()) {
+        $TestProjectsString = ''
+      } else {
+        # Trim each project path in the array.
+        $TestProjects = $TestProjects | ForEach-Object { $_.Trim() }
 
-      # Initialize the hash table to enforce unique formatted paths
-      $FormattedProjectsHashTable = @{}
-      
-      # Prefix each project path with the specific directory structure
-      foreach ($Project in $TestProjects) {
-        $FormattedPath = $PathPrefix + $Project
-        $FormattedProjectsHashTable[$FormattedPath] = $true
+        # Define the path prefix.
+        $PathPrefix = "$(SelfRepositoryFolder)/test*/**/"
+
+        # Initialize the hash table to enforce unique formatted paths.
+        $FormattedProjectsHashTable = @{}
+        
+        # Prefix each project path with the specific directory structure.
+        foreach ($Project in $TestProjects) {
+          $FormattedPath = $PathPrefix + $Project
+          $FormattedProjectsHashTable[$FormattedPath] = $true
+        }
+
+        # Convert the keys of the hash table to an array to remove any duplicates.
+        $FormattedProjects = $FormattedProjectsHashTable.Keys
+
+        # Combine all formatted project paths into a single string for output.
+        # Use a newline to separate each path for proper interpretation in Azure DevOps tasks.
+        $TestProjectsString = $FormattedProjects -join "`n"
       }
 
-      # Convert the keys of the hash table to an array to remove any duplicates
-      $FormattedProjects = $FormattedProjectsHashTable.Keys
-
-      # Combine all formatted project paths into a single string for output
-      # Use a newline to separate each path for proper interpretation in Azure DevOps tasks
-      $TestProjectsString = $FormattedProjects -join "`n"
-      $EscapedTestProjectsString = Escape-Data -data $TestProjectsString
-      
-      # Set the formatted project paths as a pipeline variable
+      # We log the assigned value.
       Write-Host "TestProjects: $TestProjectsString"
+
+      # We set the value using escaped data, because otherwise the value won't get assigned correctly.
+      # The esacped values will be resolved when accessed.
+      $EscapedTestProjectsString = Escape-Data -data $TestProjectsString
       Write-Host "##vso[task.setvariable variable=TestProjects;]$EscapedTestProjectsString"
     pwsh: true
