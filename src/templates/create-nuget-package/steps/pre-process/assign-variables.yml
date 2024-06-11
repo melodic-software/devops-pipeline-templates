@@ -11,14 +11,15 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      # Helper function to suppress Write-Host output.
-      # There were issues with newlines in variable values.
-      # These caused the variable set statements to log partial/duplicated output.
-      function Invoke-Silent {
-        param (
-          [ScriptBlock]$ScriptBlock
-        )
-        & $ScriptBlock > $null 2>&1
+    # Escape percent signs, newlines, and carriage returns.
+      function Escape-Data {
+          param (
+              [string]$Data
+          )
+          $Data = $Data -replace '%', '%AZP25'
+          $Data = $Data -replace "`n", '%0A'
+          $Data = $Data -replace "`r", '%0D'
+          return $Data
       }
 
       # --------------------------------------------------
@@ -59,7 +60,8 @@ steps:
       # Combine all formatted project paths into a single string for output
       # Use a newline to separate each path for proper interpretation in Azure DevOps tasks
       $TestProjectsString = $FormattedProjects -join "`n"
+      $EscapedTestProjectsString = Escape-Data -data $TestProjectsString
       
       # Set the formatted project paths as a pipeline variable
-      Invoke-Silent { Write-Host "##vso[task.setvariable variable=TestProjects;]$TestProjectsString" }
+      Write-Host "##vso[task.setvariable variable=TestProjects;]$EscapedTestProjectsString"
     pwsh: true
