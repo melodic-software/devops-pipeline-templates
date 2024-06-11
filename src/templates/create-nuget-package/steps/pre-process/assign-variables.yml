@@ -66,6 +66,6 @@ steps:
       $EscapedTestProjectsString = Escape-Data -data $TestProjectsString
       
       # Set the formatted project paths as a pipeline variable
-      Write-Host "TestProjects: $EscapedTestProjectsString"
+      Write-Host "TestProjects: $TestProjectsString"
       Write-Host "##vso[task.setvariable variable=TestProjects;]$EscapedTestProjectsString"
     pwsh: true
