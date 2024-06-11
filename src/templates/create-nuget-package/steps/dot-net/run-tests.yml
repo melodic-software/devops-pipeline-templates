@@ -19,3 +19,24 @@ steps:
 #  <SignAssembly>true</SignAssembly>
 #  <AssemblyOriginatorKeyFile>$(AssemblyOriginatorKeyFile)</AssemblyOriginatorKeyFile>
 #</PropertyGroup>
+
+steps:
+# Publish code coverage results for Windows (Code Coverage)
+- task: PublishCodeCoverageResults@2
+  displayName: 'Publish code coverage results (Windows)'
+  condition: eq(variables['CodeCoverageFramework'], 'Code Coverage')
+  inputs:
+    codeCoverageTool: 'Cobertura'
+    summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
+    reportDirectory: '$(Agent.TempDirectory)/**/coverage'
+    failIfCoverageEmpty: false
+
+# Publish code coverage results for Linux (Coverlet)
+- task: PublishCodeCoverageResults@2
+  displayName: 'Publish code coverage results (Linux)'
+  condition: eq(variables['CodeCoverageFramework'], 'Coverlet')
+  inputs:
+    codeCoverageTool: 'cobertura'
+    summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
+    reportDirectory: '$(Agent.TempDirectory)/**/coverage'
+    failIfCoverageEmpty: false
