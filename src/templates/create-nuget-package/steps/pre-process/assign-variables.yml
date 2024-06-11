@@ -11,7 +11,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-    # Escape percent signs, newlines, and carriage returns.
+      # Escape percent signs, newlines, and carriage returns.
       function Escape-Data {
           param (
               [string]$Data
