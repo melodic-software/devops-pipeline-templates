@@ -12,6 +12,8 @@ steps:
     targetType: 'inline'
     script: |
       # Escape percent signs, newlines, and carriage returns.
+      # This is required for the $TestProjects variable assignment below.
+      # TODO: Migrate this out if needed in other scripts.
       function Escape-Data {
           param (
               [string]$Data
@@ -26,6 +28,7 @@ steps:
       # -- ASSEMBLY ORIGINATOR KEY FILE ------------------
       # --------------------------------------------------
       $AssemblyOriginatorKeyFile = "$(DownloadNuGetSigningKey.secureFilePath)"
+      Write-Host "AssemblyOriginatorKeyFile: $AssemblyOriginatorKeyFile"
       Write-Host "##vso[task.setvariable variable=AssemblyOriginatorKeyFile;]$AssemblyOriginatorKeyFile"
 
       # --------------------------------------------------
@@ -63,5 +66,6 @@ steps:
       $EscapedTestProjectsString = Escape-Data -data $TestProjectsString
       
       # Set the formatted project paths as a pipeline variable
+      Write-Host "TestProjects: $EscapedTestProjectsString"
       Write-Host "##vso[task.setvariable variable=TestProjects;]$EscapedTestProjectsString"
     pwsh: true

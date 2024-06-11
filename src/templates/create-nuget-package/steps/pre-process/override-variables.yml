@@ -1,6 +1,10 @@
 parameters:
-  azureDevOpsPackageFeed: ''
-  proGetPackageServiceIndex: ''
+  - name: azureDevOpsPackageFeed
+    type: string
+    default: ''
+  - name: proGetPackageServiceIndex
+    type: string
+    default: ''
 
 steps:
 - task: PowerShell@2
@@ -11,16 +15,23 @@ steps:
     targetType: 'inline'
     script: |
       $AzureDevOpsPackageFeed = "${{ parameters.azureDevOpsPackageFeed }}"
-
-      if (-not [string]::IsNullOrEmpty($AzureDevOpsPackageFeed)) {
-          Write-Host "AzureDevOpsPackageFeed: $AzureDevOpsPackageFeed"
-          Write-Host "##vso[task.setvariable variable=AzureDevOpsPackageFeed]$AzureDevOpsPackageFeed"
-      }
-
       $ProGetPackageServiceIndex = "${{ parameters.proGetPackageServiceIndex }}"
 
+      $VariablesOverridden = $false
+
+      if (-not [string]::IsNullOrEmpty($AzureDevOpsPackageFeed)) {
+        Write-Host "AzureDevOpsPackageFeed: $AzureDevOpsPackageFeed"
+        Write-Host "##vso[task.setvariable variable=AzureDevOpsPackageFeed]$AzureDevOpsPackageFeed"
+        $VariablesOverridden = $true
+      }
+
       if (-not [string]::IsNullOrEmpty($ProGetPackageServiceIndex)) {
-          Write-Host "ProGetPackageServiceIndex: $ProGetPackageServiceIndex"
-          Write-Host "##vso[task.setvariable variable=ProGetPackageServiceIndex]$ProGetPackageServiceIndex"
+        Write-Host "ProGetPackageServiceIndex: $ProGetPackageServiceIndex"
+        Write-Host "##vso[task.setvariable variable=ProGetPackageServiceIndex]$ProGetPackageServiceIndex"
+        $VariablesOverridden = $true
+      }
+
+      if (-not $VariablesOverridden) {
+        Write-Host "No variable overrides have been made."
       }
     pwsh: true
