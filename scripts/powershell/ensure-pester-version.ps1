@@ -29,7 +29,7 @@ try {
     # Import the Pester module
     $ModulePath = Join-Path $PesterModule.ModuleBase "Pester.psd1"
     Write-Host "Importing Pester from $ModulePath..."
-    Import-Module -Name $ModulePath -ErrorAction Stop -Verbose
+    Import-Module -Name $ModulePath -ErrorAction Stop
 
     # Re-check the imported version.
     $InstalledPester = Get-Module -Name Pester
