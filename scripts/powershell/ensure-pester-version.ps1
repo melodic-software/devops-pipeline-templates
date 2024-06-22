@@ -9,23 +9,34 @@ function Install-Pester {
 }
 
 try {
+    # Ensure the latest list of installed modules is available
+    Write-Host "Refreshing available modules..."
+    $null = Get-Module -ListAvailable -Refresh
+
     # Check if the required Pester version is available
     $PesterModule = Get-Module -ListAvailable -Name Pester | Where-Object { $_.Version -ge [version]$RequiredPesterVersion }
 
     if (-not $PesterModule) {
+        Write-Host "Required Pester version not found. Installing..."
         Install-Pester -Version $RequiredPesterVersion
-    }
-    else {
+    } else {
         Write-Host "Pester version $RequiredPesterVersion or higher is already installed."
     }
 
     # Import Pester module
-    Import-Module -Name Pester -RequiredVersion $RequiredPesterVersion -ErrorAction Stop
+    if ($PesterModule) {
+        $ModulePath = $PesterModule.ModuleBase
+        Write-Host "Importing Pester from $ModulePath..."
+        Import-Module -Name Pester -RequiredVersion $RequiredPesterVersion -ErrorAction Stop -Verbose
+    } else {
+        Write-Host "Attempting to import Pester without specifying a path."
+        Import-Module -Name Pester -RequiredVersion $RequiredPesterVersion -ErrorAction Stop -Verbose
+    }
 
     # Re-check if the correct version is installed
     $InstalledPester = Get-Module -Name Pester | Where-Object { $_.Version -ge [version]$RequiredPesterVersion }
     if (-not $InstalledPester) {
-        Write-Error "Failed to install required Pester version $RequiredPesterVersion"
+        Write-Error "Failed to install or load required Pester version $RequiredPesterVersion."
         exit 1
     }
     else {
