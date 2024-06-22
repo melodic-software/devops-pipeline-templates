@@ -9,38 +9,35 @@ function Install-Pester {
 }
 
 try {
-    # Ensure the latest list of installed modules is available
+    # Refreshing the list of installed modules.
     Write-Host "Refreshing available modules..."
     $null = Get-Module -ListAvailable -Refresh
 
-    # Check if the required Pester version is available
-    $PesterModule = Get-Module -ListAvailable -Name Pester | Where-Object { $_.Version -ge [version]$RequiredPesterVersion }
+    # Check the highest version of Pester available
+    $PesterModule = Get-Module -ListAvailable -Name Pester | 
+                    Where-Object { $_.Version -ge [version]$RequiredPesterVersion } |
+                    Sort-Object Version -Descending |
+                    Select-Object -First 1
 
     if (-not $PesterModule) {
-        Write-Host "Required Pester version not found. Installing..."
+        Write-Host "Required Pester version not found. Installing version $RequiredPesterVersion..."
         Install-Pester -Version $RequiredPesterVersion
     } else {
-        Write-Host "Pester version $RequiredPesterVersion or higher is already installed."
+        Write-Host "Using Pester version $($PesterModule.Version)."
     }
 
-    # Import Pester module
-    if ($PesterModule) {
-        $ModulePath = $PesterModule.ModuleBase
-        Write-Host "Importing Pester from $ModulePath..."
-        Import-Module -Name Pester -RequiredVersion $RequiredPesterVersion -ErrorAction Stop -Verbose
-    } else {
-        Write-Host "Attempting to import Pester without specifying a path."
-        Import-Module -Name Pester -RequiredVersion $RequiredPesterVersion -ErrorAction Stop -Verbose
-    }
+    # Import the Pester module
+    $ModulePath = Join-Path $PesterModule.ModuleBase "Pester.psd1"
+    Write-Host "Importing Pester from $ModulePath..."
+    Import-Module -Name $ModulePath -ErrorAction Stop -Verbose
 
-    # Re-check if the correct version is installed
-    $InstalledPester = Get-Module -Name Pester | Where-Object { $_.Version -ge [version]$RequiredPesterVersion }
+    # Re-check the imported version.
+    $InstalledPester = Get-Module -Name Pester
     if (-not $InstalledPester) {
-        Write-Error "Failed to install or load required Pester version $RequiredPesterVersion."
+        Write-Error "Failed to load Pester."
         exit 1
-    }
-    else {
-        Write-Host "Pester installation/update successful."
+    } else {
+        Write-Host "Successfully loaded Pester version $($InstalledPester.Version)."
     }
 } catch {
     Write-Error "An error occurred: $_"
