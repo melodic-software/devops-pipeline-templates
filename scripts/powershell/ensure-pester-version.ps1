@@ -10,7 +10,7 @@ function Install-Pester {
 
 try {
     # Check if the required Pester version is available
-    $PesterModule = Get-Module -ListAvailable -Name Pester | Where-Object { $_.Version -ge $RequiredPesterVersion }
+    $PesterModule = Get-Module -ListAvailable -Name Pester | Where-Object { $_.Version -ge [version]$RequiredPesterVersion }
 
     if (-not $PesterModule) {
         Install-Pester -Version $RequiredPesterVersion
@@ -20,10 +20,10 @@ try {
     }
 
     # Import Pester module
-    Import-Module -Name Pester -RequiredVersion $RequiredPesterVersion
+    Import-Module -Name Pester -RequiredVersion $RequiredPesterVersion -ErrorAction Stop
 
     # Re-check if the correct version is installed
-    $InstalledPester = Get-Module -ListAvailable -Name Pester | Where-Object { $_.Version -ge $RequiredPesterVersion }
+    $InstalledPester = Get-Module -Name Pester | Where-Object { $_.Version -ge [version]$RequiredPesterVersion }
     if (-not $InstalledPester) {
         Write-Error "Failed to install required Pester version $RequiredPesterVersion"
         exit 1
@@ -33,6 +33,7 @@ try {
     }
 } catch {
     Write-Error "An error occurred: $_"
+    exit 1
 } finally {
     # Check for interactive host and non-Azure DevOps environment
     if ($Host.UI.RawUI -and (Test-Path Env:\AGENT_ID) -eq $false) {
