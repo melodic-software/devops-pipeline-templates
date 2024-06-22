@@ -7,7 +7,7 @@ steps:
 - task: PowerShell@2
   name: SetCodeCoverageFramework
   displayName: Set Code Coverage Framework
-  condition: succeeded()
+  condition: and(succeeded(), ne(variables['DotNetSDKVersion'], ''), eq(variables['RunTests'], true), ne(variables['TestProjects'], ''))
   inputs:
     targetType: 'inline'
     script: |
