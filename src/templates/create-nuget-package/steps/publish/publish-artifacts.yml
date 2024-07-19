@@ -6,8 +6,8 @@ steps:
   condition: succeeded()
   continueOnError: false
   inputs:
-    targetPath: '$(Pipeline.Workspace)' # string. Alias: path. Required. File or directory path. Default: $(Pipeline.Workspace).
-    #artifact: 'drop' # string. Alias: artifactName. Artifact name. 
+    targetPath: '$(Build.ArtifactStagingDirectory)' # string. Alias: path. Required. File or directory path. Default: $(Pipeline.Workspace).
+    artifact: 'drop' # string. Alias: artifactName. Artifact name. 
     publishLocation: 'pipeline' # 'pipeline' | 'filepath'. Alias: artifactType. Required. Artifact publish location. Default: pipeline.
     #fileSharePath: # string. Required when artifactType = filepath. File share path. 
     #parallel: false # boolean. Optional. Use when artifactType = filepath. Parallel copy. Default: false.
