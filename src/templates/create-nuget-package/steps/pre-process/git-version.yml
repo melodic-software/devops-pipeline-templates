@@ -44,14 +44,13 @@ steps:
   continueOnError: false
 
 - task: gitversion/command@3.0.0
-  displayName: Display GitVersion Config
+  displayName: Log GitVersion Config
   inputs:
     targetPath: ${{ parameters.workingDirectory }}
     disableShallowCloneCheck: false
     arguments: '/config ${{ parameters.configFilePath }} /showConfig'
 
 # https://github.com/GitTools/actions/blob/main/docs/examples/azure/gitversion/execute.md
-# https://gitversion.net/docs/usage/cli/arguments
 - task: gitversion/execute@3.0.0
   name: DetermineVersion
   displayName: Determine Version
@@ -61,7 +60,6 @@ steps:
     disableCache: true
     useConfigFile: true
     configFilePath: ${{ parameters.configFilePath }}
-    #additionalArguments: '/output buildserver'
 
 - task: PowerShell@2
   name: DisplayGitVersionVariables
@@ -114,7 +112,8 @@ steps:
 
       # Define the script parameters
       $BuildId = "$(Build.BuildId)"
-      $BuildNumber = "$(Build.OriginalBuildNumber)"
+      $BuildNumber = "$(Build.BuildNumber)"
+      $OriginalBuildNumber = "$(Build.OriginalBuildNumber)"
       $SemVer = "$(SemVer)"
       $Major = "$(Major)"
       $Minor = "$(Minor)"
@@ -149,7 +148,7 @@ steps:
       Write-Host "PreReleaseTag: $PreReleaseTag"
 
       if (-not [string]::IsNullOrWhiteSpace($PreReleaseTag)) {
-        # This is a pre-release build, so set the build configuration to Debug
+        # This is a pre-release build, so set the build configuration to Debug.
         Write-Host "This is a pre-release build. Updating the build configuration to Debug."
         Write-Host "##vso[task.setvariable variable=BuildConfiguration]Debug"
       } else {

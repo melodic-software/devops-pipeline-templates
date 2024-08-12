@@ -19,7 +19,7 @@ $MajorMinorPatch = "$Major.$Minor.$Patch"
 Write-Host "BuildId: $BuildId"
 Write-Host "BuildNumber: $BuildNumber"
 
-if ($null -ne $OriginalBuildNumber) {
+if (-not [string]::IsNullOrWhiteSpace($OriginalBuildNumber)) {
     Write-Host "OriginalBuildNumber: $OriginalBuildNumber"
 }
 
@@ -31,10 +31,16 @@ Write-Host "MajorMinorPatch: $MajorMinorPatch"
 Write-Host "PreReleaseLabel: $PreReleaseLabel"
 Write-Host "ShortSha: $ShortSha"
 
+# Define the regex pattern to match a build number format of 'yyyyMMdd.Revision'
+# This pattern is used to match the standard Azure DevOps build number format.
+$BuildNumberPattern = '^(\d{8})\.(\d+)$'
+
 # Determine the effective build number to use.
-$EffectiveBuildNumber = if ($OriginalBuildNumber -match '^(\d{8})\.(\d+)$') { 
+# Check if either the OriginalBuildNumber or BuildNumber matches the expected Azure DevOps format.
+# If a match is found, that value is used as the EffectiveBuildNumber.
+$EffectiveBuildNumber = if ($OriginalBuildNumber -match $BuildNumberPattern) { 
     $OriginalBuildNumber 
-} elseif ($BuildNumber -match '^(\d{8})\.(\d+)$') { 
+} elseif ($BuildNumber -match $BuildNumberPattern) { 
     $BuildNumber 
 } else { 
     $null 
