@@ -1,7 +1,7 @@
 Describe "Convert-PathSeparator Function Tests" {
 
     BeforeAll {
-        . "$PSScriptRoot/../../../../src/templates/shared/powershell/functions/CovertPathSeparator.ps1"
+        . "$PSScriptRoot/../../../../src/templates/shared/powershell/functions/ConvertPathSeparator.ps1"
     }
 
     Context "When running on a Windows-like environment" {
