@@ -7,13 +7,13 @@ For Windows, it ensures the path uses backslashes (`\`), and for Unix-like syste
 .PARAMETER Path
 The path string to be normalized.
 .EXAMPLE
-$NormalizedPath = NormalizePathSeparator -Path "C:/Windows/System32"
+$NormalizedPath = Convert-PathSeparator -Path "C:/Windows/System32"
 Output:
 C:\Windows\System32
 .NOTES
 Useful when working with paths that might come from different systems and you want to ensure they're correctly formatted for the current operating system.
 #>
-function NormalizePathSeparator {
+function Convert-PathSeparator {
     param (
         [Parameter(Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
