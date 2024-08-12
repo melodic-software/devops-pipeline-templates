@@ -17,10 +17,6 @@ steps:
       versioningScheme: byEnvVar
       versionEnvVar: GitVersion_SemVer
 
-  # Regarding the "versionEnvVar":
-  # The alternative syntax is GITVERSION_SEMVER (the former gets converted into the latter internally)
-  # Here's another older format: GitVersion.NuGetVersionV2
-
   # Regarding the $(NoBuildBeforePack) and "nobuild".
   # In most cases, this can be true since we've already built the project at this point.
   # This might need to be set to false for a package built from a proejct that has internal project references.
