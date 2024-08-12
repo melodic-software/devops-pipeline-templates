@@ -4,7 +4,7 @@ parameters:
     default: $(Build.SourcesDirectory)/$(SelfRepositoryFolder)
   - name: configFilePath
     type: string
-    default: $(Build.SourcesDirectory)/$(BuildTemplateRepositoryFolder)/src/templates/create-nuget-package/git-version/GitVersion.yml
+    default: $(Build.SourcesDirectory)/$(BuildTemplateRepositoryFolder)/src/templates/create-nuget-package/git-version/GitVersion.yaml
   - name: gitVersionSpec
     type: string
     default: 6.x

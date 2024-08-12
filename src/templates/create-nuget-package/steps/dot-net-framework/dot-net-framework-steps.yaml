@@ -1,0 +1,7 @@
+steps:
+  - template: ./set-assembly-metadata.yaml
+  - template: ./print-project-content.yaml
+  - template: ./nuget-restore.yaml
+  - template: ./build.yaml
+  - template: ./run-tests.yaml
+  - template: ./nuget-pack.yaml

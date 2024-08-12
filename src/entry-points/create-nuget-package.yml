@@ -129,15 +129,15 @@ variables:
   - name: TestMode
     value: ${{ parameters.testMode }}
   - group: GlobalSecrets # Must be defined as a variable group in the Azure DevOps UI
-  - template: '../templates/shared/variables/global-variables.yml'
-  - template: '../templates/create-nuget-package/variables/create-nuget-package-variables.yml'
+  - template: '../templates/shared/variables/global-variables.yaml'
+  - template: '../templates/create-nuget-package/variables/create-nuget-package-variables.yaml'
 
 jobs:
   - job: createPackage
     displayName: Create NuGet Package
     continueOnError: false
     steps:
-      - template: ../templates/create-nuget-package/steps/create-nuget-package-steps.yml
+      - template: ../templates/create-nuget-package/steps/create-nuget-package-steps.yaml
         parameters:
           targetFramework: ${{ parameters.targetFramework }}
           dotNetSDKVersion: ${{ parameters.dotNetSDKVersion }}
@@ -149,3 +149,10 @@ jobs:
           proGetPackageServiceIndex: ${{ parameters.proGetPackageServiceIndex }}
           testProjects: ${{ parameters.testProjects }}
           includeLogSteps: ${{ parameters.includeLogSteps }}
+
+# TODO: Rename this file exension to the industry standard .yaml over .yml
+# This will be a breaking change to all clients, so it may not be worth it.
+# All other internal files have been renamed.
+
+# TODO: Eventually we'll want to remove all older .NET framework paths
+# It will help simplify and streamline things.

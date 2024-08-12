@@ -1,12 +1,12 @@
 ## Introduction
 
-This repository is dedicated to advancing continuous integration and deployment across a wide range of technologies, with a special focus on .NET projects and Angular applications. By centralizing key build templates and tools, we aim to create a consistent and efficient development and deployment pipeline. Among its assets are PowerShell scripts designed for several operational functionalities, including but not limited to .NET SDK version detection, updating `GitConfig.yml` settings, and dynamic updates to project files.
+This repository is dedicated to advancing continuous integration and deployment across a wide range of technologies, with a special focus on .NET projects and Angular applications. By centralizing key build templates and tools, we aim to create a consistent and efficient development and deployment pipeline. Among its assets are PowerShell scripts designed for several operational functionalities, including but not limited to .NET SDK version detection, updating `GitConfig.yaml` settings, and dynamic updates to project files.
 
 ## Getting Started
 
 1. **Clone**: Begin by cloning the repository to a directory of your choice.
 2. **Directory Structure**: Review the repository's organized layout. Please note, external repositories are intended to only interact with the templates found in the `src/entry-points` directory. Primary templates are organized in aptly named directories, such as `create-nuget-package`. The individual, more granular template files are stored within `src/templates`.
-3. **Configuration**: To get acquainted with the core configurations that drive the CI/CD processes, refer to the `global-variables.yml` file in the `src/templates/shared/variables` directory.
+3. **Configuration**: To get acquainted with the core configurations that drive the CI/CD processes, refer to the `global-variables.yaml` file in the `src/templates/shared/variables` directory.
 
 ## Build and Test
 

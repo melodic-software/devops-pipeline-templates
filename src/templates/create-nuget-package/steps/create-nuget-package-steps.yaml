@@ -10,7 +10,7 @@ parameters:
   includeLogSteps: false
 
 steps:
-- template: ./pre-process/preprocess-steps.yml
+- template: ./pre-process/preprocess-steps.yaml
   parameters:
     azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}
     proGetPackageServiceIndex: ${{ parameters.proGetPackageServiceIndex }}
@@ -18,15 +18,15 @@ steps:
     includeLogSteps: ${{ parameters.includeLogSteps }}
 
 - ${{ if or(eq(parameters.targetFramework, 'DotNet'), eq(parameters.targetFramework, 'DotNetCore'), eq(parameters.targetFramework, 'DotNetStandard'), eq(parameters.targetFramework, 'NotSpecified')) }}:
-    - template: ./dot-net/dot-net-steps.yml
+    - template: ./dot-net/dot-net-steps.yaml
       parameters:
         dotNetSDKVersion: ${{ parameters.dotNetSDKVersion }}
         useGlobalJson: ${{ parameters.useGlobalJson }}
 
 - ${{ if or(eq(parameters.targetFramework, 'DotNetFramework'), eq(parameters.targetFramework, 'NotSpecified')) }}:
-    - template: ./dot-net-framework/dot-net-framework-steps.yml
+    - template: ./dot-net-framework/dot-net-framework-steps.yaml
 
-- template: ./publish/publish-steps.yml
+- template: ./publish/publish-steps.yaml
   parameters:
     includeAzureDevOpsPush: ${{ parameters.includeAzureDevOpsPush }}
     includeGitHubPush: ${{ parameters.includeGitHubPush }}

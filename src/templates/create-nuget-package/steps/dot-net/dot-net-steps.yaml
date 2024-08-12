@@ -1,0 +1,27 @@
+parameters:
+  - name: dotNetSDKVersion
+    displayName: .NET SDK Version
+    type: string
+    default: ''
+  - name: useGlobalJson
+    displayName: Use Global JSON
+    type: boolean
+    default: false
+
+steps:
+  - ${{ if eq(parameters.dotNetSDKVersion, '') }}:
+      - template: ./extract-dotnet-version.yaml
+
+  - template: ./set-assembly-metadata.yaml
+  - template: ./print-project-content.yaml
+
+  - ${{ if eq(parameters.useGlobalJson, true) }}:
+      - template: ./use-dotnet-sdk-global.yaml
+  - ${{ if eq(parameters.useGlobalJson, false) }}:
+      - template: ./use-dotnet-sdk.yaml
+
+  - template: ./nuget-restore.yaml
+  - template: ./build.yaml
+  - template: ./set-code-coverage-framework.yaml
+  - template: ./run-tests.yaml
+  - template: ./nuget-pack.yaml
