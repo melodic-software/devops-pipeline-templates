@@ -13,7 +13,7 @@ The name of the project, used as a fallback for the package ID if no `PackageId`
 .PARAMETER PackagePrefix
 An optional prefix to prepend to the package ID.
 .EXAMPLE
-Set-NuGetPackageId -SourceDirectory "src" -ProjectName "MyProject" -PackagePrefix "MyCompany"
+$NugetPackageId = Set-NuGetPackageId -SourceDirectory "src" -ProjectName "MyProject" -PackagePrefix "MyCompany"
 This command searches for the MyProject.csproj file in the src directory, extracts the PackageId, 
 prepends the MyCompany prefix if necessary, and sets the NugetPackageId for subsequent tasks.
 #>
@@ -109,7 +109,9 @@ function Set-NuGetPackageId {
         Write-Error "Error details: $_"
         exit 1
     }
+
+    return $NugetPackageId
 }
 
 # Example usage of the function
-# Set-NuGetPackageId -SourceDirectory $SourceDirectory -ProjectName $ProjectName -PackagePrefix $PackagePrefix
+#$NugetPackageId = Set-NuGetPackageId -SourceDirectory $SourceDirectory -ProjectName $ProjectName -PackagePrefix $PackagePrefix
