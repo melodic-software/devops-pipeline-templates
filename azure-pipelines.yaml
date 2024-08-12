@@ -29,5 +29,5 @@ steps:
   displayName: 'Run PowerShell Tests'
   inputs:
     targetType: 'filePath'
-    filePath: '$(Build.SourcesDirectory)/tests/powershell/run-all-tests.ps1'
+    filePath: '$(Build.SourcesDirectory)/tests/powershell/Run-Tests.ps1'
     pwsh: true

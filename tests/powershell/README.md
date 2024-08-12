@@ -23,6 +23,6 @@ A `Ensure-PesterVersion.ps1` script has been provided to automatically check and
 
 ### Manually Running Tests
 
-You can manually run tests in VS Code if you have the PowerShell extension installed. Otherwise, you can update the `run-specific-test.ps1` script and point it towards the test script you want to run.
+You can manually run tests in VS Code if you have the PowerShell extension installed. Otherwise, you can update the `Run-Test.ps1` script and point it towards the test script you want to run.
 
 You may need to run `Install-Module -Name Pester -Force -SkipPublisherCheck -MinimumVersion 5.5.0` in the PowerShell extension terminal so it uses the correct version of Pester.
