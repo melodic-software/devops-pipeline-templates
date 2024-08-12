@@ -88,7 +88,7 @@ steps:
   inputs:
     targetPath: ${{ parameters.workingDirectory }}
     disableShallowCloneCheck: false
-    arguments: '/showConfig'
+    arguments: '/config ${{ parameters.configFilePath }} /showConfig'
 
 # https://github.com/GitTools/actions/blob/main/docs/examples/azure/gitversion/execute.md
 # https://gitversion.net/docs/usage/cli/arguments
@@ -101,7 +101,7 @@ steps:
     disableCache: true
     useConfigFile: true
     configFilePath: ${{ parameters.configFilePath }}
-    additionalArguments: '/output buildserver'
+    #additionalArguments: '/output buildserver'
 
 - task: PowerShell@2
   name: DisplayGitVersionVariables
