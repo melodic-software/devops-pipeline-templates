@@ -9,10 +9,10 @@ The identification is based on searching for 'netstandard' within the `<TargetFr
 The content of the project file to be evaluated.
 .EXAMPLE
 $Project = Get-Content -Path "C:\path\to\project.csproj"
-$IsDotNetStandard = IsDotNetStandardProject -ProjectContent $Project
+$IsDotNetStandard = Test-DotNetStandardProject -ProjectContent $Project
 if ($IsDotNetStandard) { Write-Host "This is a .NET Standard project" }
 #>
-function IsDotNetStandardProject {
+function Test-DotNetStandardProject {
     param (
         [ValidateNotNullOrEmpty()]
         [string]$ProjectContent
@@ -30,7 +30,7 @@ function IsDotNetStandardProject {
         $Xml.LoadXml($ProjectContent)
 
         # Remove the namespace if it exists to simplify the XPath query
-        $XmlDocument.InnerXml = $XmlDocument.InnerXml -replace 'xmlns="[^"]+"', ''
+        $Xml.InnerXml = $Xml.InnerXml -replace 'xmlns="[^"]+"', ''
 
         $FrameworkNodes = $Xml.SelectNodes("//*[local-name()='TargetFramework' or local-name()='TargetFrameworks']")
         $NetStandardCheck = $FrameworkNodes | Where-Object { $_ -like "*netstandard*" }

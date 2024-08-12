@@ -53,7 +53,7 @@ if (-not $FallbackDotNetVersion) {
 
 # Import necessary scripts
 . (Join-Path -Path $SharedTemplateDirectory -ChildPath "powershell/functions/TestDotNetFrameworkProject.ps1")
-. (Join-Path -Path $SharedTemplateDirectory -ChildPath "powershell/functions/is-dotnet-standard-project.ps1")
+. (Join-Path -Path $SharedTemplateDirectory -ChildPath "powershell/functions/TestDotNetStandardProject.ps1")
 . (Join-Path -Path $SharedTemplateDirectory -ChildPath "powershell/functions/resolve-project-path.ps1")
 . (Join-Path -Path $PSScriptRoot -ChildPath "functions/convert-to-system-version.ps1")
 . (Join-Path -Path $PSScriptRoot -ChildPath "functions/convert-version-x-to-zero.ps1")

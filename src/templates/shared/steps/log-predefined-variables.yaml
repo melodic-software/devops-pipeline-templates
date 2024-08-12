@@ -12,7 +12,7 @@ steps:
       $SharedTemplatePowerShellDirectory = "$(SharedTemplatePowerShellDirectory)"
 
       # Construct the path to the primary script
-      $ScriptName = "log-predefined-variables"
+      $ScriptName = "WritePredefinedVariables"
       $ChildPath = ($BuildTemplatesDirectory, $SharedTemplatePowerShellDirectory, "functions", "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
       $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
 

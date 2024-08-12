@@ -22,7 +22,7 @@ function Get-ProjectSdkVersion {
     )
 
     # Determine if the project is a .NET Standard project.
-    $IsDotNetStandardProject = IsDotNetStandardProject -ProjectContent $ProjectContent
+    $IsDotNetStandardProject = Test-DotNetStandardProject -ProjectContent $ProjectContent
 
     if ($IsDotNetStandardProject) {
         Write-Debug "Project is a .NET Standard project."

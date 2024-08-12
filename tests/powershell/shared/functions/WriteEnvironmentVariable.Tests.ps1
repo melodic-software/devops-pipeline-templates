@@ -1,7 +1,7 @@
-Describe "LogVariable Function Tests" {
+Describe "Write-EnvironmentVariable Function Tests" {
 
     BeforeAll {
-        . "$PSScriptRoot/../../../../src/templates/shared/powershell/functions/log-predefined-variables.ps1"
+        . "$PSScriptRoot/../../../../src/templates/shared/powershell/functions/WriteEnvironmentVariable.ps1"
     }
 
     Context "Environment variable is set and has a value" {
@@ -9,7 +9,7 @@ Describe "LogVariable Function Tests" {
             Mock Test-Path { $true }
             Mock Get-Content { "Value" }
 
-            LogVariable -VariableName "TEST_VAR" -InformationVariable InfoVar
+            Write-EnvironmentVariable -VariableName "TEST_VAR" -InformationVariable InfoVar
             $InfoVar[0].MessageData.ToString().Trim() | Should -Match "TEST_VAR: Value"
         }
     }
@@ -19,7 +19,7 @@ Describe "LogVariable Function Tests" {
             Mock Test-Path { $true }
             Mock Get-Content { "" }
 
-            LogVariable -VariableName "TEST_VAR" -InformationVariable InfoVar
+            Write-EnvironmentVariable -VariableName "TEST_VAR" -InformationVariable InfoVar
             $InfoVar[0].MessageData.ToString().Trim() | Should -Match "TEST_VAR is set but empty."
         }
     }
@@ -28,7 +28,7 @@ Describe "LogVariable Function Tests" {
         It "Logs that the environment variable is not set" {
             Mock Test-Path { $false }
 
-            LogVariable -VariableName "TEST_VAR" -InformationVariable InfoVar
+            Write-EnvironmentVariable -VariableName "TEST_VAR" -InformationVariable InfoVar
             $InfoVar[0].MessageData.ToString().Trim() | Should -Match "TEST_VAR is not set."
         }
     }

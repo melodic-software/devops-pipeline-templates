@@ -1,6 +1,6 @@
 steps:
 - task: PowerShell@2
-  name: LogVariables
+  name: LogPipelineSpecificVariables
   displayName: Log Pipeline-Specific Variables
   condition: succeeded()
   continueOnError: true

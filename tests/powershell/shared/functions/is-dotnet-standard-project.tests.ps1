@@ -1,13 +1,13 @@
-Describe "IsDotNetStandardProject Tests" {
+Describe "Test-DotNetStandardProject Tests" {
     
     BeforeAll {
-        . "$PSScriptRoot/../../../../src/templates/shared/powershell/functions/is-dotnet-standard-project.ps1"
+        . "$PSScriptRoot/../../../../src/templates/shared/powershell/functions/TestDotNetStandardProject.ps1"
     }
 
     Context "When content is not a .csproj file" {
         It "Returns false" {
             $NonCsprojContent = '<NotAProject></NotAProject>'
-            $Result = IsDotNetStandardProject -ProjectContent $NonCsprojContent
+            $Result = Test-DotNetStandardProject -ProjectContent $NonCsprojContent
             $Result | Should -Be $false
         }
     }
@@ -23,7 +23,7 @@ Describe "IsDotNetStandardProject Tests" {
 </Project>
 "@
 
-            $Result = IsDotNetStandardProject -ProjectContent $ValidDotNetStandardContent
+            $Result = Test-DotNetStandardProject -ProjectContent $ValidDotNetStandardContent
             $Result | Should -Be $true
         }
         It "Returns true for multiple target frameworks" {
@@ -36,7 +36,7 @@ Describe "IsDotNetStandardProject Tests" {
 </Project>
 "@
 
-            $Result = IsDotNetStandardProject -ProjectContent $ValidDotNetStandardMultiTargetContent
+            $Result = Test-DotNetStandardProject -ProjectContent $ValidDotNetStandardMultiTargetContent
             $Result | Should -Be $true
         }
     }
@@ -51,7 +51,7 @@ Describe "IsDotNetStandardProject Tests" {
     </PropertyGroup>
 </Project>
 "@
-            $Result = IsDotNetStandardProject -ProjectContent $ValidNonDotNetStandardContent
+            $Result = Test-DotNetStandardProject -ProjectContent $ValidNonDotNetStandardContent
             $Result | Should -Be $false
         }
         It "Returns false for multiple target frameworks" {
@@ -64,7 +64,7 @@ Describe "IsDotNetStandardProject Tests" {
 </Project>
 "@
 
-            $Result = IsDotNetStandardProject -ProjectContent $ValidNonDotNetStandardMultiTargetContent
+            $Result = Test-DotNetStandardProject -ProjectContent $ValidNonDotNetStandardMultiTargetContent
             $Result | Should -Be $false
         }
     }
@@ -72,7 +72,7 @@ Describe "IsDotNetStandardProject Tests" {
     Context "When XML parsing fails" {
         It "Returns true based on regex matching" {
             $InvalidXmlContent = 'Invalid XML <Project><TargetFramework>netstandard2.0</TargetFramework></Project>'
-            $Result = IsDotNetStandardProject -ProjectContent $InvalidXmlContent
+            $Result = Test-DotNetStandardProject -ProjectContent $InvalidXmlContent
             $Result | Should -Be $true
         }
     }
