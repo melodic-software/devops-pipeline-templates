@@ -12,14 +12,14 @@ Before running the tests, ensure that you have PowerShell Core (pwsh) installed 
 
 ### Automated Pester Installation Script
 
-A `ensure-pester-version.ps1` script has been provided to automatically check and install the required version of Pester. To run this script:
+A `Ensure-PesterVersion.ps1` script has been provided to automatically check and install the required version of Pester. To run this script:
 
 1. Open PowerShell.
 2. Navigate to the `scripts/powershell` directory.
 3. Execute the script:
 
    ```powershell
-   .\ensure-pester-version.ps1
+   .\Ensure-PesterVersion.ps1
 
 ### Manually Running Tests
 
