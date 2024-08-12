@@ -17,8 +17,8 @@ steps:
 - checkout: self
 
 - task: PowerShell@2
-  name: EnsurePesterVersion
-  displayName: 'Ensure Correct Pester Version'
+  name: InstallPester
+  displayName: 'Install Pester'
   inputs:
     targetType: 'filePath'
     filePath: '$(Build.SourcesDirectory)/scripts/powershell/InstallPester.ps1'
