@@ -1,13 +1,13 @@
-Describe "IsDotNetFrameworkProject Tests" {
+Describe "Test-DotNetFrameworkProject Tests" {
     
     BeforeAll {
-        . "$PSScriptRoot/../../../../src/templates/shared/powershell/functions/is-dotnet-framework-project.ps1"
+        . "$PSScriptRoot/../../../../src/templates/shared/powershell/functions/TestDotNetFrameworkProject.ps1"
     }
 
     Context "When content does not contain a Project tag" {
         It "Returns false" {
             $NonProjectContent = '<NotAProject></NotAProject>'
-            $Result = IsDotNetFrameworkProject -ProjectContent $NonProjectContent
+            $Result = Test-DotNetFrameworkProject -ProjectContent $NonProjectContent
             $Result | Should -Be $false
         }
     }
@@ -22,7 +22,7 @@ Describe "IsDotNetFrameworkProject Tests" {
     </PropertyGroup>
 </Project>
 "@
-            $Result = IsDotNetFrameworkProject -ProjectContent $DotNetFrameworkProjectContent
+            $Result = Test-DotNetFrameworkProject -ProjectContent $DotNetFrameworkProjectContent
             $Result | Should -Be $true
         }
     }
@@ -30,7 +30,7 @@ Describe "IsDotNetFrameworkProject Tests" {
     Context "When content is an SDK-style project" {
         It "Returns false" {
             $SdkStyleProjectContent = '<Project Sdk="Microsoft.NET.Sdk"></Project>'
-            $Result = IsDotNetFrameworkProject -ProjectContent $SdkStyleProjectContent
+            $Result = Test-DotNetFrameworkProject -ProjectContent $SdkStyleProjectContent
             $Result | Should -Be $false
         }
     }
@@ -38,7 +38,7 @@ Describe "IsDotNetFrameworkProject Tests" {
     Context "When XML parsing fails and content is a .NET Framework project by regex" {
         It "Returns true" {
             $InvalidXmlDotNetFrameworkContent = 'Invalid XML <Project><TargetFrameworkVersion>v4.5</TargetFrameworkVersion></Project>'
-            $Result = IsDotNetFrameworkProject -ProjectContent $InvalidXmlDotNetFrameworkContent
+            $Result = Test-DotNetFrameworkProject -ProjectContent $InvalidXmlDotNetFrameworkContent
             $Result | Should -Be $true
         }
     }
@@ -46,7 +46,7 @@ Describe "IsDotNetFrameworkProject Tests" {
     Context "When XML parsing fails and content is not a .NET Framework project by regex" {
         It "Returns false" {
             $InvalidXmlSdkStyleContent = 'Invalid XML <Project Sdk="Microsoft.NET.Sdk"></Project>'
-            $Result = IsDotNetFrameworkProject -ProjectContent $InvalidXmlSdkStyleContent
+            $Result = Test-DotNetFrameworkProject -ProjectContent $InvalidXmlSdkStyleContent
             $Result | Should -Be $false
         }
     }
@@ -60,7 +60,7 @@ Describe "IsDotNetFrameworkProject Tests" {
     </PropertyGroup>
 </Project>
 "@
-            $Result = IsDotNetFrameworkProject -ProjectContent $NoTargetFrameworkVersionContent
+            $Result = Test-DotNetFrameworkProject -ProjectContent $NoTargetFrameworkVersionContent
             $Result | Should -Be $false
         }
     }

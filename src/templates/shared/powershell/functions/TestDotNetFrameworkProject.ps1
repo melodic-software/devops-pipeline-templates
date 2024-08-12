@@ -7,11 +7,11 @@ The identification is based on the absence of the SDK attribute in the <Project>
 .PARAMETER ProjectFilePath
 The path to the project file that needs to be evaluated.
 .EXAMPLE
-$IsDotNetFrameworkProject = IsDotNetFrameworkProject -ProjectFilePath "C:\path\to\project.csproj"
+$IsDotNetFrameworkProject = Test-DotNetFrameworkProject -ProjectFilePath "C:\path\to\project.csproj"
 if ($IsDotNetFrameworkProject) { Write-Host "This is a .NET Framework project." }
 else { Write-Host "This is not a .NET Framework project." }
 #>
-function IsDotNetFrameworkProject {
+function Test-DotNetFrameworkProject {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
@@ -59,6 +59,6 @@ function IsDotNetFrameworkProject {
 }
 
 # Example usage:
-# $Result = IsDotNetFrameworkProject -ProjectFilePath "path\to\your\project.csproj"
+# $Result = Test-DotNetFrameworkProject -ProjectFilePath "path\to\your\project.csproj"
 # if ($Result) { /* Do something if it is a .NET Framework project */ }
 # else { /* Do something else if it is not a .NET Framework project */ }

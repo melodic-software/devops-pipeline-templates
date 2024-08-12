@@ -31,7 +31,7 @@ function Get-HighestSdkVersion {
 
         # Get the content of the project file only once to improve performance.
         $ProjectContent = Get-Content -Path $ProjectFile -Raw
-        $IsFrameworkProject = IsDotNetFrameworkProject -ProjectContent $ProjectContent
+        $IsFrameworkProject = Test-DotNetFrameworkProject -ProjectContent $ProjectContent
 
         if ($IsFrameworkProject) {
             Write-Debug "Project is a .NET Framework project."
