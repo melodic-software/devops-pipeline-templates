@@ -1,4 +1,4 @@
-$RequiredPesterVersion = '5.x'
+$RequiredPesterVersion = '5.5.0'
 
 function Install-Pester {
     param (
