@@ -13,7 +13,7 @@ steps:
       
       # Construct the path to the primary script
       $ScriptName = "SetNuGetPackageId"
-      $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, $ScriptName, "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
+      $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, "set-nuget-package-id", "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
       $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
 
       # Define the script parameters
@@ -87,7 +87,7 @@ steps:
       
       # Construct the path to the primary script
       $ScriptName = "update-project-properties"
-      $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, $ScriptName, "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
+      $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, "update-project-properties", "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
       $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
 
       # Define the script parameters hashtable for splatting

@@ -14,7 +14,7 @@ steps:
       
       # Construct the path to the primary script
       $ScriptName = "update-release-notes"
-      $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, $ScriptName, "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
+      $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, "update-release-notes", "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
       $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
 
       # Define the script parameters
