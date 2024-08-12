@@ -1,7 +1,7 @@
 steps:
 - task: PowerShell@2
-  name: ExtractDotNetFrameworkProjectInfo
-  displayName: Extract .NET Framework Project Info'
+  name: SetNuGetPackageMetadata
+  displayName: Set NuGet Package Metadata
   condition: succeeded()
   inputs:
     targetType: 'inline'
@@ -12,8 +12,8 @@ steps:
       $PowerShellScriptsDirectory = "$(PowerShellScriptsDirectory)"
       
       # Construct the path to the primary script
-      $ScriptName = "extract-dotnet-framework-project-info"
-      $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, "extract-dotnet-framework-project-info", "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
+      $ScriptName = "SetNuGetPackageMetadata"
+      $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, "set-nuget-package-metadata", "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
       $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
 
       # Define the script parameters
@@ -25,8 +25,11 @@ steps:
       Write-Host "SourceDirectory: $SourceDirectory"
       Write-Host "ProjectName: $ProjectName"
 
-      # Execute the script with the necessary parameters
-      & $ScriptPath -SourceDirectory $SourceDirectory -ProjectName $ProjectName
+      # Source the script to load the function into the current session
+      . $ScriptPath
+
+      # Execute the function
+      Set-NuGetPackageMetadata -SourceDirectory $SourceDirectory -ProjectName $ProjectName
     pwsh: true
 
 # https://marketplace.visualstudio.com/items?itemName=bleddynrichards.Assembly-Info-Task
@@ -105,5 +108,6 @@ steps:
       Write-Host "Parameters: $($Params | Out-String)"
 
       # Execute the script with splatting
+      # TODO: Convert to function, rename, and execute using function name (requires dot-sourcing the script)
       & $ScriptPath @Params
     pwsh: true
