@@ -7,7 +7,7 @@ parameters:
     default: $(Build.SourcesDirectory)/$(BuildTemplateRepositoryFolder)/src/templates/create-nuget-package/git-version/GitVersion.yml
   - name: gitVersionSpec
     type: string
-    default: 5.x # latest
+    default: 6.x
 
 steps:
 - task: PowerShell@2
@@ -23,16 +23,17 @@ steps:
       Write-Host "##vso[task.setvariable variable=Build.OriginalBuildNumber;]$(Build.BuildNumber)"
     pwsh: true
 
-# https://github.com/GitTools/actions/blob/main/docs/examples/azure/gitversion/setup/usage-examples.md
-- task: gitversion/setup@0
+# https://github.com/GitTools/actions/blob/main/docs/examples/azure/gitversion/setup.md
+- task: gitversion/setup@3.0.0
   name: InstallGitVersion
   displayName: Install GitVersion
   condition: succeeded()
   continueOnError: true
   inputs:
     versionSpec: ${{ parameters.gitVersionSpec }}
-    preferLatestVersion: true
     includePrerelease: false
+    ignoreFailedSources: false
+    preferLatestVersion: true
   retryCountOnTaskFailure: 3
 
 # This is a fallback in case the GitVersion tool failed to install.
@@ -82,16 +83,28 @@ steps:
       Write-Host "GitVersion configured."
     pwsh: true
 
-# https://github.com/GitTools/actions/blob/main/docs/examples/azure/gitversion/execute/usage-examples.md
+- task: gitversion/command@3.0.0
+  displayName: Display GitVersion Config
+  inputs:
+    arguments: '/showConfig'
+
+# https://github.com/GitTools/actions/blob/main/docs/examples/azure/gitversion/execute.md
 # https://gitversion.net/docs/usage/cli/arguments
-- task: gitversion/execute@0
+- task: gitversion/execute@3.0.0
   name: DetermineVersion
   displayName: Determine Version
   condition: succeeded()
   inputs:
     targetPath: ${{ parameters.workingDirectory }}
+    disableCache: false
+    disableNormalization: false
+    disableShallowCloneCheck: false
     useConfigFile: true
     configFilePath: ${{ parameters.configFilePath }}
+    # Optional override for the configuration file. This should be newline-separated key-value pairs.
+    #overrideConfig: ''
+    #updateAssemblyInfo: false
+    #updateAssemblyInfoFilename: ''
     additionalArguments: '/output buildserver /nocache'
 
 # - task: PowerShell@2
