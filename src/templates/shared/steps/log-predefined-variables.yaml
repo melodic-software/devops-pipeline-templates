@@ -16,6 +16,9 @@ steps:
       $ChildPath = ($BuildTemplatesDirectory, $SharedTemplatePowerShellDirectory, "functions", "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
       $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
 
-      # Execute the script
-      & $ScriptPath
+      # Source the script to load the function into the current session
+      . $ScriptPath
+
+      # Call the function
+      Write-PredefinedEnvironmentVariables
     pwsh: true

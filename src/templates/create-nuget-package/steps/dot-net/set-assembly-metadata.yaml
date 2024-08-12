@@ -27,8 +27,11 @@ steps:
       Write-Host "ProjectName: $ProjectName"
       Write-Host "PackagePrefix: $PackagePrefix"
 
-      # Execute the script
-      & $ScriptPath -SourceDirectory $SourceDirectory -ProjectName $ProjectName -PackagePrefix $PackagePrefix
+      # Source the script to load the function into the current session
+      . $ScriptPath
+
+      # Execute the function and capture the result
+      $NugetPackageId = Set-NuGetPackageId -SourceDirectory $SourceDirectory -ProjectName $ProjectName -PackagePrefix $PackagePrefix
     pwsh: true
 
 # https://marketplace.visualstudio.com/items?itemName=bleddynrichards.Assembly-Info-Task
