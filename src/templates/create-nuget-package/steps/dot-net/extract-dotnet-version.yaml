@@ -29,6 +29,7 @@ steps:
       # Execute the script and handle potential errors
       try {
           # Capturing the script's output, which is assumed to be the major version
+          # TODO: Convert to function, rename, and execute using function name (requires dot-sourcing the script)
           $MajorVersion = & $ScriptPath -ProjectPath $ProjectPath -SharedTemplateDirectory $SharedTemplateDirectory -Warnings -Information -Verbose -Debug
       }
       catch {

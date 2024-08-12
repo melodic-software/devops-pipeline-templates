@@ -126,6 +126,7 @@ steps:
       Write-Host "ScriptPath: $ScriptPath"
 
       # Execute the script with the necessary parameters
+      # TODO: Convert to function, rename, and execute using function name (requires dot-sourcing the script)
       & $ScriptPath -BuildId $BuildId `
                     -BuildNumber $BuildNumber `
                     -OriginalBuildNumber $OriginalBuildNumber `

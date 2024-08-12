@@ -113,5 +113,6 @@ steps:
       Write-Host "Parameters: $($Params | Out-String)"
 
       # Execute the script with splatting
+      # TODO: Convert to function, rename, and execute using function name (requires dot-sourcing the script)
       & $ScriptPath @Params
     pwsh: true

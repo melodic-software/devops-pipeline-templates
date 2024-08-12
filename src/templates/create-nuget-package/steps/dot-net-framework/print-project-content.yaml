@@ -27,5 +27,6 @@ steps:
       Write-Host "ProjectName: $ProjectName"
 
       # Execute the script with the necessary parameters
+      # TODO: Convert to function, rename, and execute using function name (requires dot-sourcing the script)
       & $ScriptPath -SourceDirectory $SourceDirectory -ProjectName $ProjectName
     pwsh: true
