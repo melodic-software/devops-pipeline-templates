@@ -43,46 +43,6 @@ steps:
   condition: failed()
   continueOnError: false
 
-- task: PowerShell@2
-  name: ConfigureGitVersion
-  displayName: Configure GitVersion
-  condition: succeeded()
-  continueOnError: false
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Define base directories and script locations
-      $BaseDirectory = "$(Build.SourcesDirectory)"
-      $BuildTemplatesDirectory = "$(BuildTemplateRepositoryFolder)"
-      $PowerShellScriptsDirectory = "$(PowerShellScriptsDirectory)"
-      
-      # Construct the path to the primary script
-      $ScriptName = "configure-git-version"
-      $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, $ScriptName, "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
-      $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
-
-      # Define the script parameters
-      $SourceBranch = "$(Build.SourceBranch)"
-      $GitVersionConfigPath = "${{ parameters.configFilePath }}"
-
-      if ($IsWindows) {
-        # We're on Windows, so format the path in Windows style
-        $GitVersionConfigPath = $GitVersionConfigPath -replace '/', '\'
-      }
-
-      # Log the script path and variables for debugging purposes
-      Write-Host "ScriptPath: $ScriptPath"
-      Write-Host "SourceBranch: $SourceBranch"
-      Write-Host "GitVersionConfigPath: $GitVersionConfigPath"
-      Write-Host "WorkingDirectory: $BaseDirectory"
-
-      # Execute the script with the necessary parameters
-      & $ScriptPath -SourceBranch $SourceBranch -GitVersionConfigPath $GitVersionConfigPath -WorkingDirectory $BaseDirectory
-      
-      # Confirm completion
-      Write-Host "GitVersion configured."
-    pwsh: true
-
 - task: gitversion/command@3.0.0
   displayName: Display GitVersion Config
   inputs:
