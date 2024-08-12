@@ -1,7 +1,7 @@
 Describe "NuGet Package ID Extraction and Processing Tests" {
 
     BeforeAll {
-        $ScriptPath = "$PSScriptRoot/../../../../src/templates/create-nuget-package/powershell/determine-package-id/determine-package-id.ps1"
+        $ScriptPath = "$PSScriptRoot/../../../../src/templates/create-nuget-package/powershell/functions/SetNuGetPackageId.ps1"
         
 $CsprojWithoutPackageId = @'
 <Project>

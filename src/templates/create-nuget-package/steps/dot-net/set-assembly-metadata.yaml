@@ -12,7 +12,7 @@ steps:
       $PowerShellScriptsDirectory = "$(PowerShellScriptsDirectory)"
       
       # Construct the path to the primary script
-      $ScriptName = "determine-package-id"
+      $ScriptName = "SetNuGetPackageId"
       $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, $ScriptName, "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
       $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
 

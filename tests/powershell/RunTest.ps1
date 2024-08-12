@@ -1,4 +1,4 @@
-& "$PSScriptRoot/determine-package-id/determine-package-id/determine-package-id.tests.ps1" -ErrorAction SilentlyContinue
+& "$PSScriptRoot/create-nuget-package/functions/SetNugetPackageId.Tests.ps1" -ErrorAction SilentlyContinue
 
 # Check if the current host is interactive and if the script is not running in Azure DevOps
 if ($Host.UI.RawUI -and (Test-Path Env:\AGENT_ID) -eq $false) {
