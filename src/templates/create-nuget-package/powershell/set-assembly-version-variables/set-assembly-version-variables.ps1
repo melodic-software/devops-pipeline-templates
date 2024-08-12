@@ -1,7 +1,7 @@
 param(
     [string]$BuildId,
     [string]$BuildNumber,
-    [string]$OriginalBuildNumber,  # Assuming this is passed into the script
+    [string]$OriginalBuildNumber,
     [string]$SemVer,
     [string]$Major,
     [string]$Minor,
