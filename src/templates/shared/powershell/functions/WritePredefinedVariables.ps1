@@ -19,7 +19,7 @@ Write-PredefinedEnvironmentVariables -VariableNames $CustomVariables
 Logs the values of the specified custom environment variables.
 .NOTES
 - This function uses the `Write-EnvironmentVariable` function to log each variable's value.
-- Ensure that the `Write-EnvironmentVariable` function is sourced before calling this function.
+- The `Write-EnvironmentVariable` function is sourced automatically from the same directory.
 #>
 function Write-PredefinedEnvironmentVariables {
     param (
@@ -94,6 +94,9 @@ function Write-PredefinedEnvironmentVariables {
             "TF_BUILD"
         )
     )
+
+    # Dot-source the Write-EnvironmentVariable function from the same directory.
+    . "$PSScriptRoot\WriteEnvironmentVariable.ps1"
 
     try {
         foreach ($VariableName in $VariableNames) {
