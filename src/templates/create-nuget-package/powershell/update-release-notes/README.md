@@ -6,7 +6,7 @@ This repository contains PowerShell scripts designed to update the release notes
 
 1. [Overview](#overview)
 2. [Scripts](#scripts)
-   - [Resolve-ProjectPath](#resolve-projectpath)
+   - [Find-ProjectPath](#find-projectpath)
    - [Add-PackageReleaseNotes](#add-packagereleasenotes)
    - [Remove-PackageReleaseNotes](#remove-packagereleasenotes)
    - [Update-PackageReleaseNotes](#update-packagereleasenotes)
@@ -20,7 +20,7 @@ The scripts in this collection are tailored to manage the `PackageReleaseNotes` 
 
 ## Scripts
 
-### Resolve-ProjectPath
+### Find-ProjectPath
 
 Resolves the provided path to the `.csproj` file. This function ensures that the path to the project file is accurate and can manage wildcard paths.
 

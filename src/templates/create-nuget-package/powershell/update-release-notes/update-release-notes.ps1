@@ -12,7 +12,7 @@ Absolute or relative path to the target .csproj file to be processed.
 .EXAMPLE
 .\update-release-notes.ps1 -ReleaseNotes "Bug fixes and improvements" -ProjectPath "C:/path/to/project.csproj"
 .NOTES
-This script leverages helper functions like `Resolve-ProjectPath`, `RemovePackageReleaseNotes`, `UpdatePackageReleaseNotes`, and `AddPackageReleaseNotes` to perform its operations.
+This script leverages helper functions like `Find-ProjectPath`, `RemovePackageReleaseNotes`, `UpdatePackageReleaseNotes`, and `AddPackageReleaseNotes` to perform its operations.
 #>
 param (
     [string]$ReleaseNotes,
@@ -21,12 +21,12 @@ param (
 )
 
 # Dot-source the functions using Join-Path
-. (Join-Path -Path $SharedTemplateDirectory -ChildPath "powershell/functions/resolve-project-path.ps1")
+. (Join-Path -Path $SharedTemplateDirectory -ChildPath "powershell/functions/FindProjectPath.ps1")
 . (Join-Path -Path $PSScriptRoot -ChildPath "functions/remove-package-release-notes.ps1")
 . (Join-Path -Path $PSScriptRoot -ChildPath "functions/update-package-release-notes.ps1")
 . (Join-Path -Path $PSScriptRoot -ChildPath "functions/add-package-release-notes.ps1")
 
-$ResolvedProjectPath = Resolve-ProjectPath -Path $ProjectPath
+$ResolvedProjectPath = Find-ProjectPath -Path $ProjectPath
 
 Write-Host "Resolved project path: $ResolvedProjectPath"
 

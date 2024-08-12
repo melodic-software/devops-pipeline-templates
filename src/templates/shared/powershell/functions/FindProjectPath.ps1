@@ -1,8 +1,8 @@
 <#
 .SYNOPSIS
-Resolves the full path to .csproj file(s) based on the provided path pattern.
+Finds the full path to .csproj file(s) based on the provided path pattern.
 .DESCRIPTION
-The Resolve-ProjectPath function processes a potentially ambiguous path input, which can include wildcards, incomplete paths, or specific file names.
+The Find-ProjectPath function processes a potentially ambiguous path input, which can include wildcards, incomplete paths, or specific file names.
 It resolves these to the precise path of a .csproj file or a common base root directory.
 The function handles various path scenarios, accommodating the intricacies of file path patterns within a file system.
 It ensures consistency and accuracy in locating the .csproj files for build operations or other project setup tasks.
@@ -12,20 +12,20 @@ The path pattern input that requires resolution. This parameter can receive seve
 2. A wildcard pattern that represents multiple possibilities (e.g., '*project.csproj').
 3. A directory path, potentially including wildcards, indicating the .csproj file is within this directory or its subdirectories.
 .EXAMPLE
-Resolve-ProjectPath -Path "demo-package/**/Enterprise.Demo.csproj"
+Find-ProjectPath -Path "demo-package/**/Enterprise.Demo.csproj"
 This command returns the full path to the 'Enterprise.Demo.csproj' file if it exists within the 'demo-package' directory structure.
 It is useful when the .csproj file is located within a nested directory structure.
 .EXAMPLE
-Resolve-ProjectPath -Path "demo-package/*.csproj"
+Find-ProjectPath -Path "demo-package/*.csproj"
 This command is used in scenarios where the exact .csproj file name is unknown, or there might be multiple .csproj files.
 It returns the base directory containing the .csproj files, assisting in operations where any .csproj file is to be selected or processed.
 .EXAMPLE
-Resolve-ProjectPath -Path "demo-package/"
+Find-ProjectPath -Path "demo-package/"
 This command is used when a directory is specified without a file name or wildcard.
 The function returns the input path normalized.
 It's helpful in scenarios where subsequent operations are intended on the directory rather than a specific .csproj file.
 .EXAMPLE
-Resolve-ProjectPath -Path "Enterprise.Demo.csproj"
+Find-ProjectPath -Path "Enterprise.Demo.csproj"
 This command is ideal for scenarios where the build script is executed in the project's root directory, where the .csproj file resides.
 If a specific .csproj file name is provided, the function returns its full path if it's in the script's root directory.
 .NOTES
@@ -33,7 +33,7 @@ If a specific .csproj file name is provided, the function returns its full path 
 This ensures that build processes or other setup operations do not proceed with an incorrect path reference.
 - The returned path uses forward slashes ('/') for compatibility across different operating systems and environments.
 #>
-function Resolve-ProjectPath {
+function Find-ProjectPath {
     param (
         [Parameter(Mandatory=$true)]
         [ValidateNotNullOrEmpty()]

@@ -10,7 +10,7 @@ This directory contains a series of PowerShell scripts designed to extract and d
    - [Find-ProjectFiles](#find-projectfiles)
    - [Get-HighestSdkVersion](#get-highestsdkversion)
    - [ParseProjectFile](#parseprojectfile)
-   - [Resolve-ProjectPath & Resolve-WildcardPath](#resolve-projectpath--resolve-wildcardpath)
+   - [Find-ProjectPath & Resolve-WildcardPath](#find-projectpath--resolve-wildcardpath)
    - [ValidateInputs](#validateinputs)
 3. [Main Script: extract-dotnet-version.ps1](#main-script-extract-dotnet-versionps1)
 4. [Usage](#usage)
@@ -42,7 +42,7 @@ After compiling a list of `.csproj` files, this script identifies the highest .N
 
 Extracts the .NET SDK version from the provided `.csproj` file content. It's designed to identify both the older 'netcoreappX.X' format and the newer .NET 5+ 'netX.X' format.
 
-### Resolve-ProjectPath & Resolve-WildcardPath
+### Find-ProjectPath & Resolve-WildcardPath
 
 These functions focus on addressing paths with wildcards. They decipher the genuine path(s) based on the given input and ensure the path's validity. Both single (`*`) and double wildcard (`**`) patterns are supported.
 

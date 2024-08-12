@@ -54,7 +54,7 @@ if (-not $FallbackDotNetVersion) {
 # Import necessary scripts
 . (Join-Path -Path $SharedTemplateDirectory -ChildPath "powershell/functions/TestDotNetFrameworkProject.ps1")
 . (Join-Path -Path $SharedTemplateDirectory -ChildPath "powershell/functions/TestDotNetStandardProject.ps1")
-. (Join-Path -Path $SharedTemplateDirectory -ChildPath "powershell/functions/resolve-project-path.ps1")
+. (Join-Path -Path $SharedTemplateDirectory -ChildPath "powershell/functions/FindProjectPath.ps1")
 . (Join-Path -Path $PSScriptRoot -ChildPath "functions/convert-to-system-version.ps1")
 . (Join-Path -Path $PSScriptRoot -ChildPath "functions/convert-version-x-to-zero.ps1")
 . (Join-Path -Path $PSScriptRoot -ChildPath "functions/find-project-files.ps1")
@@ -69,7 +69,7 @@ if ($FallbackDotNetVersion -notmatch "^\d+\.x$") {
 }
 
 try {
-    $ResolvedPath = Resolve-ProjectPath -Path $ProjectPath
+    $ResolvedPath = Find-ProjectPath -Path $ProjectPath
 
     Write-Debug "Resolved path: $ResolvedPath"
 
