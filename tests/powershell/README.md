@@ -12,17 +12,17 @@ Before running the tests, ensure that you have PowerShell Core (pwsh) installed 
 
 ### Automated Pester Installation Script
 
-A `Ensure-PesterVersion.ps1` script has been provided to automatically check and install the required version of Pester. To run this script:
+A `InstallPester.ps1` script has been provided to automatically check and install the required version of Pester. To run this script:
 
 1. Open PowerShell.
 2. Navigate to the `scripts/powershell` directory.
 3. Execute the script:
 
    ```powershell
-   .\Ensure-PesterVersion.ps1
+   .\InstallPester.ps1
 
 ### Manually Running Tests
 
-You can manually run tests in VS Code if you have the PowerShell extension installed. Otherwise, you can update the `Run-Test.ps1` script and point it towards the test script you want to run.
+You can manually run tests in VS Code if you have the PowerShell extension installed. Otherwise, you can update the `RunTest.ps1` script and point it towards the test script you want to run.
 
 You may need to run `Install-Module -Name Pester -Force -SkipPublisherCheck -MinimumVersion 5.5.0` in the PowerShell extension terminal so it uses the correct version of Pester.

@@ -21,7 +21,7 @@ steps:
   displayName: 'Ensure Correct Pester Version'
   inputs:
     targetType: 'filePath'
-    filePath: '$(Build.SourcesDirectory)/scripts/powershell/Ensure-PesterVersion.ps1'
+    filePath: '$(Build.SourcesDirectory)/scripts/powershell/InstallPester.ps1'
     pwsh: true
 
 - task: PowerShell@2
@@ -29,5 +29,5 @@ steps:
   displayName: 'Run PowerShell Tests'
   inputs:
     targetType: 'filePath'
-    filePath: '$(Build.SourcesDirectory)/tests/powershell/Run-Tests.ps1'
+    filePath: '$(Build.SourcesDirectory)/tests/powershell/RunTests.ps1'
     pwsh: true
