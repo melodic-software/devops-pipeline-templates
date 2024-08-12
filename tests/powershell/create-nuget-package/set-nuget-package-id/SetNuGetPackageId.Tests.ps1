@@ -1,6 +1,7 @@
 Describe "NuGet Package ID Extraction and Processing Tests" {
+
     BeforeAll {
-        $ScriptPath = "$PSScriptRoot/../../../../src/templates/create-nuget-package/powershell/set-nuget-package-id/SetNuGetPackageId.ps1"
+        . "$PSScriptRoot/../../../../src/templates/create-nuget-package/powershell/set-nuget-package-id/SetNuGetPackageId.ps1"
         
         $CsprojWithoutPackageId = @'
 <Project>
@@ -15,7 +16,7 @@ Describe "NuGet Package ID Extraction and Processing Tests" {
             Mock Get-ChildItem { return @([IO.FileInfo]::new("TestProject.csproj")) }
             Mock Get-Content { return $CsprojWithoutPackageId }
 
-            $NugetPackageId = . $ScriptPath -SourceDirectory "src" -ProjectName "TestProject" -PackagePrefix "Company"
+            $NugetPackageId = Set-NuGetPackageId -SourceDirectory "src" -ProjectName "TestProject" -PackagePrefix "Company"
 
             $NugetPackageId | Should -Be "Company.TestProject"
         }
@@ -24,7 +25,7 @@ Describe "NuGet Package ID Extraction and Processing Tests" {
             Mock Get-ChildItem { return @([IO.FileInfo]::new("TestProject.csproj")) }
             Mock Get-Content { return $CsprojWithoutPackageId }
 
-            $NugetPackageId = . $ScriptPath -SourceDirectory "src" -ProjectName "Company.TestProject" -PackagePrefix "Company"
+            $NugetPackageId = Set-NuGetPackageId -SourceDirectory "src" -ProjectName "Company.TestProject" -PackagePrefix "Company"
 
             $NugetPackageId | Should -Be "Company.TestProject"
         }
@@ -43,7 +44,7 @@ Describe "NuGet Package ID Extraction and Processing Tests" {
             Mock Get-ChildItem { return @([IO.FileInfo]::new("TestProject.csproj")) }
             Mock Get-Content { return $CsprojWithPackageId }
 
-            $NugetPackageId = . $ScriptPath -SourceDirectory "src" -ProjectName "TestProject" -PackagePrefix "Company"
+            $NugetPackageId = Set-NuGetPackageId -SourceDirectory "src" -ProjectName "TestProject" -PackagePrefix "Company"
 
             $NugetPackageId | Should -Be "Company.TestPackageId"
         }
@@ -60,7 +61,7 @@ Describe "NuGet Package ID Extraction and Processing Tests" {
             Mock Get-ChildItem { return @([IO.FileInfo]::new("TestProject.csproj")) }
             Mock Get-Content { return $CsprojWithPrefixedPackageId }
 
-            $NugetPackageId = . $ScriptPath -SourceDirectory "src" -ProjectName "TestProject" -PackagePrefix "Company"
+            $NugetPackageId = Set-NuGetPackageId -SourceDirectory "src" -ProjectName "TestProject" -PackagePrefix "Company"
 
             $NugetPackageId | Should -Be "Company.TestPackageId"
         }
