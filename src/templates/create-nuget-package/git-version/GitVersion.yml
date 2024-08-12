@@ -1,2 +1,7 @@
 workflow: GitHubFlow/v1
-mode: ContinuousDeployment
+
+branches:
+  feature:
+    mode: ContinuousDelivery
+  unknown:
+    mode: ContinuousDelivery
