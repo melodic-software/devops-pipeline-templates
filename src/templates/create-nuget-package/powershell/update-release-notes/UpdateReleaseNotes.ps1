@@ -25,9 +25,9 @@ function Update-ReleaseNotes {
 
     # Dot-source the functions using Join-Path
     . (Join-Path -Path $SharedTemplateDirectory -ChildPath "powershell/functions/FindProjectPath.ps1")
-    . (Join-Path -Path $PSScriptRoot -ChildPath "Remove-ReleaseNotesFromCsproj.ps1")
-    . (Join-Path -Path $PSScriptRoot -ChildPath "Update-ReleaseNotesInCsproj.ps1")
-    . (Join-Path -Path $PSScriptRoot -ChildPath "Add-ReleaseNotesToCsproj.ps1")
+    . (Join-Path -Path $PSScriptRoot -ChildPath "RemoveReleaseNotesFromCsproj.ps1")
+    . (Join-Path -Path $PSScriptRoot -ChildPath "UpdateReleaseNotesInCsproj.ps1")
+    . (Join-Path -Path $PSScriptRoot -ChildPath "AddReleaseNotesToCsproj.ps1")
 
     $ResolvedProjectPath = Find-ProjectPath -Path $ProjectPath
 
