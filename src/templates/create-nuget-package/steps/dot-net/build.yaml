@@ -9,5 +9,7 @@ steps:
       arguments: >
         --configuration $(BuildConfiguration)
         --no-restore
-        /p:SignAssembly=$(SignAssembly)
-        /p:AssemblyOriginatorKeyFile=$(AssemblyOriginatorKeyFile)
+        ${{ if eq(variables['SignAssembly'], 'true') }}:
+          /p:SignAssembly=${{ variables['SignAssembly'] }}
+        ${{ if ne(variables['AssemblyOriginatorKeyFile'], '') }}:
+          /p:AssemblyOriginatorKeyFile=${{ variables['AssemblyOriginatorKeyFile'] }}
