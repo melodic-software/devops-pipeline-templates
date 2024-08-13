@@ -76,8 +76,8 @@ steps:
         $PowerShellScriptsDirectory = "$(PowerShellScriptsDirectory)"
 
         # Construct the path to the primary script
-        $ScriptName = "update-project-properties"
-        $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, "update-project-properties", "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
+        $ScriptName = "SetCsprojProperties"
+        $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, "set-csproj-properties", "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
         $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
 
         # Define the script parameters
@@ -107,7 +107,9 @@ steps:
         Write-Host "ScriptPath: $ScriptPath"
         Write-Host "Parameters: $($Params | Out-String)"
 
-        # Execute the script with splatting
-        # TODO: Convert to function, rename, and execute using function name (requires dot-sourcing the script)
-        & $ScriptPath @Params
+        # Source the script to load the function into the current session
+        . $ScriptPath
+
+        # Execute the function
+        Set-CsprojProperties @Params
       pwsh: true

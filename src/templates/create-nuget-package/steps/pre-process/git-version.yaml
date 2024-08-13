@@ -106,7 +106,7 @@ steps:
         $PowerShellScriptsDirectory = "$(PowerShellScriptsDirectory)"
 
         # Construct the path to the primary script
-        $ScriptName = "set-assembly-version-variables"
+        $ScriptName = "SetAssemblyVersionVariables"
         $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, "set-assembly-version-variables", "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
         $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
 
@@ -125,9 +125,11 @@ steps:
         # Variables are logged internally so we're not going to duplicate here
         Write-Host "ScriptPath: $ScriptPath"
 
-        # Execute the script with the necessary parameters
-        # TODO: Convert to function, rename, and execute using function name (requires dot-sourcing the script)
-        & $ScriptPath -BuildId $BuildId `
+        # Source the script to load the function into the current session
+        . $ScriptPath
+
+        # Execute the function
+        Set-AssemblyVersionVariables -BuildId $BuildId `
                       -BuildNumber $BuildNumber `
                       -OriginalBuildNumber $OriginalBuildNumber `
                       -SemVer $SemVer `
