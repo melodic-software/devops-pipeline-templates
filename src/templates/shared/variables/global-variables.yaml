@@ -13,3 +13,5 @@ variables:
     value: "src/templates/shared"
   - name: SharedTemplatePowerShellDirectory
     value: "src/templates/shared/powershell"
+  - name: DefaultDomain
+    value: "melodicsoftware.com"
