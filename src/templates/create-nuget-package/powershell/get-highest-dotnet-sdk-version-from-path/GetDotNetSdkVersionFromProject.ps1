@@ -18,7 +18,7 @@ function Get-DotNetSdkVersionFromProject {
     try {
         Write-Debug "Reading content of: $ProjectFilePath"
         [string]$ProjectContent = Get-Content -Path $ProjectFilePath -Raw
-        [Version]$SdkVersion = Get-DotNetSdkVersionFromProjectContent -ProjectContent $ProjectContent -FallbackDotNetVersion $CurrentHighestVersion
+        [Version]$SdkVersion = Get-ProjectDotNetSdkVersion -ProjectContent $ProjectContent -FallbackDotNetVersion $CurrentHighestVersion
         return Get-DotNetSdkVersionToReturn -SdkVersion $SdkVersion -CurrentHighestVersion $CurrentHighestVersion
     }
     catch {
