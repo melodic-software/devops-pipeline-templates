@@ -17,13 +17,13 @@ steps:
     testProjects: ${{ parameters.testProjects }}
     includeLogSteps: ${{ parameters.includeLogSteps }}
 
-- ${{ if or(eq(parameters.targetFramework, 'DotNet'), eq(parameters.targetFramework, 'DotNetCore'), eq(parameters.targetFramework, 'DotNetStandard'), eq(parameters.targetFramework, 'NotSpecified')) }}:
+- ${{ if or(eq(parameters.targetFramework, 'DotNet'), eq(parameters.targetFramework, 'DotNetCore'), eq(parameters.targetFramework, 'DotNetStandard')) }}:
     - template: ./dot-net/dot-net-steps.yaml
       parameters:
         dotNetSdkVersion: ${{ parameters.dotNetSdkVersion }}
         useGlobalJson: ${{ parameters.useGlobalJson }}
 
-- ${{ if or(eq(parameters.targetFramework, 'DotNetFramework'), eq(parameters.targetFramework, 'NotSpecified')) }}:
+- ${{ if and(or(eq(parameters.targetFramework, 'DotNetFramework')) }}:
     - template: ./dot-net-framework/dot-net-framework-steps.yaml
 
 - template: ./publish/publish-steps.yaml

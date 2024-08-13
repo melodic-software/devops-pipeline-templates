@@ -5,7 +5,7 @@ steps:
   
   - task: DotNetCoreCLI@2
     displayName: NuGet Pack
-    condition: and(succeeded(), ne(variables['DotNetSdkVersion'], ''))
+    condition: succeeded()
     inputs:
       command: pack
       packagesToPack: $(SelfRepositoryFolder)/**/$(ProjectName).csproj

@@ -22,12 +22,11 @@ parameters:
   - name: projectName
     displayName: Project Name
     type: string
-  - name: targetFramework # When specified, irrelevant tasks will be not be shown in the pipeline.
+  - name: targetFramework
     displayName: Target Framework
     type: string
-    default: 'NotSpecified'
+    default: 'DotNet'
     values:
-      - 'NotSpecified'
       - 'DotNet'
       - 'DotNetCore'
       - 'DotNetStandard'
@@ -40,7 +39,7 @@ parameters:
   - name: useGlobalJson
     displayName: Use Global JSON
     type: boolean
-    default: false
+    default: true
   - name: signAssembly
     displayName: Sign Assembly
     type: boolean
@@ -112,8 +111,6 @@ variables:
     value: ${{ parameters.projectName }}
   - name: TargetFramework
     value: ${{ parameters.targetFramework }}
-  - name: DotNetSdkVersion
-    value: ${{ parameters.dotNetSDKVersion }}
   - name: SignAssembly
     value: ${{ parameters.signAssembly }}
   - name: IncludeSymbols

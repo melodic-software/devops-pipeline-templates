@@ -3,13 +3,13 @@ steps:
 - task: NuGetAuthenticate@1
   name: NuGetAuthenticate
   displayName: Nuget Authenticate
-  condition: and(succeeded(), ne(variables['DotNetSdkVersion'], ''))
+  condition: succeeded()
 
 # NuGet.config should exist in the source repository root, but this isn't guaranteed.
 - task: PowerShell@2
   name: SetNuGetRestoreSettings
   displayName: Set NuGet Restore Settings
-  condition: and(succeeded(), ne(variables['DotNetSdkVersion'], ''))
+  condition: succeeded()
   continueOnError: true
   inputs:
     targetType: 'inline'
@@ -29,7 +29,7 @@ steps:
 # - task: PowerShell@2
 #   name: ClearNuGetCache
 #   displayName: 'Clear NuGet Cache'
-#   condition: and(succeeded(), ne(variables['DotNetSdkVersion'], ''))
+#   condition: succeeded()
 #   continueOnError: true
 #   inputs:
 #     targetType: 'inline'
@@ -45,7 +45,7 @@ steps:
 - task: DotNetCoreCLI@2
   name: NuGetRestoreDotNet
   displayName: NuGet Restore
-  condition: and(succeeded(), ne(variables['DotNetSdkVersion'], ''))
+  condition: succeeded()
   inputs:
     command: restore
     projects: |

@@ -2,15 +2,15 @@ parameters:
   - name: dotNetSdkVersion
     displayName: .NET SDK Version
     type: string
-    default: ''
+    default: ""
   - name: useGlobalJson
     displayName: Use Global JSON
     type: boolean
     default: false
 
 steps:
-  #- ${{ if eq(parameters.dotNetSdkVersion, '') }}:
-  - template: ./extract-dotnet-version.yaml
+  - ${{ if and(eq(parameters.dotNetSdkVersion, ''), eq(parameters.useGlobalJson, false)) }}:
+      - template: ./extract-dotnet-version.yaml
 
   - template: ./set-assembly-metadata.yaml
   - template: ./print-project-content.yaml

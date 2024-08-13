@@ -2,7 +2,7 @@ steps:
 - task: PowerShell@2
   name: PrintProjectContentDotNet
   displayName: Print Project Content
-  condition: and(succeeded(), ne(variables['DotNetSdkVersion'], ''))
+  condition: succeeded()
   continueOnError: true
   inputs:
     targetType: 'inline'
