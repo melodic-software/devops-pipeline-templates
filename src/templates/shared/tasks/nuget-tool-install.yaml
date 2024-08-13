@@ -1,0 +1,13 @@
+parameters:
+  - name: versionSpec
+    type: string
+    displayName: Version Spec
+    default: $(NugetToolInstallVersionSpec)
+
+task: NuGetToolInstaller@1
+name: NugetToolInstall
+displayName: Nuget Tool Install
+inputs:
+  versionSpec: ${{ parameters.versionSpec }}
+  checkLatest: true
+retryCountOnTaskFailure: 3

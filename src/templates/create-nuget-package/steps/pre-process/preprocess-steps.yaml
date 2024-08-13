@@ -23,7 +23,7 @@ steps:
       - template: ../../../shared/steps/log-git-info.yaml
       - template: ../../../shared/steps/log-powershell-version.yaml
 
-  - template: ../../../shared/steps/nuget-tool-install.yaml
+  - template: ../../../shared/tasks/nuget-tool-install.yaml
   - template: ./checkout.yaml
 
   - ${{ if eq(parameters.includeLogSteps, true) }}:
