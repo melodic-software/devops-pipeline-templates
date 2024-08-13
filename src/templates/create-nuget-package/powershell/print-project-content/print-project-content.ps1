@@ -22,10 +22,12 @@ try {
     Write-Host "Current .csproj content:"
     Write-Host $StringWriter.ToString()
 
-} catch {
+}
+catch {
     Write-Error "An error occurred: $_"
     exit 1
-} finally {
+}
+finally {
     # Clean up
     if ($XmlTextWriter) {
         $XmlTextWriter.Dispose()

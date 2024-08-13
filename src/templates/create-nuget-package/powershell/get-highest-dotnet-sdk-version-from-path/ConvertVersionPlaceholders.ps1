@@ -14,7 +14,7 @@ If the version string does not contain 'x', it will be returned unchanged.
 #>
 function Convert-VersionPlaceholders {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [string]$VersionString
     )
@@ -24,7 +24,8 @@ function Convert-VersionPlaceholders {
     if ($VersionString -like "*x") {
         $ConvertedVersion = $VersionString -replace 'x', '0'
         Write-Debug "Converted 'x' to '0' in version string. Result: $ConvertedVersion"
-    } else {
+    }
+    else {
         $ConvertedVersion = $VersionString
         Write-Debug "Version string does not contain 'x'. No conversion needed."
     }

@@ -12,13 +12,13 @@ Outputs an array containing the paths of all discovered .csproj files.
 #>
 function Get-ProjectFilePaths {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [ValidateScript({
-            if (-not (Test-Path $_ -PathType Container)) {
-                throw "Path '$_' does not exist or is not a directory."
-            }
-            return $true
-        })]
+                if (-not (Test-Path $_ -PathType Container)) {
+                    throw "Path '$_' does not exist or is not a directory."
+                }
+                return $true
+            })]
         [string]$Path
     )
 

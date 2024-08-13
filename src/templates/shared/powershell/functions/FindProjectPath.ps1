@@ -35,7 +35,7 @@ This ensures that build processes or other setup operations do not proceed with 
 #>
 function Find-ProjectPath {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [string]$Path
     )
@@ -69,26 +69,31 @@ function Find-ProjectPath {
             if ($FoundCsproj) {
                 # Return the full path of the found .csproj file, normalized to use forward slashes.
                 $Result = $FoundCsproj.FullName.Replace('\', '/')
-            } else {
+            }
+            else {
                 throw "No .csproj file found matching the name '$CsprojName' within '$SearchBase'."
             }
-        } else {
+        }
+        else {
             # For paths with wildcards or without a specific .csproj file, resolve the directory.
             
             # If there's a '**', we resolve up to the directory before it.
             if ($NormalizedPath.Contains('**')) {
                 $Result = $NormalizedPath.Substring(0, $NormalizedPath.IndexOf('**')).TrimEnd('/')
-            } elseif ($NormalizedPath.EndsWith('*.csproj')) {
+            }
+            elseif ($NormalizedPath.EndsWith('*.csproj')) {
                 # If the path seeks any .csproj file (but not a specific one), resolve to the directory.
                 $Result = Split-Path $NormalizedPath -Parent
-            } else {
+            }
+            else {
                 # In other cases (like direct directory references), return the normalized path.
                 $Result = $NormalizedPath
             }
         }
 
         return $Result
-    } catch {
+    }
+    catch {
         throw $_
     }
 }

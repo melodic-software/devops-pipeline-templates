@@ -1,10 +1,10 @@
 steps:
-- task: CmdLine@2
-  name: LogGitVersion
-  displayName: Log Git Version
-  condition: succeeded()
-  inputs:
-    targetType: 'inline'
-    script: |
-      git --version
-      git lfs version
+  - task: CmdLine@2
+    name: LogGitVersion
+    displayName: Log Git Version
+    condition: succeeded()
+    inputs:
+      targetType: "inline"
+      script: |
+        git --version
+        git lfs version

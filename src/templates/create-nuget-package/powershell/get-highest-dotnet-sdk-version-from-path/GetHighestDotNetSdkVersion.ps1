@@ -15,7 +15,7 @@ This function relies on `Get-DotNetSdkVersion` and related helper functions to c
 #>
 function Get-HighestDotNetSdkVersion {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [array]$ProjectFiles,
         [string]$FallbackDotNetVersion
     )

@@ -40,9 +40,11 @@ $BuildNumberPattern = '^(\d{8})\.(\d+)$'
 # If a match is found, that value is used as the EffectiveBuildNumber.
 $EffectiveBuildNumber = if ($OriginalBuildNumber -match $BuildNumberPattern) { 
     $OriginalBuildNumber 
-} elseif ($BuildNumber -match $BuildNumberPattern) { 
+}
+elseif ($BuildNumber -match $BuildNumberPattern) { 
     $BuildNumber 
-} else { 
+}
+else { 
     $null 
 }
 
@@ -50,7 +52,7 @@ if ($null -ne $EffectiveBuildNumber) {
     $DatePart = $EffectiveBuildNumber.Split('.')[0]
     $RevisionPart = $EffectiveBuildNumber.Split('.')[-1]
 
-    $TwoDigitYear = $DatePart.Substring(2,2)
+    $TwoDigitYear = $DatePart.Substring(2, 2)
     $DayOfYear = [DateTime]::ParseExact($DatePart, "yyyyMMdd", [Globalization.CultureInfo]::InvariantCulture).DayOfYear.ToString("D3")
     $SafeBuildId = "$TwoDigitYear$DayOfYear"
     $Revision = [int]$RevisionPart.PadLeft(2, '0')
@@ -75,7 +77,8 @@ if ($null -ne $EffectiveBuildNumber) {
         $InformationalVersion = "$InformationalVersion-$PreReleaseLabel"
     }
     $InformationalVersion = "$InformationalVersion+$ShortSha"
-} else {
+}
+else {
     Write-Error "BuildNumber is not in the expected format."
     throw "Invalid BuildNumber format, cannot proceed."
 }

@@ -9,20 +9,20 @@ branches:
   # These will be named something like "support/1.x".
   # It is important that the major versions no longer be bumped on these. Only minor and patch updates can be made.
   support:
-    label: ''
+    label: ""
     increment: Patch
     prevent-increment:
       of-merged-branch: true
     track-merge-target: false
     track-merge-message: true
     regex: ^support[/-](?<BranchName>.+)
-    source-branches: 
+    source-branches:
       - main
     is-source-branch-for: []
     tracks-release-branches: false
     is-release-branch: false
     is-main-branch: true
     pre-release-weight: 55000
-  
+
   unknown:
     mode: ContinuousDelivery

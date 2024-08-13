@@ -1,18 +1,18 @@
 steps:
-- checkout: self # https://learn.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/steps-checkout
-  name: CheckOutMainFiles
-  displayName: Check Out Main Repo
-  path: s/$(SelfRepositoryFolder)
-  fetchDepth: 0 # we need the full history for GitVersion to work
-  persistCredentials: true
-  clean: true
-  #lfs: true
+  - checkout: self # https://learn.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/steps-checkout
+    name: CheckOutMainFiles
+    displayName: Check Out Main Repo
+    path: s/$(SelfRepositoryFolder)
+    fetchDepth: 0 # we need the full history for GitVersion to work
+    persistCredentials: true
+    clean: true
+    #lfs: true
 
-- checkout: templates
-  name: CheckOutBuildTemplates
-  displayName: Check Out Build Template Repo
-  path: s/$(BuildTemplateRepositoryFolder)
-  fetchDepth: 1 # this makes the checkout process more efficent by only fetching the latest commit
-  persistCredentials: true
-  clean: true
-  #lfs: true
+  - checkout: templates
+    name: CheckOutBuildTemplates
+    displayName: Check Out Build Template Repo
+    path: s/$(BuildTemplateRepositoryFolder)
+    fetchDepth: 1 # this makes the checkout process more efficent by only fetching the latest commit
+    persistCredentials: true
+    clean: true
+    #lfs: true

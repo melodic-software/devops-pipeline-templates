@@ -1,15 +1,15 @@
 # https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/publish-pipeline-artifact-v1?view=azure-pipelines
 steps:
-- task: PublishPipelineArtifact@1
-  name: PublishArtifacts
-  displayName: Publish Artifacts
-  condition: succeeded()
-  continueOnError: false
-  inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)' # string. Alias: path. Required. File or directory path. Default: $(Pipeline.Workspace).
-    artifact: 'drop' # string. Alias: artifactName. Artifact name. 
-    publishLocation: 'pipeline' # 'pipeline' | 'filepath'. Alias: artifactType. Required. Artifact publish location. Default: pipeline.
-    #fileSharePath: # string. Required when artifactType = filepath. File share path. 
-    #parallel: false # boolean. Optional. Use when artifactType = filepath. Parallel copy. Default: false.
-    #parallelCount: '8' # string. Optional. Use when artifactType = filepath && parallel = true. Parallel count. Default: 8.
-    #properties: # string. Custom properties.
+  - task: PublishPipelineArtifact@1
+    name: PublishArtifacts
+    displayName: Publish Artifacts
+    condition: succeeded()
+    continueOnError: false
+    inputs:
+      targetPath: "$(Build.ArtifactStagingDirectory)" # string. Alias: path. Required. File or directory path. Default: $(Pipeline.Workspace).
+      artifact: "drop" # string. Alias: artifactName. Artifact name.
+      publishLocation: "pipeline" # 'pipeline' | 'filepath'. Alias: artifactType. Required. Artifact publish location. Default: pipeline.
+      #fileSharePath: # string. Required when artifactType = filepath. File share path.
+      #parallel: false # boolean. Optional. Use when artifactType = filepath. Parallel copy. Default: false.
+      #parallelCount: '8' # string. Optional. Use when artifactType = filepath && parallel = true. Parallel count. Default: 8.
+      #properties: # string. Custom properties.

@@ -5,10 +5,10 @@ parameters:
     default: $(NugetToolInstallVersionSpec)
 
 steps:
-- task: NuGetToolInstaller@1
-  name: NugetToolInstall
-  displayName: Nuget Tool Install
-  inputs:
-    versionSpec: ${{ parameters.versionSpec }}
-    checkLatest: true
-  retryCountOnTaskFailure: 3
+  - task: NuGetToolInstaller@1
+    name: NugetToolInstall
+    displayName: Nuget Tool Install
+    inputs:
+      versionSpec: ${{ parameters.versionSpec }}
+      checkLatest: true
+    retryCountOnTaskFailure: 3

@@ -14,20 +14,20 @@ pool:
   name: Azure Pipelines
 
 steps:
-- checkout: self
+  - checkout: self
 
-- task: PowerShell@2
-  name: InstallPester
-  displayName: 'Install Pester'
-  inputs:
-    targetType: 'filePath'
-    filePath: '$(Build.SourcesDirectory)/scripts/powershell/InstallPester.ps1'
-    pwsh: true
+  - task: PowerShell@2
+    name: InstallPester
+    displayName: "Install Pester"
+    inputs:
+      targetType: "filePath"
+      filePath: "$(Build.SourcesDirectory)/scripts/powershell/InstallPester.ps1"
+      pwsh: true
 
-- task: PowerShell@2
-  name: RunPowerShellTests
-  displayName: 'Run PowerShell Tests'
-  inputs:
-    targetType: 'filePath'
-    filePath: '$(Build.SourcesDirectory)/tests/powershell/RunTests.ps1'
-    pwsh: true
+  - task: PowerShell@2
+    name: RunPowerShellTests
+    displayName: "Run PowerShell Tests"
+    inputs:
+      targetType: "filePath"
+      filePath: "$(Build.SourcesDirectory)/tests/powershell/RunTests.ps1"
+      pwsh: true

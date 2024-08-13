@@ -18,7 +18,7 @@ It is crucial to use this function appropriately to avoid unintended behavior, e
 #>
 function ConvertTo-SystemVersion {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [ValidatePattern("^[0-9]+(\.[xX0-9]+)*$")]
         [string]$VersionString
     )

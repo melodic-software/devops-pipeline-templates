@@ -49,7 +49,8 @@ function Get-DotNetSdkVersionFromProjectContent {
 
         # Returning the formatted version, indicating the major version and any minor version (e.g., "8.x").
         return $SdkVersionFormatted
-    } catch {
+    }
+    catch {
         # In case of an unexpected error during processing, the function logs a warning and returns null.
         Write-Warning "An error occurred while parsing the project file: $($_.Exception.Message)"
         return $null

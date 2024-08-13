@@ -1,118 +1,118 @@
 steps:
-- task: PowerShell@2
-  name: DeterminePackageId
-  displayName: Determine Package ID
-  condition: succeeded()
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Define base directories and script locations
-      $BaseDirectory = "$(Build.SourcesDirectory)"
-      $BuildTemplatesDirectory = "$(BuildTemplateRepositoryFolder)"
-      $PowerShellScriptsDirectory = "$(PowerShellScriptsDirectory)"
-      
-      # Construct the path to the primary script
-      $ScriptName = "SetNuGetPackageId"
-      $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, "set-nuget-package-id", "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
-      $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
+  - task: PowerShell@2
+    name: DeterminePackageId
+    displayName: Determine Package ID
+    condition: succeeded()
+    inputs:
+      targetType: "inline"
+      script: |
+        # Define base directories and script locations
+        $BaseDirectory = "$(Build.SourcesDirectory)"
+        $BuildTemplatesDirectory = "$(BuildTemplateRepositoryFolder)"
+        $PowerShellScriptsDirectory = "$(PowerShellScriptsDirectory)"
 
-      # Define the script parameters
-      $SourceDirectory = ("$(Build.SourcesDirectory)", "$(SelfRepositoryFolder)" -join [IO.Path]::DirectorySeparatorChar)
-      $ProjectName = "$(ProjectName)"
-      $PackagePrefix = "$(PackagePrefix)"
+        # Construct the path to the primary script
+        $ScriptName = "SetNuGetPackageId"
+        $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, "set-nuget-package-id", "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
+        $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
 
-      # Log the script path and variables for debugging purposes
-      Write-Host "ScriptPath: $ScriptPath"
-      Write-Host "SourceDirectory: $SourceDirectory"
-      Write-Host "ProjectName: $ProjectName"
-      Write-Host "PackagePrefix: $PackagePrefix"
+        # Define the script parameters
+        $SourceDirectory = ("$(Build.SourcesDirectory)", "$(SelfRepositoryFolder)" -join [IO.Path]::DirectorySeparatorChar)
+        $ProjectName = "$(ProjectName)"
+        $PackagePrefix = "$(PackagePrefix)"
 
-      # Source the script to load the function into the current session
-      . $ScriptPath
+        # Log the script path and variables for debugging purposes
+        Write-Host "ScriptPath: $ScriptPath"
+        Write-Host "SourceDirectory: $SourceDirectory"
+        Write-Host "ProjectName: $ProjectName"
+        Write-Host "PackagePrefix: $PackagePrefix"
 
-      # Execute the function and capture the result
-      $NugetPackageId = Set-NuGetPackageId -SourceDirectory $SourceDirectory -ProjectName $ProjectName -PackagePrefix $PackagePrefix
-    pwsh: true
+        # Source the script to load the function into the current session
+        . $ScriptPath
 
-# https://marketplace.visualstudio.com/items?itemName=bleddynrichards.Assembly-Info-Task
-# https://github.com/BMuuN/vsts-assemblyinfo-task/wiki
-# https://learn.microsoft.com/en-us/nuget/create-packages/package-authoring-best-practices
-# https://learn.microsoft.com/en-us/dotnet/standard/assembly/set-attributes
-- task: Assembly-Info-NetCore@3
-  name: SetAssemblyMetadataDotNet
-  displayName: Set Assembly Metadata
-  condition: succeeded()
-  inputs:
-    Path: '$(Build.SourcesDirectory)'
-    FileNames: '**/$(ProjectName).csproj'
-    InsertAttributes: true
-    FileEncoding: 'auto'
-    WriteBOM: true
-    GeneratePackageOnBuild: false # we do this later in the pipeline
-    PackageRequireLicenseAcceptance: false # does the package require consent (dialog box presented upon use)
-    PackageId: '$(NugetPackageId)'
-    Authors: '$(CompanyName) Contributors' #$(Build.RequestedFor), $(Build.RequestedForEmail)?
-    Company: '$(CompanyName)'
-    #Product: ''
-    #Description: ''
-    Copyright: 'Copyright $(date:YYYY) $(CompanyName)' # what's the preferred format here?
-    #PackageLicenseUrl: ''
-    #PackageLicenseExpression: ''
-    PackageProjectUrl: '$(Build.Repository.Uri)'
-    #PackageIconUrl: ''
-    RepositoryUrl: '$(Build.Repository.Uri)'
-    RepositoryType: 'git'
-    #PackageTags: '' # Build,Release
-    #PackageReleaseNotes: $(ReleaseNotes) # this is set dynamically before this step (altered in the .csproj)
-    #Culture: 'en-US' # informs the resource manager of the default culture for the assembly
-    VersionNumber: '$(AssemblyVersion)'
-    FileVersionNumber: '$(FileVersion)'
-    InformationalVersion: '$(InformationalVersion)'
-    PackageVersion: '$(PackageVersion)'
-    LogLevel: 'verbose'
-    FailOnWarning: true
-    DisableTelemetry: true # if not disabled, anonymous usage data is collected to help improve the product
-    IgnoreNetFrameworkProjects: true
-    #UpdateBuildNumber: '$(Build.DefinitionName)_$(SemVer)'
-    #AddBuildTag: 'v$(SemVer)'
+        # Execute the function and capture the result
+        $NugetPackageId = Set-NuGetPackageId -SourceDirectory $SourceDirectory -ProjectName $ProjectName -PackagePrefix $PackagePrefix
+      pwsh: true
 
-- task: PowerShell@2
-  name: UpdateProjectPropertiesDotNet
-  displayName: Update Project Properties
-  condition: succeeded()
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Define base directories and script locations
-      $BaseDirectory = "$(Build.SourcesDirectory)"
-      $BuildTemplatesDirectory = "$(BuildTemplateRepositoryFolder)"
-      $PowerShellScriptsDirectory = "$(PowerShellScriptsDirectory)"
-      
-      # Construct the path to the primary script
-      $ScriptName = "update-project-properties"
-      $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, "update-project-properties", "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
-      $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
+  # https://marketplace.visualstudio.com/items?itemName=bleddynrichards.Assembly-Info-Task
+  # https://github.com/BMuuN/vsts-assemblyinfo-task/wiki
+  # https://learn.microsoft.com/en-us/nuget/create-packages/package-authoring-best-practices
+  # https://learn.microsoft.com/en-us/dotnet/standard/assembly/set-attributes
+  - task: Assembly-Info-NetCore@3
+    name: SetAssemblyMetadataDotNet
+    displayName: Set Assembly Metadata
+    condition: succeeded()
+    inputs:
+      Path: "$(Build.SourcesDirectory)"
+      FileNames: "**/$(ProjectName).csproj"
+      InsertAttributes: true
+      FileEncoding: "auto"
+      WriteBOM: true
+      GeneratePackageOnBuild: false # we do this later in the pipeline
+      PackageRequireLicenseAcceptance: false # does the package require consent (dialog box presented upon use)
+      PackageId: "$(NugetPackageId)"
+      Authors: "$(CompanyName) Contributors" #$(Build.RequestedFor), $(Build.RequestedForEmail)?
+      Company: "$(CompanyName)"
+      #Product: ''
+      #Description: ''
+      Copyright: "Copyright $(date:YYYY) $(CompanyName)" # what's the preferred format here?
+      #PackageLicenseUrl: ''
+      #PackageLicenseExpression: ''
+      PackageProjectUrl: "$(Build.Repository.Uri)"
+      #PackageIconUrl: ''
+      RepositoryUrl: "$(Build.Repository.Uri)"
+      RepositoryType: "git"
+      #PackageTags: '' # Build,Release
+      #PackageReleaseNotes: $(ReleaseNotes) # this is set dynamically before this step (altered in the .csproj)
+      #Culture: 'en-US' # informs the resource manager of the default culture for the assembly
+      VersionNumber: "$(AssemblyVersion)"
+      FileVersionNumber: "$(FileVersion)"
+      InformationalVersion: "$(InformationalVersion)"
+      PackageVersion: "$(PackageVersion)"
+      LogLevel: "verbose"
+      FailOnWarning: true
+      DisableTelemetry: true # if not disabled, anonymous usage data is collected to help improve the product
+      IgnoreNetFrameworkProjects: true
+      #UpdateBuildNumber: '$(Build.DefinitionName)_$(SemVer)'
+      #AddBuildTag: 'v$(SemVer)'
 
-      # Define the script parameters hashtable for splatting
-      $Params = @{
-        SourceDirectory = ("$(Build.SourcesDirectory)", "$(SelfRepositoryFolder)" -join [IO.Path]::DirectorySeparatorChar)
-        ProjectName = "$(ProjectName)"
-        RepositoryCommit = "$(Build.SourceVersion)"
-        RepositoryBranch = "$(Build.SourceBranchName)"
-        SignAssembly = [System.Convert]::ToBoolean("$(SignAssembly)")
-        IncludeSymbols = [System.Convert]::ToBoolean("$(IncludeSymbols)")
-        SymbolPackageFormat = "$(SymbolPackageFormat)"
-        AssemblyOriginatorKeyFile = "$(DownloadNuGetSigningKey.secureFilePath)"
-        PathMap = $null
-        IsDotNetFrameworkTarget = $false
-        OverwriteExisting = $false
-      }
+  - task: PowerShell@2
+    name: UpdateProjectPropertiesDotNet
+    displayName: Update Project Properties
+    condition: succeeded()
+    inputs:
+      targetType: "inline"
+      script: |
+        # Define base directories and script locations
+        $BaseDirectory = "$(Build.SourcesDirectory)"
+        $BuildTemplatesDirectory = "$(BuildTemplateRepositoryFolder)"
+        $PowerShellScriptsDirectory = "$(PowerShellScriptsDirectory)"
 
-      # Log the script path and variables for debugging purposes
-      Write-Host "ScriptPath: $ScriptPath"
-      Write-Host "Parameters: $($Params | Out-String)"
+        # Construct the path to the primary script
+        $ScriptName = "update-project-properties"
+        $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, "update-project-properties", "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
+        $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
 
-      # Execute the script with splatting
-      # TODO: Convert to function, rename, and execute using function name (requires dot-sourcing the script)
-      & $ScriptPath @Params
-    pwsh: true
+        # Define the script parameters hashtable for splatting
+        $Params = @{
+          SourceDirectory = ("$(Build.SourcesDirectory)", "$(SelfRepositoryFolder)" -join [IO.Path]::DirectorySeparatorChar)
+          ProjectName = "$(ProjectName)"
+          RepositoryCommit = "$(Build.SourceVersion)"
+          RepositoryBranch = "$(Build.SourceBranchName)"
+          SignAssembly = [System.Convert]::ToBoolean("$(SignAssembly)")
+          IncludeSymbols = [System.Convert]::ToBoolean("$(IncludeSymbols)")
+          SymbolPackageFormat = "$(SymbolPackageFormat)"
+          AssemblyOriginatorKeyFile = "$(DownloadNuGetSigningKey.secureFilePath)"
+          PathMap = $null
+          IsDotNetFrameworkTarget = $false
+          OverwriteExisting = $false
+        }
+
+        # Log the script path and variables for debugging purposes
+        Write-Host "ScriptPath: $ScriptPath"
+        Write-Host "Parameters: $($Params | Out-String)"
+
+        # Execute the script with splatting
+        # TODO: Convert to function, rename, and execute using function name (requires dot-sourcing the script)
+        & $ScriptPath @Params
+      pwsh: true

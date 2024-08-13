@@ -33,7 +33,7 @@ Describe "Find-ProjectPath Function Tests" {
         It "Returns the full path of the .csproj file" {
             Mock Get-ChildItem { [PSCustomObject]@{ FullName = "C:/demo-package/subdir/Enterprise.Demo.csproj" } }
 
-            $Result =Find-ProjectPath -Path "demo-package/**/Enterprise.Demo.csproj"
+            $Result = Find-ProjectPath -Path "demo-package/**/Enterprise.Demo.csproj"
             $Result | Should -Be "C:/demo-package/subdir/Enterprise.Demo.csproj"
         }
     }

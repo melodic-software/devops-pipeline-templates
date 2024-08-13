@@ -20,7 +20,8 @@ function AddPackageReleaseNotes([xml]$XmlDocument, [string]$Notes) {
     if ($TargetPropertyGroup) {
         $TargetPropertyGroup.AppendChild($NewNode)
         Write-Host "Added new PackageReleaseNotes node to the targeted PropertyGroup."
-    } else {
+    }
+    else {
         Write-Warning "No PropertyGroup with TargetFramework found. No changes made."
     }
 }

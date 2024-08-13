@@ -25,15 +25,15 @@ It then displays and returns the highest SDK version discovered or the fallback 
 #>
 function Get-HighestDotNetSdkVersionFromPath {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [string]$ProjectPath,
 
-        [Parameter(Mandatory=$false)]
+        [Parameter(Mandatory = $false)]
         [ValidateNotNullOrEmpty()]
         [string]$FallbackDotNetVersion,
 
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [string]$SharedTemplateDirectory,
 
@@ -81,7 +81,8 @@ function Get-HighestDotNetSdkVersionFromPath {
         $ProjectFiles = @()
         if ($ResolvedPath.EndsWith(".csproj")) {
             $ProjectFiles += $ResolvedPath
-        } else {
+        }
+        else {
             $ProjectFiles += Get-ProjectFilePaths -Path $ResolvedPath
         }
 
@@ -90,7 +91,8 @@ function Get-HighestDotNetSdkVersionFromPath {
         }
 
         [System.Version]$HighestSdkVersion = Get-HighestDotNetSdkVersion -ProjectFiles $ProjectFiles -FallbackDotNetVersion $FallbackDotNetVersion
-    } catch {
+    }
+    catch {
         Write-Warning "Failed to parse the .NET SDK version from the .csproj file(s). Falling back to default version: $FallbackDotNetVersion."
         Write-Warning "Error details: $($_.Exception.Message)"
         $HighestSdkVersion = $FallbackDotNetVersion
@@ -108,7 +110,8 @@ function Get-HighestDotNetSdkVersionFromPath {
     $MajorVersionString = if ($HighestSdkVersion) {
         Write-Debug "Highest SDK version: $HighestSdkVersion"
         "$($HighestSdkVersion.Major).x"  # Constructing the string based on the highest version found.
-    } else {
+    }
+    else {
         Write-Warning "SDK Version not found. Using fallback value: $FallbackDotNetVersion"
         $FallbackDotNetVersion  # Using the fallback version since no SDK version was found.
     }

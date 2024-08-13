@@ -20,7 +20,8 @@ function UpdatePackageReleaseNotes([xml]$XmlDocument, [string]$Notes) {
     if ($Node) {
         $Node.InnerText = $Notes
         Write-Host "Updated PackageReleaseNotes node."
-    } else {
+    }
+    else {
         AddPackageReleaseNotes $XmlDocument $Notes
     }
 }

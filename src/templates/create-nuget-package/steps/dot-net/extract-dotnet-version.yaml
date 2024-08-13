@@ -1,50 +1,50 @@
 steps:
-- task: PowerShell@2
-  name: ExtractDotNetSdkVersion
-  displayName: Extract .NET SDK Version
-  condition: and(succeeded(), eq(variables['DotNetSdkVersion'], ''))
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Define base directories and script locations
-      $BaseDirectory = "$(Build.SourcesDirectory)"
-      $BuildTemplatesDirectory = "$(BuildTemplateRepositoryFolder)"
-      $PowerShellScriptsDirectory = "$(PowerShellScriptsDirectory)"
-      
-      # Construct the path to the primary script
-      $ScriptName = "GetHighestDotNetSdkVersionFromPath"
-      $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, "get-highest-dotnet-sdk-version-from-path", "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
-      $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
+  - task: PowerShell@2
+    name: ExtractDotNetSdkVersion
+    displayName: Extract .NET SDK Version
+    condition: and(succeeded(), eq(variables['DotNetSdkVersion'], ''))
+    inputs:
+      targetType: "inline"
+      script: |
+        # Define base directories and script locations
+        $BaseDirectory = "$(Build.SourcesDirectory)"
+        $BuildTemplatesDirectory = "$(BuildTemplateRepositoryFolder)"
+        $PowerShellScriptsDirectory = "$(PowerShellScriptsDirectory)"
 
-      # Define the script parameters
-      $ProjectPath = "$(SelfRepositoryFolder)/**/$(ProjectName).csproj"
-      $SharedTemplateDirectory = Join-Path $BaseDirectory $BuildTemplatesDirectory
-      $SharedTemplateDirectory = Join-Path $SharedTemplateDirectory "$(SharedTemplateDirectory)"
+        # Construct the path to the primary script
+        $ScriptName = "GetHighestDotNetSdkVersionFromPath"
+        $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, "get-highest-dotnet-sdk-version-from-path", "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
+        $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
 
-      # Log the constructed paths for debugging purposes
-      Write-Host "ScriptPath: $ScriptPath"
-      Write-Host "ProjectPath: $ProjectPath"
-      Write-Host "SharedTemplateDirectory: $SharedTemplateDirectory"
+        # Define the script parameters
+        $ProjectPath = "$(SelfRepositoryFolder)/**/$(ProjectName).csproj"
+        $SharedTemplateDirectory = Join-Path $BaseDirectory $BuildTemplatesDirectory
+        $SharedTemplateDirectory = Join-Path $SharedTemplateDirectory "$(SharedTemplateDirectory)"
 
-      # Dot-source the function script to make the function available in the current scope
-      . $ScriptPath
+        # Log the constructed paths for debugging purposes
+        Write-Host "ScriptPath: $ScriptPath"
+        Write-Host "ProjectPath: $ProjectPath"
+        Write-Host "SharedTemplateDirectory: $SharedTemplateDirectory"
 
-      # Execute the function and capture the major version
-      try {
-          $MajorVersion = Get-HighestDotNetSdkVersionFromPath -ProjectPath $ProjectPath -SharedTemplateDirectory $SharedTemplateDirectory -Warnings -Info -Verbose -Debug
-      }
-      catch {
-          Write-Host "An error occurred during script execution."
-          Write-Host "Error details: $_"
-          exit 1
-      }
-      
-      # Check if a valid MajorVersion was returned
-      if (-not $MajorVersion) {
-          Write-Host "No .NET SDK version was extracted from the project. SDK installation may be skipped."
-      } else {
-          # Update the pipeline variable and log the value.
-          Write-Host "##vso[task.setvariable variable=DotNetSdkVersion;]$MajorVersion"
-          Write-Host ".NET SDK Version: $MajorVersion"
-      }
-    pwsh: true
+        # Dot-source the function script to make the function available in the current scope
+        . $ScriptPath
+
+        # Execute the function and capture the major version
+        try {
+            $MajorVersion = Get-HighestDotNetSdkVersionFromPath -ProjectPath $ProjectPath -SharedTemplateDirectory $SharedTemplateDirectory -Warnings -Info -Verbose -Debug
+        }
+        catch {
+            Write-Host "An error occurred during script execution."
+            Write-Host "Error details: $_"
+            exit 1
+        }
+
+        # Check if a valid MajorVersion was returned
+        if (-not $MajorVersion) {
+            Write-Host "No .NET SDK version was extracted from the project. SDK installation may be skipped."
+        } else {
+            # Update the pipeline variable and log the value.
+            Write-Host "##vso[task.setvariable variable=DotNetSdkVersion;]$MajorVersion"
+            Write-Host ".NET SDK Version: $MajorVersion"
+        }
+      pwsh: true

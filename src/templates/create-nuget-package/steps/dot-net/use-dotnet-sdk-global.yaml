@@ -1,13 +1,13 @@
 steps:
-- task: UseDotNet@2
-  name: UseDotNetSDK
-  displayName: Use .NET SDK
-  condition: succeeded()
-  inputs:
-    packageType: 'sdk'
-    useGlobalJson: true
-    workingDirectory: '$(Build.SourcesDirectory)/$(SelfRepositoryFolder)'
-    #vsVersion: '17.7.7' # https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/7.0/releases.json
-    #installationPath: '$(Agent.ToolsDirectory)/dotnet'
-    performMultiLevelLookup: false # https://github.com/dotnet/core-setup/blob/master/Documentation/design-docs/multilevel-sharedfx-lookup.md
-  retryCountOnTaskFailure: 3
+  - task: UseDotNet@2
+    name: UseDotNetSDK
+    displayName: Use .NET SDK
+    condition: succeeded()
+    inputs:
+      packageType: "sdk"
+      useGlobalJson: true
+      workingDirectory: "$(Build.SourcesDirectory)/$(SelfRepositoryFolder)"
+      #vsVersion: '17.7.7' # https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/7.0/releases.json
+      #installationPath: '$(Agent.ToolsDirectory)/dotnet'
+      performMultiLevelLookup: false # https://github.com/dotnet/core-setup/blob/master/Documentation/design-docs/multilevel-sharedfx-lookup.md
+    retryCountOnTaskFailure: 3

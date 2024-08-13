@@ -35,15 +35,18 @@ function Test-DotNetFrameworkProject {
             if ($TargetFrameworkNode -and $TargetFrameworkNode.'#text' -like "v*") {
                 Write-Host "This is a .NET Framework project." -ForegroundColor Green
                 return $true
-            } else {
+            }
+            else {
                 Write-Host "No TargetFrameworkVersion tag found, this is not a .NET Framework project." -ForegroundColor Yellow
                 return $false
             }
-        } else {
+        }
+        else {
             Write-Host "Project uses the SDK format, it is not a .NET Framework project." -ForegroundColor Yellow
             return $false
         }
-    } catch {
+    }
+    catch {
         Write-Host "Failed to parse project content as XML, falling back to regex matching." -ForegroundColor Red
 
         # Check if it's not an SDK-style project using regex
@@ -51,7 +54,8 @@ function Test-DotNetFrameworkProject {
         if ($IsNotSdkStyle -and ($ProjectContent -match '<TargetFrameworkVersion>v[0-9]+(\.[0-9]+)+</TargetFrameworkVersion>')) {
             Write-Host "Based on regex analysis, this is a .NET Framework project." -ForegroundColor Green
             return $true
-        } else {
+        }
+        else {
             Write-Host "Based on regex analysis, this is not a .NET Framework project." -ForegroundColor Yellow
             return $false
         }

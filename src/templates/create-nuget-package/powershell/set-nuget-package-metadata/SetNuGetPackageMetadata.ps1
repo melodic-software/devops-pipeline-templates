@@ -38,23 +38,27 @@ function Set-NuGetPackageMetadata {
         
         if ($NugetPackageId -eq $null) {
             $NugetPackageId = $ProjectName
-        } else {
+        }
+        else {
             Write-Host "Extracted NuGet Package ID from .nuspec: $NugetPackageId"
         }
 
         if ($NugetPackageTitle -eq $null) {
             $NugetPackageTitle = $ProjectName
-        } else {
+        }
+        else {
             Write-Host "Extracted NuGet Package Title from .nuspec: $NugetPackageTitle"
         }
         
         $NugetPackageDescription = $NuspecContent.package.metadata.description -as [string]
         if ($NugetPackageDescription -eq $null) {
             $NugetPackageDescription = ""
-        } else {
+        }
+        else {
             Write-Host "Extracted NuGet Package Description from .nuspec: $NugetPackageDescription"
         }
-    } else {
+    }
+    else {
         Write-Host ".nuspec file not found for project $ProjectName. Falling back to defaults and AssemblyInfo.cs extraction (if available)."
     }
 
@@ -84,13 +88,14 @@ function Set-NuGetPackageMetadata {
                     Write-Host "Extracted NuGet Package Description from AssemblyInfo.cs: $NugetPackageDescription"
                 }
             }
-        } else {
+        }
+        else {
             Write-Host "AssemblyInfo.cs not found for project $ProjectName. Using default values."
         }
     }
 
     if ($NugetPackageId -eq $null) {
-      $NugetPackageId = $ProjectName
+        $NugetPackageId = $ProjectName
     }
 
     # Logging the extracted/decided values
@@ -104,8 +109,8 @@ function Set-NuGetPackageMetadata {
 
     # Return the extracted values for further processing or testing
     return @{
-        NuGetPackageId = $NugetPackageId
-        NuGetPackageTitle = $NugetPackageTitle
+        NuGetPackageId          = $NugetPackageId
+        NuGetPackageTitle       = $NugetPackageTitle
         NuGetPackageDescription = $NugetPackageDescription
     }
 }

@@ -1,58 +1,58 @@
 steps:
-# https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/nuget-command-v2
-- task: NuGetCommand@2
-  name: PushPackagesToAzureDevOps
-  displayName: Push Packages to Azure DevOps
-  condition: |
-    and(
-      succeeded(),
-      ne(variables['AzureDevOpsPackageFeed'], ''),
-      eq(variables['TestMode'], 'false'),
-      ne(variables['Build.Reason'], 'PullRequest')
-    )
-  continueOnError: true
-  inputs:
-    command: push
-    packagesToPush: $(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg # $(Build.ArtifactStagingDirectory)/**/*.nupkg 
-    nuGetFeedType: internal
-    publishVstsFeed: $(AzureDevOpsPackageFeed)
-    allowPackageConflicts: true # ignores packages that already exist
-    publishPackageMetadata: true
-    verbosityPush: Detailed
+  # https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/nuget-command-v2
+  - task: NuGetCommand@2
+    name: PushPackagesToAzureDevOps
+    displayName: Push Packages to Azure DevOps
+    condition: |
+      and(
+        succeeded(),
+        ne(variables['AzureDevOpsPackageFeed'], ''),
+        eq(variables['TestMode'], 'false'),
+        ne(variables['Build.Reason'], 'PullRequest')
+      )
+    continueOnError: true
+    inputs:
+      command: push
+      packagesToPush: $(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg # $(Build.ArtifactStagingDirectory)/**/*.nupkg
+      nuGetFeedType: internal
+      publishVstsFeed: $(AzureDevOpsPackageFeed)
+      allowPackageConflicts: true # ignores packages that already exist
+      publishPackageMetadata: true
+      verbosityPush: Detailed
 
-# https://devblogs.microsoft.com/dotnet/improving-debug-time-productivity-with-source-link/
-# https://learn.microsoft.com/en-us/dotnet/standard/library-guidance/sourcelink
-# https://devblogs.microsoft.com/dotnet/producing-packages-with-source-link/
-# can use Directory.build.props for enabling "Source Link" for every project in the solution
-# https://garywoodfine.com/what-is-this-directory-build-props-file-all-about/
-# https://learn.microsoft.com/en-us/azure/devops/pipelines/artifacts/symbols
-- task: PublishSymbols@2
-  name: PushSymbolsToAzureDevOps
-  displayName: Push Symbols To Azure DevOps
-  condition: |
-    and(
-      succeeded(),
-      ne(variables['AzureDevOpsPackageFeed'], ''),
-      eq(variables['IncludeSymbols'], 'true'),
-      eq(variables['TestMode'], 'false'),
-      ne(variables['Build.Reason'], 'PullRequest')
-    )
-  continueOnError: false
-  inputs:
-    SymbolsFolder: '$(Build.SourcesDirectory)' #TODO: this could pick up test project .pdbs, should we limit based on the project name?
-    SearchPattern: '**/bin/**/*.pdb'
-    IndexSources: false # must be disabled for "Source Link"
-    PublishSymbols: true
-    SymbolServerType: 'TeamServices'
-    #SymbolsPath: '' # use when publishing to a file share
-    #CompressSymbols: true # use when publishing to a file share
-    SymbolExpirationInDays: '36530'
-  # ADVANCED
-    IndexableFileFormats: 'Default'
-    DetailedLog: true
-    TreatNotIndexedAsWarning: false
-    UseNetCoreClientTool: false
-    #SymbolsMaximumWaitTime: '' # max wait time in minutes. 
-    #SymbolsProduct: ''
-    #SymbolsVersion: ''
-    SymbolsArtifactName: 'Symbols_$(NugetPackageId)_$(SemVer)_$(Build.SourceVersion)_$(Build.OriginalBuildNumber)'
+  # https://devblogs.microsoft.com/dotnet/improving-debug-time-productivity-with-source-link/
+  # https://learn.microsoft.com/en-us/dotnet/standard/library-guidance/sourcelink
+  # https://devblogs.microsoft.com/dotnet/producing-packages-with-source-link/
+  # can use Directory.build.props for enabling "Source Link" for every project in the solution
+  # https://garywoodfine.com/what-is-this-directory-build-props-file-all-about/
+  # https://learn.microsoft.com/en-us/azure/devops/pipelines/artifacts/symbols
+  - task: PublishSymbols@2
+    name: PushSymbolsToAzureDevOps
+    displayName: Push Symbols To Azure DevOps
+    condition: |
+      and(
+        succeeded(),
+        ne(variables['AzureDevOpsPackageFeed'], ''),
+        eq(variables['IncludeSymbols'], 'true'),
+        eq(variables['TestMode'], 'false'),
+        ne(variables['Build.Reason'], 'PullRequest')
+      )
+    continueOnError: false
+    inputs:
+      SymbolsFolder: "$(Build.SourcesDirectory)" #TODO: this could pick up test project .pdbs, should we limit based on the project name?
+      SearchPattern: "**/bin/**/*.pdb"
+      IndexSources: false # must be disabled for "Source Link"
+      PublishSymbols: true
+      SymbolServerType: "TeamServices"
+      #SymbolsPath: '' # use when publishing to a file share
+      #CompressSymbols: true # use when publishing to a file share
+      SymbolExpirationInDays: "36530"
+      # ADVANCED
+      IndexableFileFormats: "Default"
+      DetailedLog: true
+      TreatNotIndexedAsWarning: false
+      UseNetCoreClientTool: false
+      #SymbolsMaximumWaitTime: '' # max wait time in minutes.
+      #SymbolsProduct: ''
+      #SymbolsVersion: ''
+      SymbolsArtifactName: "Symbols_$(NugetPackageId)_$(SemVer)_$(Build.SourceVersion)_$(Build.OriginalBuildNumber)"

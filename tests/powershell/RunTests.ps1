@@ -18,7 +18,7 @@ Get-ChildItem -Path "$PSScriptRoot" -Recurse -Filter "*.tests.ps1" | ForEach-Obj
 # Output total failed tests count, conditionally based on environment
 Write-Host "Total failed tests: $TotalFailedTests"
 
-    # Check for interactive host and non-Azure DevOps environment
+# Check for interactive host and non-Azure DevOps environment
 if ($Host.UI.RawUI -and (Test-Path Env:\AGENT_ID) -eq $false) {
     Write-Host "Press any key to continue ..."
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")

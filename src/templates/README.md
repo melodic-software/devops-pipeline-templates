@@ -11,13 +11,13 @@ The structure of the `src/templates` directory is designed to offer granularity,
 - **PowerShell Scripts**: These scripts handle various automation tasks and are crucial for several pipeline operations. Make sure to thoroughly test any new or modified script to ensure it behaves as expected.
 
 - **YAML Templates**: The backbone of our CI/CD processes. We have templates designed for:
+
   - **Stages**: Representing a phase in the pipeline.
   - **Jobs**: Individual units of work in a stage.
   - **Steps**: Sequential tasks within a job.
   - **Variables**: Configurations and values used throughout the pipeline.
 
 - **Named Folders**: These folders (like `src/templates/create-nuget-package`) encapsulate templates related to a specific workflow or task. Each named folder might contain a series of related templates, scripts, and other necessary files that define and support that workflow.
-  
 - **Shared Folder (`src/templates/shared`)**: A repository of common templates and resources. Items in this folder might be referenced by multiple named template folders, ensuring we maintain a DRY (Don't Repeat Yourself) principle in our pipeline configurations.
 
 ## ⚠ Warning - Modifying Resources

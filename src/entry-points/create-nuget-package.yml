@@ -2,40 +2,40 @@ parameters:
   - name: vmImage
     displayName: Virtual Machine Image
     type: string
-    default: 'ubuntu-latest' # windows-latest, macos-latest
+    default: "ubuntu-latest" # windows-latest, macos-latest
   - name: buildConfiguration
     displayName: Build Configuration
     type: string
-    default: 'Release'
+    default: "Release"
     values:
-      - 'Debug'
-      - 'Release'
+      - "Debug"
+      - "Release"
   - name: buildPlatform
     displayName: Build Platform
     type: string
-    default: 'AnyCPU'
+    default: "AnyCPU"
     values:
-      - 'AnyCPU'
-      - 'x86'
-      - 'x64'
-      - 'ARM'
+      - "AnyCPU"
+      - "x86"
+      - "x64"
+      - "ARM"
   - name: projectName
     displayName: Project Name
     type: string
   - name: targetFramework
     displayName: Target Framework
     type: string
-    default: 'DotNet'
+    default: "DotNet"
     values:
-      - 'DotNet'
-      - 'DotNetCore'
-      - 'DotNetStandard'
-      - 'DotNetFramework'
-      - 'MultiTarget'
+      - "DotNet"
+      - "DotNetCore"
+      - "DotNetStandard"
+      - "DotNetFramework"
+      - "MultiTarget"
   - name: dotNetSDKVersion # TODO: rename to dotNetSdkVersion
     displayName: .NET SDK Version
     type: string
-    default: ''
+    default: ""
   - name: useGlobalJson
     displayName: Use Global JSON
     type: boolean
@@ -51,10 +51,10 @@ parameters:
   - name: symbolPackageFormat
     displayName: Symbol Package Format
     type: string
-    default: 'snupkg'
+    default: "snupkg"
     values:
-      - 'symbols.nupkg'
-      - 'snupkg'
+      - "symbols.nupkg"
+      - "snupkg"
   - name: noBuildBeforePack
     displayName: No Build Before Pack
     type: boolean
@@ -62,7 +62,7 @@ parameters:
   - name: releaseNotes
     displayName: Release Notes
     type: string
-    default: ''
+    default: ""
   - name: includeAzureDevOpsPush # Push package to an Azure DevOps feed?
     displayName: Include Azure DevOps Push
     type: boolean
@@ -70,7 +70,7 @@ parameters:
   - name: azureDevOpsPackageFeed
     displayName: Azure DevOps Package Feed
     type: string
-    default: '' # If specified, the default AzureDevOpsPackageFeed global variable will be overwritten.
+    default: "" # If specified, the default AzureDevOpsPackageFeed global variable will be overwritten.
   - name: includeGitHubPush # Push to GitHub packages?
     displayName: Include GitHub Push
     type: boolean
@@ -82,7 +82,7 @@ parameters:
   - name: proGetPackageServiceIndex
     displayName: ProGet Package Service Index
     type: string
-    default: '' # If specified, the default ProGetPackageServiceIndex global variable will be overwritten.
+    default: "" # If specified, the default ProGetPackageServiceIndex global variable will be overwritten.
   - name: runTests
     displayName: Run Tests
     type: boolean
@@ -90,7 +90,7 @@ parameters:
   - name: testProjects
     displayName: Test Projects
     type: object
-    default: ['*.csproj'] # Allow for providing specific .csproj names in the standard "test"/"tests" folder in the main repo root.
+    default: ["*.csproj"] # Allow for providing specific .csproj names in the standard "test"/"tests" folder in the main repo root.
   - name: testMode # Allow for skipping package push steps, symbol publication, etc.
     displayName: Test Mode
     type: boolean
@@ -126,8 +126,8 @@ variables:
   - name: TestMode
     value: ${{ parameters.testMode }}
   - group: GlobalSecrets # Must be defined as a variable group in the Azure DevOps UI
-  - template: '../templates/shared/variables/global-variables.yaml'
-  - template: '../templates/create-nuget-package/variables/create-nuget-package-variables.yaml'
+  - template: "../templates/shared/variables/global-variables.yaml"
+  - template: "../templates/create-nuget-package/variables/create-nuget-package-variables.yaml"
 
 jobs:
   - job: createPackage
@@ -146,7 +146,6 @@ jobs:
           proGetPackageServiceIndex: ${{ parameters.proGetPackageServiceIndex }}
           testProjects: ${{ parameters.testProjects }}
           includeLogSteps: ${{ parameters.includeLogSteps }}
-
 # TODO: Rename this file exension to the industry standard .yaml over .yml
 # This will be a breaking change to all clients, so it may not be worth it.
 # All other internal files have been renamed.

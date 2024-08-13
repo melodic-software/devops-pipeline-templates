@@ -15,7 +15,7 @@ Useful when working with paths that might come from different systems and you wa
 #>
 function Convert-PathSeparator {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [string]$Path,
         $DirectorySeparator = [IO.Path]::DirectorySeparatorChar # This gets the OS-specific separator, but can be specified for testing purposes.
@@ -25,7 +25,8 @@ function Convert-PathSeparator {
     if ($DirectorySeparator -eq "\") {
         # If we are on Windows, replace forward slashes with backslashes
         $CorrectedPath = $Path -replace '/', '\'
-    } else {
+    }
+    else {
         # If we are on a Unix-like system, replace backslashes with forward slashes
         $CorrectedPath = $Path -replace '\\', '/'
     }

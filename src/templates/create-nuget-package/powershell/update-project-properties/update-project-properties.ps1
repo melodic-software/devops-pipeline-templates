@@ -13,16 +13,16 @@ param(
 )
 
 $Properties = @{
-    "PublishRepositoryUrl" = "true"
-    "RepositoryCommit" = $RepositoryCommit
-    "RepositoryBranch" = $RepositoryBranch
+    "PublishRepositoryUrl"       = "true"
+    "RepositoryCommit"           = $RepositoryCommit
+    "RepositoryBranch"           = $RepositoryBranch
     "ContinuousIntegrationBuild" = "true"
-    "Deterministic" = "true"
-    "DebugType" = "portable" # "none", "portable", "embedded", "full", or "pdbonly"
-    "EmbedUntrackedSources" = "true"
-    "IncludeSymbols" = $IncludeSymbols
-    "SymbolPackageFormat" = $SymbolPackageFormat
-    "SourceLinkEnabled" = "true"
+    "Deterministic"              = "true"
+    "DebugType"                  = "portable" # "none", "portable", "embedded", "full", or "pdbonly"
+    "EmbedUntrackedSources"      = "true"
+    "IncludeSymbols"             = $IncludeSymbols
+    "SymbolPackageFormat"        = $SymbolPackageFormat
+    "SourceLinkEnabled"          = "true"
 }
 
 if ($IsDotNetFrameworkTarget) {
@@ -44,11 +44,11 @@ Write-Host "Properties: $($Properties | Out-String)"
 
 function Set-ProjectProperty {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [System.Xml.XmlDocument]$CsProjXml,
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$PropertyName,
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$PropertyValue,
         [System.Xml.XmlNamespaceManager]$NamespaceManager,
         [bool]$Overwrite
@@ -77,7 +77,8 @@ function Set-ProjectProperty {
             if ($Overwrite -or $NoValue) {
                 Write-Host "Updating property '$PropertyName' with value '$PropertyValue'."
                 $PropertyNode.InnerText = $PropertyValue
-            } else {
+            }
+            else {
                 Write-Host "Property '$PropertyName' already exists with value '$($PropertyNode.InnerText)'. Overwrite is set to false; skipping update."
             }
             break # Stop the loop if we found the property, whether we updated it or not
@@ -136,6 +137,7 @@ try {
     # Save the changes back to the .csproj file
     $CsProjXml.Save($CsProjFilePath) | Out-Null
     Write-Host "The .csproj file '$ProjectName' has been successfully updated."
-} catch {
+}
+catch {
     Write-Host "Error: $($_.Exception.Message)"
 }

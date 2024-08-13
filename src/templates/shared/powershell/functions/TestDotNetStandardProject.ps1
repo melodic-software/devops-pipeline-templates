@@ -36,7 +36,8 @@ function Test-DotNetStandardProject {
         $NetStandardCheck = $FrameworkNodes | Where-Object { $_.InnerText -like "*netstandard*" }
 
         return ($null -ne $NetStandardCheck -and $NetStandardCheck.Count -gt 0)
-    } catch {
+    }
+    catch {
         Write-Host "Failed to parse content as XML. Falling back to regex matching."
         return $ProjectContent -match '<TargetFramework.*>netstandard.*<\/TargetFramework>|<TargetFrameworks.*>netstandard.*<\/TargetFrameworks>'
     }

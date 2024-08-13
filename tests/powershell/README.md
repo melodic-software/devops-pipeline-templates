@@ -20,6 +20,7 @@ A `InstallPester.ps1` script has been provided to automatically check and instal
 
    ```powershell
    .\InstallPester.ps1
+   ```
 
 ### Manually Running Tests
 

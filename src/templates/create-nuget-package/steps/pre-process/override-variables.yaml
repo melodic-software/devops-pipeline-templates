@@ -1,37 +1,37 @@
 parameters:
   - name: azureDevOpsPackageFeed
     type: string
-    default: ''
+    default: ""
   - name: proGetPackageServiceIndex
     type: string
-    default: ''
+    default: ""
 
 steps:
-- task: PowerShell@2
-  name: OverrideGlobalVariables # Override pipeline specific OR global variables here.
-  displayName: Override Variables
-  condition: succeeded()
-  inputs:
-    targetType: 'inline'
-    script: |
-      $AzureDevOpsPackageFeed = "${{ parameters.azureDevOpsPackageFeed }}"
-      $ProGetPackageServiceIndex = "${{ parameters.proGetPackageServiceIndex }}"
+  - task: PowerShell@2
+    name: OverrideGlobalVariables # Override pipeline specific OR global variables here.
+    displayName: Override Variables
+    condition: succeeded()
+    inputs:
+      targetType: "inline"
+      script: |
+        $AzureDevOpsPackageFeed = "${{ parameters.azureDevOpsPackageFeed }}"
+        $ProGetPackageServiceIndex = "${{ parameters.proGetPackageServiceIndex }}"
 
-      $VariablesOverridden = $false
+        $VariablesOverridden = $false
 
-      if (-not [string]::IsNullOrEmpty($AzureDevOpsPackageFeed)) {
-        Write-Host "AzureDevOpsPackageFeed: $AzureDevOpsPackageFeed"
-        Write-Host "##vso[task.setvariable variable=AzureDevOpsPackageFeed]$AzureDevOpsPackageFeed"
-        $VariablesOverridden = $true
-      }
+        if (-not [string]::IsNullOrEmpty($AzureDevOpsPackageFeed)) {
+          Write-Host "AzureDevOpsPackageFeed: $AzureDevOpsPackageFeed"
+          Write-Host "##vso[task.setvariable variable=AzureDevOpsPackageFeed]$AzureDevOpsPackageFeed"
+          $VariablesOverridden = $true
+        }
 
-      if (-not [string]::IsNullOrEmpty($ProGetPackageServiceIndex)) {
-        Write-Host "ProGetPackageServiceIndex: $ProGetPackageServiceIndex"
-        Write-Host "##vso[task.setvariable variable=ProGetPackageServiceIndex]$ProGetPackageServiceIndex"
-        $VariablesOverridden = $true
-      }
+        if (-not [string]::IsNullOrEmpty($ProGetPackageServiceIndex)) {
+          Write-Host "ProGetPackageServiceIndex: $ProGetPackageServiceIndex"
+          Write-Host "##vso[task.setvariable variable=ProGetPackageServiceIndex]$ProGetPackageServiceIndex"
+          $VariablesOverridden = $true
+        }
 
-      if (-not $VariablesOverridden) {
-        Write-Host "No variable overrides have been made."
-      }
-    pwsh: true
+        if (-not $VariablesOverridden) {
+          Write-Host "No variable overrides have been made."
+        }
+      pwsh: true

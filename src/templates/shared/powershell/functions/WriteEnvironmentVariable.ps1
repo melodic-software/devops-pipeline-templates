@@ -18,7 +18,7 @@ Designed for use to quickly log the values of common environment variables avail
 #>
 function Write-EnvironmentVariable {
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$VariableName
     )
 
@@ -29,10 +29,12 @@ function Write-EnvironmentVariable {
         
         if ([string]::IsNullOrEmpty($VariableValue)) {
             Write-Host "${VariableName} is set but empty."
-        } else {
+        }
+        else {
             Write-Host "${VariableName}: $VariableValue"
         }
-    } else {
+    }
+    else {
         Write-Host "${VariableName} is not set."
     }
 }

@@ -47,7 +47,8 @@ function Get-ProjectDotNetSdkVersion {
     # Convert the parsed SDK version into a System.Version object.
     $CurrentVersion = if ($ParsedSdkVersionString -Match "^\d+\.\d+$") {
         New-Object System.Version $ParsedSdkVersionString
-    } else {
+    }
+    else {
         ConvertTo-SystemVersion -VersionString $ParsedSdkVersionString
     }
 

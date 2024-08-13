@@ -1,27 +1,27 @@
 steps:
-# We need to use a different code coverage framework depending on the operating system
-# "Code Coverage" is for Windows, and "Coverlet" is for Linux
-# https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-code-coverage?tabs=windows
-# https://github.com/coverlet-coverage/coverlet
-# Set the code coverage framework variable based on the OS of the build agent
-- task: PowerShell@2
-  name: SetCodeCoverageFramework
-  displayName: Set Code Coverage Framework
-  condition: and(succeeded(), eq(variables['RunTests'], true), ne(variables['TestProjects'], ''))
-  inputs:
-    targetType: 'inline'
-    script: |
-      if ($env:AGENT_OS -eq "Windows_NT") {
-        # Windows-based agents will use "Code Coverage"
-        Write-Host "##vso[task.setvariable variable=CodeCoverageFramework]Code Coverage"
-        Write-Host "##vso[task.setvariable variable=CoverletOutputFormat]Cobertura"
-        Write-Host "##vso[task.setvariable variable=CodeCoverageTool]Cobertura"
-        Write-Host 'Running on Windows - using Code Coverage'
-      } else {
-        # Non-Windows agents (e.g., Linux) will use "Coverlet" / "XPlat Code Coverage"
-        Write-Host "##vso[task.setvariable variable=CodeCoverageFramework]XPlat Code Coverage"
-        Write-Host "##vso[task.setvariable variable=CoverletOutputFormat]cobertura"
-        Write-Host "##vso[task.setvariable variable=CodeCoverageTool]cobertura"
-        Write-Host 'Running on Linux - using Coverlet (XPlat Code Coverage)'
-      }
-    pwsh: true
+  # We need to use a different code coverage framework depending on the operating system
+  # "Code Coverage" is for Windows, and "Coverlet" is for Linux
+  # https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-code-coverage?tabs=windows
+  # https://github.com/coverlet-coverage/coverlet
+  # Set the code coverage framework variable based on the OS of the build agent
+  - task: PowerShell@2
+    name: SetCodeCoverageFramework
+    displayName: Set Code Coverage Framework
+    condition: and(succeeded(), eq(variables['RunTests'], true), ne(variables['TestProjects'], ''))
+    inputs:
+      targetType: "inline"
+      script: |
+        if ($env:AGENT_OS -eq "Windows_NT") {
+          # Windows-based agents will use "Code Coverage"
+          Write-Host "##vso[task.setvariable variable=CodeCoverageFramework]Code Coverage"
+          Write-Host "##vso[task.setvariable variable=CoverletOutputFormat]Cobertura"
+          Write-Host "##vso[task.setvariable variable=CodeCoverageTool]Cobertura"
+          Write-Host 'Running on Windows - using Code Coverage'
+        } else {
+          # Non-Windows agents (e.g., Linux) will use "Coverlet" / "XPlat Code Coverage"
+          Write-Host "##vso[task.setvariable variable=CodeCoverageFramework]XPlat Code Coverage"
+          Write-Host "##vso[task.setvariable variable=CoverletOutputFormat]cobertura"
+          Write-Host "##vso[task.setvariable variable=CodeCoverageTool]cobertura"
+          Write-Host 'Running on Linux - using Coverlet (XPlat Code Coverage)'
+        }
+      pwsh: true

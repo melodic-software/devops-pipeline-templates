@@ -10,10 +10,10 @@ parameters:
     default: false
 
 steps:
-- template: ./publish-artifacts.yaml
-- ${{ if eq(parameters.includeAzureDevOpsPush, true) }}:
-  - template: ./push-to-azure-devops.yaml
-- ${{ if eq(parameters.includeGitHubPush, true) }}:
-  - template: ./push-to-github.yaml
-- ${{ if eq(parameters.includeProGetPush, true) }}:
-  - template: ./push-to-proget.yaml
+  - template: ./publish-artifacts.yaml
+  - ${{ if eq(parameters.includeAzureDevOpsPush, true) }}:
+      - template: ./push-to-azure-devops.yaml
+  - ${{ if eq(parameters.includeGitHubPush, true) }}:
+      - template: ./push-to-github.yaml
+  - ${{ if eq(parameters.includeProGetPush, true) }}:
+      - template: ./push-to-proget.yaml

@@ -23,7 +23,7 @@ Logs the values of the specified custom environment variables.
 #>
 function Write-PredefinedEnvironmentVariables {
     param (
-        [Parameter(Mandatory=$false)]
+        [Parameter(Mandatory = $false)]
         [string[]]$VariableNames = @(
             "AGENT_BUILDDIRECTORY",
             "AGENT_HOMEDIRECTORY",
@@ -102,7 +102,8 @@ function Write-PredefinedEnvironmentVariables {
         foreach ($VariableName in $VariableNames) {
             Write-EnvironmentVariable -VariableName $VariableName
         }
-    } catch {
+    }
+    catch {
         Write-Error "An error occurred while processing the variable '${VariableName}': $_"
         # Optionally, further error handling can be added here, like logging to a file.
     }

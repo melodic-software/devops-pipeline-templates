@@ -8,7 +8,8 @@ function Install-Pester {
     try {
         Install-Module -Name Pester -RequiredVersion $Version -Force -Scope CurrentUser -SkipPublisherCheck
         Write-Host "Pester version $Version installed successfully."
-    } catch {
+    }
+    catch {
         Write-Error "Failed to install Pester version $Version. Error: $_"
         exit 1
     }
@@ -20,23 +21,24 @@ try {
 
     Write-Host "Checking for installed versions of Pester..."
     $PesterModule = Get-Module -ListAvailable -Name Pester | 
-                    Where-Object { $_.Version -eq [version]$RequiredPesterVersion } |
-                    Sort-Object Version -Descending |
-                    Select-Object -First 1
+    Where-Object { $_.Version -eq [version]$RequiredPesterVersion } |
+    Sort-Object Version -Descending |
+    Select-Object -First 1
 
     if (-not $PesterModule) {
         Write-Host "Required Pester version $RequiredPesterVersion not found. Installing..."
         Install-Pester -Version $RequiredPesterVersion
         $PesterModule = Get-Module -ListAvailable -Name Pester | 
-                        Where-Object { $_.Version -eq [version]$RequiredPesterVersion } |
-                        Sort-Object Version -Descending |
-                        Select-Object -First 1
+        Where-Object { $_.Version -eq [version]$RequiredPesterVersion } |
+        Sort-Object Version -Descending |
+        Select-Object -First 1
     }
 
     if (-not $PesterModule) {
         Write-Error "Pester module installation failed or version $RequiredPesterVersion not found."
         exit 1
-    } else {
+    }
+    else {
         Write-Host "Using Pester version $($PesterModule.Version)."
     }
 
@@ -45,7 +47,8 @@ try {
     try {
         Import-Module -Name $ModulePath -ErrorAction Stop
         Write-Host "Successfully imported Pester."
-    } catch {
+    }
+    catch {
         Write-Error "Failed to import Pester from $ModulePath. Error: $_"
         exit 1
     }
@@ -54,13 +57,16 @@ try {
     if (-not $InstalledPester) {
         Write-Error "Failed to load Pester after installation."
         exit 1
-    } else {
+    }
+    else {
         Write-Host "Successfully loaded Pester version $($InstalledPester.Version)."
     }
-} catch {
+}
+catch {
     Write-Error "An unexpected error occurred: $_"
     exit 1
-} finally {
+}
+finally {
     if ($Host.UI.RawUI -and (Test-Path Env:\AGENT_ID) -eq $false) {
         Write-Host "Press any key to continue ..."
         $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")

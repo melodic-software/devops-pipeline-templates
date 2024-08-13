@@ -1,73 +1,73 @@
 steps:
-- task: PowerShell@2
-  name: LogPipelineSpecificVariables
-  displayName: Log Pipeline-Specific Variables
-  condition: succeeded()
-  continueOnError: true
-  env:
-    # Map secret variables from variable group defined in Azure DevOps UI
-    GITHUBPACKAGEAPIKEY: $(GitHubPackageApiKey)
-    PROGETPACKAGEAPIKEY: $(ProGetPackageApiKey)
-  inputs:
-    targetType: "inline"
-    script: |
-      function Log-PipelineVariable {
-        param (
-          [string]$VariableName,
-          [string]$DisplayName
-        )
-        $Variable = Get-Item -Path Env:$VariableName -ErrorAction SilentlyContinue
-        if ($Variable -and $Variable.Value -ne '' -and $Variable.Value -ne '$(' + $VariableName + ')') {
-          Write-Host "${DisplayName}: $($Variable.Value)"
-        } else {
-          Write-Host "${DisplayName} is not set or has been defaulted to null."
+  - task: PowerShell@2
+    name: LogPipelineSpecificVariables
+    displayName: Log Pipeline-Specific Variables
+    condition: succeeded()
+    continueOnError: true
+    env:
+      # Map secret variables from variable group defined in Azure DevOps UI
+      GITHUBPACKAGEAPIKEY: $(GitHubPackageApiKey)
+      PROGETPACKAGEAPIKEY: $(ProGetPackageApiKey)
+    inputs:
+      targetType: "inline"
+      script: |
+        function Log-PipelineVariable {
+          param (
+            [string]$VariableName,
+            [string]$DisplayName
+          )
+          $Variable = Get-Item -Path Env:$VariableName -ErrorAction SilentlyContinue
+          if ($Variable -and $Variable.Value -ne '' -and $Variable.Value -ne '$(' + $VariableName + ')') {
+            Write-Host "${DisplayName}: $($Variable.Value)"
+          } else {
+            Write-Host "${DisplayName} is not set or has been defaulted to null."
+          }
         }
-      }
 
-      # Hashtables mapping environment variable names to their Azure DevOps pipeline name
+        # Hashtables mapping environment variable names to their Azure DevOps pipeline name
 
-      $VariableDisplayNames = [ordered]@{
-        # Predefined variables
-        "ASSEMBLYORIGINATORKEYFILE" = "AssemblyOriginatorKeyFile"
-        "AZUREDEVOPSPACKAGEFEED" = "AzureDevOpsPackageFeed"
-        "AZUREDEVOPSPACKAGESYMBOLSFILEPATH" = "AzureDevopsPackageSymbolsFilePath"
-        "BUILDCONFIGURATION" = "BuildConfiguration"
-        "BUILDPLATFORM" = "BuildPlatform"
-        "GITHUBPACKAGESERVICEINDEX" = "GitHubPackageServiceIndex"
-        "INCLUDESYMBOLS" = "IncludeSymbols"
-        "NOBUILDBEFOREPACK" = "NoBuildBeforePack"
-        "NUGETASSEMBLYSNKFILE" = "NuGetAssemblySnkFile"
-        "NUGETASSEMBLYSNKPUBLICKEY" = "NuGetAssemblySnkPublicKey"
-        "PACKAGEPREFIX" = "PackagePrefix"
-        "POWERSHELLSCRIPTSDIRECTORY" = "PowerShellScriptsDirectory"
-        "PROGETPACKAGESERVICEINDEX" = "ProGetPackageServiceIndex"
-        "PROJECTNAME" = "ProjectName"
-        "RELEASENOTES" = "ReleaseNotes"
-        "RUNTESTS" = "RunTests"
-        "SIGNASSEMBLY" = "SignAssembly"
-        "SYMBOLPACKAGEFORMAT" = "SymbolPackageFormat"
-        "TARGETFRAMEWORK" = "TargetFramework"
-        "TESTMODE" = "TestMode"
-        "TESTPROJECTS" = "TestProjects"
-        "VIRTUALMACHINEIMAGE" = "VirtualMachineImage"
-      }
+        $VariableDisplayNames = [ordered]@{
+          # Predefined variables
+          "ASSEMBLYORIGINATORKEYFILE" = "AssemblyOriginatorKeyFile"
+          "AZUREDEVOPSPACKAGEFEED" = "AzureDevOpsPackageFeed"
+          "AZUREDEVOPSPACKAGESYMBOLSFILEPATH" = "AzureDevopsPackageSymbolsFilePath"
+          "BUILDCONFIGURATION" = "BuildConfiguration"
+          "BUILDPLATFORM" = "BuildPlatform"
+          "GITHUBPACKAGESERVICEINDEX" = "GitHubPackageServiceIndex"
+          "INCLUDESYMBOLS" = "IncludeSymbols"
+          "NOBUILDBEFOREPACK" = "NoBuildBeforePack"
+          "NUGETASSEMBLYSNKFILE" = "NuGetAssemblySnkFile"
+          "NUGETASSEMBLYSNKPUBLICKEY" = "NuGetAssemblySnkPublicKey"
+          "PACKAGEPREFIX" = "PackagePrefix"
+          "POWERSHELLSCRIPTSDIRECTORY" = "PowerShellScriptsDirectory"
+          "PROGETPACKAGESERVICEINDEX" = "ProGetPackageServiceIndex"
+          "PROJECTNAME" = "ProjectName"
+          "RELEASENOTES" = "ReleaseNotes"
+          "RUNTESTS" = "RunTests"
+          "SIGNASSEMBLY" = "SignAssembly"
+          "SYMBOLPACKAGEFORMAT" = "SymbolPackageFormat"
+          "TARGETFRAMEWORK" = "TargetFramework"
+          "TESTMODE" = "TestMode"
+          "TESTPROJECTS" = "TestProjects"
+          "VIRTUALMACHINEIMAGE" = "VirtualMachineImage"
+        }
 
-      $SecretVariableDisplayNames = [ordered]@{
-        # Variable group variables defined in Azure DevOps
-        # Any that are defined as "secret" should result in masked values
-        "GITHUBPACKAGEAPIKEY" = "GitHubPackageApiKey"
-        "PROGETPACKAGEAPIKEY" = "ProGetPackageApiKey"
-      }
+        $SecretVariableDisplayNames = [ordered]@{
+          # Variable group variables defined in Azure DevOps
+          # Any that are defined as "secret" should result in masked values
+          "GITHUBPACKAGEAPIKEY" = "GitHubPackageApiKey"
+          "PROGETPACKAGEAPIKEY" = "ProGetPackageApiKey"
+        }
 
-      # Logging variables
-      Write-Host "VARIABLES"
-      foreach ($VariableName in $VariableDisplayNames.Keys) {
-        Log-PipelineVariable -VariableName $VariableName -DisplayName $VariableDisplayNames[$VariableName]
-      }
+        # Logging variables
+        Write-Host "VARIABLES"
+        foreach ($VariableName in $VariableDisplayNames.Keys) {
+          Log-PipelineVariable -VariableName $VariableName -DisplayName $VariableDisplayNames[$VariableName]
+        }
 
-      # Logging secret variables
-      Write-Host "SECRET VARIABLES"
-      foreach ($VariableName in $SecretVariableDisplayNames.Keys) {
-        Log-PipelineVariable -VariableName $VariableName -DisplayName $SecretVariableDisplayNames[$VariableName]
-      }
-    pwsh: true
+        # Logging secret variables
+        Write-Host "SECRET VARIABLES"
+        foreach ($VariableName in $SecretVariableDisplayNames.Keys) {
+          Log-PipelineVariable -VariableName $VariableName -DisplayName $SecretVariableDisplayNames[$VariableName]
+        }
+      pwsh: true

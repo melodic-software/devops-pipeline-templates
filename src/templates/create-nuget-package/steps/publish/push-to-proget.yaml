@@ -1,20 +1,20 @@
 steps:
-- task: DotNetCoreCLI@2
-  name: PushPackageToProGet
-  displayName: 'Push Package to ProGet'
-  condition: |
-    and(
-      succeeded(),
-      ne(variables['ProGetPackageServiceIndex'], ''),
-      ne(variables['ProGetPackageApiKey'], ''),
-      eq(variables['TestMode'], 'false'),
-      ne(variables['Build.Reason'], 'PullRequest')
-    )
-  inputs:
-    command: custom
-    custom: nuget
-    arguments: >
-      push "$(Build.ArtifactStagingDirectory)/**/**"
-      --source "$(ProGetPackageServiceIndex)"
-      --api-key $(ProGetPackageApiKey)
-      --skip-duplicate
+  - task: DotNetCoreCLI@2
+    name: PushPackageToProGet
+    displayName: "Push Package to ProGet"
+    condition: |
+      and(
+        succeeded(),
+        ne(variables['ProGetPackageServiceIndex'], ''),
+        ne(variables['ProGetPackageApiKey'], ''),
+        eq(variables['TestMode'], 'false'),
+        ne(variables['Build.Reason'], 'PullRequest')
+      )
+    inputs:
+      command: custom
+      custom: nuget
+      arguments: >
+        push "$(Build.ArtifactStagingDirectory)/**/**"
+        --source "$(ProGetPackageServiceIndex)"
+        --api-key $(ProGetPackageApiKey)
+        --skip-duplicate

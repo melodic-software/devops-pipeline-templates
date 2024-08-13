@@ -10,150 +10,150 @@ parameters:
     default: 6.x
 
 steps:
-- task: PowerShell@2
-  name: StoreOriginalBuildNumber
-  displayName: Store Original Build Number
-  condition: succeeded()
-  inputs:
-    targetType: 'inline'
-    script: |
-      # this gets overwritten by the GitVersion task, so we copy the original value and set it to a new variable
-      # we use it later to extract the revision number, and in publish symbol artifacts step
-      Write-Host "Original Build Number: $(Build.BuildNumber)"
-      Write-Host "##vso[task.setvariable variable=Build.OriginalBuildNumber;]$(Build.BuildNumber)"
-    pwsh: true
+  - task: PowerShell@2
+    name: StoreOriginalBuildNumber
+    displayName: Store Original Build Number
+    condition: succeeded()
+    inputs:
+      targetType: "inline"
+      script: |
+        # this gets overwritten by the GitVersion task, so we copy the original value and set it to a new variable
+        # we use it later to extract the revision number, and in publish symbol artifacts step
+        Write-Host "Original Build Number: $(Build.BuildNumber)"
+        Write-Host "##vso[task.setvariable variable=Build.OriginalBuildNumber;]$(Build.BuildNumber)"
+      pwsh: true
 
-# https://github.com/GitTools/actions/blob/main/docs/examples/azure/gitversion/setup.md
-- task: gitversion/setup@3.0.0
-  name: InstallGitVersion
-  displayName: Install GitVersion
-  condition: succeeded()
-  continueOnError: true
-  inputs:
-    versionSpec: ${{ parameters.gitVersionSpec }}
-    includePrerelease: false
-    ignoreFailedSources: false
-    preferLatestVersion: true
-  retryCountOnTaskFailure: 3
+  # https://github.com/GitTools/actions/blob/main/docs/examples/azure/gitversion/setup.md
+  - task: gitversion/setup@3.0.0
+    name: InstallGitVersion
+    displayName: Install GitVersion
+    condition: succeeded()
+    continueOnError: true
+    inputs:
+      versionSpec: ${{ parameters.gitVersionSpec }}
+      includePrerelease: false
+      ignoreFailedSources: false
+      preferLatestVersion: true
+    retryCountOnTaskFailure: 3
 
-# This is a fallback in case the GitVersion tool failed to install.
-- script: dotnet tool install --global GitVersion.Tool --version ${{ parameters.gitVersionSpec }}
-  name: InstallGitVersionFallback
-  displayName: 'Fallback: Install GitVersion'
-  condition: failed()
-  continueOnError: false
+  # This is a fallback in case the GitVersion tool failed to install.
+  - script: dotnet tool install --global GitVersion.Tool --version ${{ parameters.gitVersionSpec }}
+    name: InstallGitVersionFallback
+    displayName: "Fallback: Install GitVersion"
+    condition: failed()
+    continueOnError: false
 
-- task: gitversion/command@3.0.0
-  displayName: Log GitVersion Config
-  inputs:
-    targetPath: ${{ parameters.workingDirectory }}
-    disableShallowCloneCheck: false
-    arguments: '/config ${{ parameters.configFilePath }} /showConfig'
+  - task: gitversion/command@3.0.0
+    displayName: Log GitVersion Config
+    inputs:
+      targetPath: ${{ parameters.workingDirectory }}
+      disableShallowCloneCheck: false
+      arguments: "/config ${{ parameters.configFilePath }} /showConfig"
 
-# https://github.com/GitTools/actions/blob/main/docs/examples/azure/gitversion/execute.md
-- task: gitversion/execute@3.0.0
-  name: DetermineVersion
-  displayName: Determine Version
-  condition: succeeded()
-  inputs:
-    targetPath: ${{ parameters.workingDirectory }}
-    disableCache: true
-    useConfigFile: true
-    configFilePath: ${{ parameters.configFilePath }}
+  # https://github.com/GitTools/actions/blob/main/docs/examples/azure/gitversion/execute.md
+  - task: gitversion/execute@3.0.0
+    name: DetermineVersion
+    displayName: Determine Version
+    condition: succeeded()
+    inputs:
+      targetPath: ${{ parameters.workingDirectory }}
+      disableCache: true
+      useConfigFile: true
+      configFilePath: ${{ parameters.configFilePath }}
 
-- task: PowerShell@2
-  name: DisplayGitVersionVariables
-  displayName: Display GitVersion Variables
-  condition: succeeded()
-  inputs:
-    targetType: 'inline'
-    script: |
-      Write-Output "Major: $(Major)"
-      Write-Output "Minor: $(Minor)"
-      Write-Output "Patch: $(Patch)"
-      Write-Output "PreReleaseTag: $(PreReleaseTag)"
-      Write-Output "PreReleaseTagWithDash: $(PreReleaseTagWithDash)"
-      Write-Output "PreReleaseLabel: $(PreReleaseLabel)"
-      Write-Output "PreReleaseNumber: $(PreReleaseNumber)"
-      Write-Output "WeightedPreReleaseNumber: $(WeightedPreReleaseNumber)"
-      Write-Output "BuildMetaData: $(BuildMetaData)"
-      Write-Output "FullBuildMetaData: $(FullBuildMetaData)"
-      Write-Output "MajorMinorPatch: $(MajorMinorPatch)"
-      Write-Output "SemVer: $(SemVer)"
-      Write-Output "AssemblySemVer: $(AssemblySemVer)"
-      Write-Output "AssemblySemFileVer: $(AssemblySemFileVer)"
-      Write-Output "FullSemVer: $(FullSemVer)"
-      Write-Output "InformationalVersion: $(InformationalVersion)"
-      Write-Output "BranchName: $(BranchName)"
-      Write-Output "Sha: $(Sha)"
-      Write-Output "ShortSha: $(ShortSha)"
-      Write-Output "VersionSourceSha: $(VersionSourceSha)"
-      Write-Output "CommitsSinceVersionSource: $(CommitsSinceVersionSource)"
-      Write-Output "UncommittedChanges: $(UncommittedChanges)"
-      Write-Output "CommitDate: $(CommitDate)"
-    pwsh: true
+  - task: PowerShell@2
+    name: DisplayGitVersionVariables
+    displayName: Display GitVersion Variables
+    condition: succeeded()
+    inputs:
+      targetType: "inline"
+      script: |
+        Write-Output "Major: $(Major)"
+        Write-Output "Minor: $(Minor)"
+        Write-Output "Patch: $(Patch)"
+        Write-Output "PreReleaseTag: $(PreReleaseTag)"
+        Write-Output "PreReleaseTagWithDash: $(PreReleaseTagWithDash)"
+        Write-Output "PreReleaseLabel: $(PreReleaseLabel)"
+        Write-Output "PreReleaseNumber: $(PreReleaseNumber)"
+        Write-Output "WeightedPreReleaseNumber: $(WeightedPreReleaseNumber)"
+        Write-Output "BuildMetaData: $(BuildMetaData)"
+        Write-Output "FullBuildMetaData: $(FullBuildMetaData)"
+        Write-Output "MajorMinorPatch: $(MajorMinorPatch)"
+        Write-Output "SemVer: $(SemVer)"
+        Write-Output "AssemblySemVer: $(AssemblySemVer)"
+        Write-Output "AssemblySemFileVer: $(AssemblySemFileVer)"
+        Write-Output "FullSemVer: $(FullSemVer)"
+        Write-Output "InformationalVersion: $(InformationalVersion)"
+        Write-Output "BranchName: $(BranchName)"
+        Write-Output "Sha: $(Sha)"
+        Write-Output "ShortSha: $(ShortSha)"
+        Write-Output "VersionSourceSha: $(VersionSourceSha)"
+        Write-Output "CommitsSinceVersionSource: $(CommitsSinceVersionSource)"
+        Write-Output "UncommittedChanges: $(UncommittedChanges)"
+        Write-Output "CommitDate: $(CommitDate)"
+      pwsh: true
 
-- task: PowerShell@2
-  name: SetAssemblyVersionVariables
-  displayName: Set Assembly Version Variables
-  condition: succeeded()
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Define base directories and script locations
-      $BaseDirectory = "$(Build.SourcesDirectory)"
-      $BuildTemplatesDirectory = "$(BuildTemplateRepositoryFolder)"
-      $PowerShellScriptsDirectory = "$(PowerShellScriptsDirectory)"
-      
-      # Construct the path to the primary script
-      $ScriptName = "set-assembly-version-variables"
-      $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, "set-assembly-version-variables", "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
-      $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
+  - task: PowerShell@2
+    name: SetAssemblyVersionVariables
+    displayName: Set Assembly Version Variables
+    condition: succeeded()
+    inputs:
+      targetType: "inline"
+      script: |
+        # Define base directories and script locations
+        $BaseDirectory = "$(Build.SourcesDirectory)"
+        $BuildTemplatesDirectory = "$(BuildTemplateRepositoryFolder)"
+        $PowerShellScriptsDirectory = "$(PowerShellScriptsDirectory)"
 
-      # Define the script parameters
-      $BuildId = "$(Build.BuildId)"
-      $BuildNumber = "$(Build.BuildNumber)"
-      $OriginalBuildNumber = "$(Build.OriginalBuildNumber)"
-      $SemVer = "$(SemVer)"
-      $Major = "$(Major)"
-      $Minor = "$(Minor)"
-      $Patch = "$(Patch)"
-      $PreReleaseLabel = "$(PreReleaseLabel)"
-      $ShortSha = "$(ShortSha)"
+        # Construct the path to the primary script
+        $ScriptName = "set-assembly-version-variables"
+        $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, "set-assembly-version-variables", "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
+        $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
 
-      # Log the script path
-      # Variables are logged internally so we're not going to duplicate here
-      Write-Host "ScriptPath: $ScriptPath"
+        # Define the script parameters
+        $BuildId = "$(Build.BuildId)"
+        $BuildNumber = "$(Build.BuildNumber)"
+        $OriginalBuildNumber = "$(Build.OriginalBuildNumber)"
+        $SemVer = "$(SemVer)"
+        $Major = "$(Major)"
+        $Minor = "$(Minor)"
+        $Patch = "$(Patch)"
+        $PreReleaseLabel = "$(PreReleaseLabel)"
+        $ShortSha = "$(ShortSha)"
 
-      # Execute the script with the necessary parameters
-      # TODO: Convert to function, rename, and execute using function name (requires dot-sourcing the script)
-      & $ScriptPath -BuildId $BuildId `
-                    -BuildNumber $BuildNumber `
-                    -OriginalBuildNumber $OriginalBuildNumber `
-                    -SemVer $SemVer `
-                    -Major $Major `
-                    -Minor $Minor `
-                    -Patch $Patch `
-                    -PreReleaseLabel $PreReleaseLabel `
-                    -ShortSha $ShortSha
-    pwsh: true
+        # Log the script path
+        # Variables are logged internally so we're not going to duplicate here
+        Write-Host "ScriptPath: $ScriptPath"
 
-- task: PowerShell@2
-  name: UpdateBuildConfigurationForPreRelease
-  displayName: 'Update Build Configuration for Pre-Release'
-  condition: succeeded()
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Check if the PreReleaseTag variable from GitVersion indicates a pre-release
-      $PreReleaseTag = "$(PreReleaseTag)"
-      Write-Host "PreReleaseTag: $PreReleaseTag"
+        # Execute the script with the necessary parameters
+        # TODO: Convert to function, rename, and execute using function name (requires dot-sourcing the script)
+        & $ScriptPath -BuildId $BuildId `
+                      -BuildNumber $BuildNumber `
+                      -OriginalBuildNumber $OriginalBuildNumber `
+                      -SemVer $SemVer `
+                      -Major $Major `
+                      -Minor $Minor `
+                      -Patch $Patch `
+                      -PreReleaseLabel $PreReleaseLabel `
+                      -ShortSha $ShortSha
+      pwsh: true
 
-      if (-not [string]::IsNullOrWhiteSpace($PreReleaseTag)) {
-        # This is a pre-release build, so set the build configuration to Debug.
-        Write-Host "This is a pre-release build. Updating the build configuration to Debug."
-        Write-Host "##vso[task.setvariable variable=BuildConfiguration]Debug"
-      } else {
-        Write-Host "This is not a pre-release build. No change to the build configuration."
-      }
-    pwsh: true
+  - task: PowerShell@2
+    name: UpdateBuildConfigurationForPreRelease
+    displayName: "Update Build Configuration for Pre-Release"
+    condition: succeeded()
+    inputs:
+      targetType: "inline"
+      script: |
+        # Check if the PreReleaseTag variable from GitVersion indicates a pre-release
+        $PreReleaseTag = "$(PreReleaseTag)"
+        Write-Host "PreReleaseTag: $PreReleaseTag"
+
+        if (-not [string]::IsNullOrWhiteSpace($PreReleaseTag)) {
+          # This is a pre-release build, so set the build configuration to Debug.
+          Write-Host "This is a pre-release build. Updating the build configuration to Debug."
+          Write-Host "##vso[task.setvariable variable=BuildConfiguration]Debug"
+        } else {
+          Write-Host "This is not a pre-release build. No change to the build configuration."
+        }
+      pwsh: true

@@ -1,74 +1,74 @@
 parameters:
   - name: testProjects
     type: object
-    default: ['*.csproj']
+    default: ["*.csproj"]
 
 steps:
-- task: PowerShell@2
-  name: AssignVariables
-  displayName: Assign Variables
-  condition: succeeded()
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Escape percent signs, newlines, and carriage returns.
-      # This is required for the $TestProjects variable assignment below.
-      # TODO: Migrate this out if needed in other scripts.
-      function Escape-Data {
-          param (
-              [string]$Data
-          )
-          $Data = $Data -replace '%', '%AZP25'
-          $Data = $Data -replace "`n", '%0A'
-          $Data = $Data -replace "`r", '%0D'
-          return $Data
-      }
-
-      # --------------------------------------------------
-      # -- ASSEMBLY ORIGINATOR KEY FILE ------------------
-      # --------------------------------------------------
-      $AssemblyOriginatorKeyFile = "$(DownloadNuGetSigningKey.secureFilePath)"
-      Write-Host "AssemblyOriginatorKeyFile: $AssemblyOriginatorKeyFile"
-      Write-Host "##vso[task.setvariable variable=AssemblyOriginatorKeyFile;]$AssemblyOriginatorKeyFile"
-
-      # --------------------------------------------------
-      # -- TEST PROJECTS ---------------------------------
-      # --------------------------------------------------
-      # Convert the input parameter to a PowerShell array.
-      $TestProjects = "${{ join(',', parameters.testProjects) }}".Split(',')
-
-      # If the array is empty or contains only empty strings, set TestProjects to an empty string.
-      if (-not ($TestProjects -join '').Trim()) {
-        $TestProjectsString = ''
-      } else {
-        # Trim each project path in the array.
-        $TestProjects = $TestProjects | ForEach-Object { $_.Trim() }
-
-        # Define the path prefix.
-        $PathPrefix = "$(SelfRepositoryFolder)/test*/**/"
-
-        # Initialize the hash table to enforce unique formatted paths.
-        $FormattedProjectsHashTable = @{}
-        
-        # Prefix each project path with the specific directory structure.
-        foreach ($Project in $TestProjects) {
-          $FormattedPath = $PathPrefix + $Project
-          $FormattedProjectsHashTable[$FormattedPath] = $true
+  - task: PowerShell@2
+    name: AssignVariables
+    displayName: Assign Variables
+    condition: succeeded()
+    inputs:
+      targetType: "inline"
+      script: |
+        # Escape percent signs, newlines, and carriage returns.
+        # This is required for the $TestProjects variable assignment below.
+        # TODO: Migrate this out if needed in other scripts.
+        function Escape-Data {
+            param (
+                [string]$Data
+            )
+            $Data = $Data -replace '%', '%AZP25'
+            $Data = $Data -replace "`n", '%0A'
+            $Data = $Data -replace "`r", '%0D'
+            return $Data
         }
 
-        # Convert the keys of the hash table to an array to remove any duplicates.
-        $FormattedProjects = $FormattedProjectsHashTable.Keys
+        # --------------------------------------------------
+        # -- ASSEMBLY ORIGINATOR KEY FILE ------------------
+        # --------------------------------------------------
+        $AssemblyOriginatorKeyFile = "$(DownloadNuGetSigningKey.secureFilePath)"
+        Write-Host "AssemblyOriginatorKeyFile: $AssemblyOriginatorKeyFile"
+        Write-Host "##vso[task.setvariable variable=AssemblyOriginatorKeyFile;]$AssemblyOriginatorKeyFile"
 
-        # Combine all formatted project paths into a single string for output.
-        # Use a newline to separate each path for proper interpretation in Azure DevOps tasks.
-        $TestProjectsString = $FormattedProjects -join "`n"
-      }
+        # --------------------------------------------------
+        # -- TEST PROJECTS ---------------------------------
+        # --------------------------------------------------
+        # Convert the input parameter to a PowerShell array.
+        $TestProjects = "${{ join(',', parameters.testProjects) }}".Split(',')
 
-      # We log the assigned value.
-      Write-Host "TestProjects: $TestProjectsString"
+        # If the array is empty or contains only empty strings, set TestProjects to an empty string.
+        if (-not ($TestProjects -join '').Trim()) {
+          $TestProjectsString = ''
+        } else {
+          # Trim each project path in the array.
+          $TestProjects = $TestProjects | ForEach-Object { $_.Trim() }
 
-      # We set the value using escaped data, because otherwise the value won't get assigned correctly.
-      # The esacped values will be resolved when accessed.
-      $EscapedTestProjectsString = Escape-Data -data $TestProjectsString
-      Write-Host "##vso[task.setvariable variable=TestProjects;]$EscapedTestProjectsString"
-    pwsh: true
+          # Define the path prefix.
+          $PathPrefix = "$(SelfRepositoryFolder)/test*/**/"
+
+          # Initialize the hash table to enforce unique formatted paths.
+          $FormattedProjectsHashTable = @{}
+          
+          # Prefix each project path with the specific directory structure.
+          foreach ($Project in $TestProjects) {
+            $FormattedPath = $PathPrefix + $Project
+            $FormattedProjectsHashTable[$FormattedPath] = $true
+          }
+
+          # Convert the keys of the hash table to an array to remove any duplicates.
+          $FormattedProjects = $FormattedProjectsHashTable.Keys
+
+          # Combine all formatted project paths into a single string for output.
+          # Use a newline to separate each path for proper interpretation in Azure DevOps tasks.
+          $TestProjectsString = $FormattedProjects -join "`n"
+        }
+
+        # We log the assigned value.
+        Write-Host "TestProjects: $TestProjectsString"
+
+        # We set the value using escaped data, because otherwise the value won't get assigned correctly.
+        # The esacped values will be resolved when accessed.
+        $EscapedTestProjectsString = Escape-Data -data $TestProjectsString
+        Write-Host "##vso[task.setvariable variable=TestProjects;]$EscapedTestProjectsString"
+      pwsh: true

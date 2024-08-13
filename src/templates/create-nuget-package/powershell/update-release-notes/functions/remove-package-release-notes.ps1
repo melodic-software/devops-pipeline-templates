@@ -15,7 +15,8 @@ function RemovePackageReleaseNotes([xml]$XmlDocument) {
     if ($Node) {
         $Node.ParentNode.RemoveChild($node)
         Write-Host "PackageReleaseNotes node removed."
-    } else {
+    }
+    else {
         Write-Host "PackageReleaseNotes node not found. No changes made."
     }
 }
