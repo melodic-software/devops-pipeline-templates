@@ -1,15 +1,39 @@
 steps:
+  - task: PowerShell@2
+    name: PrepareBuildArguments
+    displayName: Prepare Build Arguments
+    condition: succeeded()
+    inputs:
+      targetType: "inline"
+      script: |
+        $SignAssembly = [System.Convert]::ToBoolean("$(SignAssembly)")
+        $AssemblyOriginatorKeyFile = "$(AssemblyOriginatorKeyFile)"
+
+        # Initialize with static values.
+        $BuildArguments = "--configuration $(BuildConfiguration) --no-restore"
+
+        # The following are dynamic properties.
+
+        if ($SignAssembly) {
+          $BuildArguments += " /p:SignAssembly=true"
+          
+          if (-not [string]::IsNullOrEmpty($AssemblyOriginatorKeyFile)) {
+            $BuildArguments += " /p:AssemblyOriginatorKeyFile=$AssemblyOriginatorKeyFile"
+          } else {
+            Write-Warning "SignAssembly is true but AssemblyOriginatorKeyFile has not been provided. Assembly signing may fail."
+          }
+        } elseif (-not [string]::IsNullOrEmpty($AssemblyOriginatorKeyFile)) {
+          Write-Warning "AssemblyOriginatorKeyFile is provided but SignAssembly is false. The key file will be ignored."
+        }
+
+        Write-Host "Build arguments: $BuildArguments"
+        Write-Host "##vso[task.setvariable variable=BuildArguments]$BuildArguments"
+      pwsh: true
+
   - task: DotNetCoreCLI@2
     name: BuildDotNet
     displayName: Build Project
-    condition: succeeded()
     inputs:
       command: "build"
       projects: "**/$(ProjectName).csproj"
-      arguments: >-
-        --configuration $(BuildConfiguration)
-        --no-restore
-        ${{ if eq(variables['SignAssembly'], 'true') }}:
-        /p:SignAssembly=$(SignAssembly)
-        ${{ if ne(variables['AssemblyOriginatorKeyFile'], '') }}:
-        /p:AssemblyOriginatorKeyFile=$(AssemblyOriginatorKeyFile)
+      arguments: $(BuildArguments)
