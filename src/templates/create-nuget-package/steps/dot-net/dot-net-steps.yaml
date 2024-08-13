@@ -9,8 +9,8 @@ parameters:
     default: false
 
 steps:
-  - ${{ if eq(parameters.dotNetSDKVersion, '') }}:
-      - template: ./extract-dotnet-version.yaml
+  #- ${{ if eq(parameters.dotNetSDKVersion, '') }}:
+  - template: ./extract-dotnet-version.yaml
 
   - template: ./set-assembly-metadata.yaml
   - template: ./print-project-content.yaml
