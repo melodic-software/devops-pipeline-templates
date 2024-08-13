@@ -13,7 +13,7 @@ steps:
       - template: ./extract-dotnet-version.yaml
 
   - template: ./set-assembly-metadata.yaml
-  - template: ./print-project-content.yaml
+  - template: ../shared/print-project-content.yaml
 
   - ${{ if eq(parameters.useGlobalJson, true) }}:
       - template: ./use-dotnet-sdk-global.yaml

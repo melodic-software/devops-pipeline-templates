@@ -1,6 +1,6 @@
 steps:
   - task: PowerShell@2
-    name: PrintProjectContentDotNet
+    name: PrintProjectContent
     displayName: Print Project Content
     condition: succeeded()
     continueOnError: true
@@ -13,8 +13,8 @@ steps:
         $PowerShellScriptsDirectory = "$(PowerShellScriptsDirectory)"
 
         # Construct the path to the primary script
-        $ScriptName = "print-project-content"
-        $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, "print-project-content", "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
+        $ScriptName = "GetCsprojContent"
+        $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, "get-csproj-content", "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
         $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
 
         # Define the script parameters
@@ -26,7 +26,9 @@ steps:
         Write-Host "SourceDirectory: $SourceDirectory"
         Write-Host "ProjectName: $ProjectName"
 
-        # Execute the script with the necessary parameters
-        # TODO: Convert to function, rename, and execute using function name (requires dot-sourcing the script)
-        & $ScriptPath -SourceDirectory $SourceDirectory -ProjectName $ProjectName
+        # Source the script to load the function into the current session
+        . $ScriptPath
+
+        # Execute the function
+        Get-CsprojContent -SourceDirectory $SourceDirectory -ProjectName $ProjectName
       pwsh: true
