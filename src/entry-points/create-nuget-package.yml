@@ -146,6 +146,7 @@ jobs:
           proGetPackageServiceIndex: ${{ parameters.proGetPackageServiceIndex }}
           testProjects: ${{ parameters.testProjects }}
           includeLogSteps: ${{ parameters.includeLogSteps }}
+          
 # TODO: Rename this file exension to the industry standard .yaml over .yml
 # This will be a breaking change to all clients, so it may not be worth it.
 # All other internal files have been renamed.
