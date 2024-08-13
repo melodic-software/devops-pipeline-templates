@@ -30,10 +30,10 @@ function Test-DotNetStandardProject {
         $Xml.LoadXml($ProjectContent)
 
         # Remove the namespace if it exists to simplify the XPath query
-        $XmlDocument.InnerXml = $XmlDocument.InnerXml -replace 'xmlns="[^"]+"', ''
+        $Xml.InnerXml = $Xml.InnerXml -replace 'xmlns="[^"]+"', ''
 
         $FrameworkNodes = $Xml.SelectNodes("//*[local-name()='TargetFramework' or local-name()='TargetFrameworks']")
-        $NetStandardCheck = $FrameworkNodes | Where-Object { $_ -like "*netstandard*" }
+        $NetStandardCheck = $FrameworkNodes | Where-Object { $_.InnerText -like "*netstandard*" }
 
         return ($null -ne $NetStandardCheck -and $NetStandardCheck.Count -gt 0)
     } catch {
