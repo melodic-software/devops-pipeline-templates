@@ -6,13 +6,12 @@ This repository contains PowerShell scripts designed to update the release notes
 
 1. [Overview](#overview)
 2. [Scripts](#scripts)
-   - [Find-ProjectPath](#find-projectpath)
-   - [Add-PackageReleaseNotes](#add-packagereleasenotes)
-   - [Remove-PackageReleaseNotes](#remove-packagereleasenotes)
-   - [Update-PackageReleaseNotes](#update-packagereleasenotes)
-3. [Main Script: update-release-notes.ps1](#main-script-update-release-notesps1)
-4. [Usage](#usage)
-5. [Edge Cases and Handling](#edge-cases-and-handling)
+   - [Add-ReleaseNotesToCsproj](#add-releasenotestocsproj)
+   - [Remove-ReleaseNotesFromCsproj](#remove-releasenotesfromcsproj)
+   - [Update-ReleaseNotesInCsproj](#update-releasenotesincsproj)
+   - [Update-ReleaseNotes](#update-releasenotes)
+3. [Usage](#usage)
+4. [Edge Cases and Handling](#edge-cases-and-handling)
 
 ## Overview
 
@@ -20,23 +19,19 @@ The scripts in this collection are tailored to manage the `PackageReleaseNotes` 
 
 ## Scripts
 
-### Find-ProjectPath
-
-Resolves the provided path to the `.csproj` file. This function ensures that the path to the project file is accurate and can manage wildcard paths.
-
-### Add-PackageReleaseNotes
+### Add-ReleaseNotesToCsproj
 
 If the `PackageReleaseNotes` node doesn't exist in the `.csproj` file, this function creates and populates it with the specified release notes.
 
-### Remove-PackageReleaseNotes
+### Remove-ReleaseNotesFromCsproj
 
 Targets and removes the `PackageReleaseNotes` node from the `.csproj` file, if present.
 
-### Update-PackageReleaseNotes
+### Update-ReleaseNotesInCsproj
 
-Updates the content of an existing `PackageReleaseNotes` node with new release notes. If the node is absent, it defers to the `Add-PackageReleaseNotes` function to create it.
+Updates the content of an existing `PackageReleaseNotes` node with new release notes. If the node is absent, it defers to the `Add-ReleaseNotesToCsproj` function to create it.
 
-## Main Script: update-release-notes.ps1
+### Update-ReleaseNotes
 
 Serves as the chief script, tying in all utility functions to provide an efficient way to update the release notes in a `.csproj` file. If release notes are not provided or specified as "N/A", the script will remove the `PackageReleaseNotes` node.
 
@@ -44,7 +39,7 @@ Serves as the chief script, tying in all utility functions to provide an efficie
 
 1. Set the `$ReleaseNotes` variable to the desired release note text.
 2. Adjust the `$ProjectPath` variable to point to the `.csproj` file.
-3. Run the `update-release-notes.ps1` script.
+3. Run the `Update-ReleaseNotes.ps1` script.
 4. The release notes in the specified `.csproj` file will be updated accordingly.
 
 ## Edge Cases and Handling

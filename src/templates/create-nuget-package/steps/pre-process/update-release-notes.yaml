@@ -13,7 +13,7 @@ steps:
         $PowerShellScriptsDirectory = "$(PowerShellScriptsDirectory)"
 
         # Construct the path to the primary script
-        $ScriptName = "update-release-notes"
+        $ScriptName = "UpdateReleaseNotes"
         $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, "update-release-notes", "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
         $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
 
@@ -28,7 +28,9 @@ steps:
         Write-Host "ProjectPath: $ProjectPath"
         Write-Host "SharedTemplateDirectory: $SharedTemplateDirectory"
 
-        # Execute the script with the necessary parameters
-        # TODO: Convert to function, rename, and execute using function name (requires dot-sourcing the script)
-        & $ScriptPath -ReleaseNotes $ReleaseNotes -ProjectPath $ProjectPath -SharedTemplateDirectory $SharedTemplateDirectory
+        # Source the script to load the function into the current session
+        . $ScriptPath
+
+        # Execute the function
+        Update-ReleaseNotes -ReleaseNotes $ReleaseNotes -ProjectPath $ProjectPath -SharedTemplateDirectory $SharedTemplateDirectory
       pwsh: true
