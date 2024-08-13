@@ -50,7 +50,7 @@ function Write-PredefinedEnvironmentVariables {
             "BUILD_BUILDNUMBERFORMAT",
             "BUILD_BUILDURI",
             "BUILD_CRONSCHEDULE_DISPLAYNAME",
-            "BUILD_CLEAN"
+            "BUILD_CLEAN" # Deprecated
             "BUILD_CONTAINERID",
             "BUILD_DEFINITIONNAME",
             "BUILD_DEFINITIONVERSION",
@@ -58,7 +58,7 @@ function Write-PredefinedEnvironmentVariables {
             "BUILD_QUEUEDBYID",
             "BUILD_REASON",
             "BUILD_REPOSITORY_CLEAN",
-            "BUILD_REPOSITORY_GIT_LFS_SUPPORT", # IS THIS VALID?
+            "BUILD_REPOSITORY_GIT_LFS_SUPPORT",
             "BUILD_REPOSITORY_GIT_SUBMODULECHECKOUT",
             "BUILD_REPOSITORY_ID",
             "BUILD_REPOSITORY_LOCALPATH",
@@ -81,7 +81,6 @@ function Write-PredefinedEnvironmentVariables {
             "BUILD_TRIGGEREDBY_BUILDNUMBER",
             "BUILD_TRIGGEREDBY_DEFINITIONID",
             "BUILD_TRIGGEREDBY_DEFINITIONNAME",
-            "BUILD_TRIGGEREDBY_ID", # IS THIS REAL?
             "BUILD_TRIGGEREDBY_PROJECTID",
             "COMMON_TESTRESULTSDIRECTORY",
 
