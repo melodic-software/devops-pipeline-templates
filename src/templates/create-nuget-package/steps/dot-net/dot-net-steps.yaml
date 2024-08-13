@@ -21,7 +21,12 @@ steps:
       - template: ./use-dotnet-sdk.yaml
 
   - template: ./nuget-restore.yaml
-  - template: ./build.yaml
+
+  - template: ../shared/build.yaml
+    parameters:
+      tool: "dotnet"
+      projects: "**/$(ProjectName).csproj"
+
   - template: ./set-code-coverage-framework.yaml
   - template: ./run-tests.yaml
   - template: ./nuget-pack.yaml

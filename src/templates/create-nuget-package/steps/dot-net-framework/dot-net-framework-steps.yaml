@@ -2,6 +2,10 @@ steps:
   - template: ./set-assembly-metadata.yaml
   - template: ../shared/print-project-content.yaml
   - template: ./nuget-restore.yaml
-  - template: ./build.yaml
+
+  - template: ../shared/build.yaml
+    parameters:
+      tool: "msbuild"
+
   - template: ./run-tests.yaml
   - template: ./nuget-pack.yaml
