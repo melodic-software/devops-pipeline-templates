@@ -2,7 +2,7 @@ steps:
 - task: VSTest@2
   name: RunTestsDotNetFramework
   displayName: Run Tests
-  condition: and(succeeded(), eq(variables['DotNetSDKVersion'], ''), eq(variables['RunTests'], true))
+  condition: and(succeeded(), eq(variables['DotNetSdkVersion'], ''), eq(variables['RunTests'], true))
   inputs:
     testSelector: 'testAssemblies' # making sure we are selecting test assemblies and not test plan
     testAssemblyVer2: |

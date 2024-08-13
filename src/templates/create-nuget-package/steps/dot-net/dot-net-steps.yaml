@@ -1,5 +1,5 @@
 parameters:
-  - name: dotNetSDKVersion
+  - name: dotNetSdkVersion
     displayName: .NET SDK Version
     type: string
     default: ''
@@ -9,7 +9,7 @@ parameters:
     default: false
 
 steps:
-  #- ${{ if eq(parameters.dotNetSDKVersion, '') }}:
+  #- ${{ if eq(parameters.dotNetSdkVersion, '') }}:
   - template: ./extract-dotnet-version.yaml
 
   - template: ./set-assembly-metadata.yaml

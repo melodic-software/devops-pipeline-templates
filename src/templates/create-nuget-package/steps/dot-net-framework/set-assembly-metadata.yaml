@@ -39,7 +39,7 @@ steps:
 - task: Assembly-Info-NetFramework@3
   name: SetAssemblyMetadataDotNetFramework
   displayName: Set Assembly Metadata
-  condition: and(succeeded(), eq(variables['DotNetSDKVersion'], ''))
+  condition: and(succeeded(), eq(variables['DotNetSdkVersion'], ''))
   inputs:
     Path: '$(Build.SourcesDirectory)'
     FileNames: '**\$(ProjectName)\**\AssemblyInfo.cs'
@@ -66,7 +66,7 @@ steps:
 - task: PowerShell@2
   name: UpdateProjectPropertiesDotNetFramework
   displayName: Update Project Properties
-  condition: and(succeeded(), eq(variables['DotNetSDKVersion'], ''))
+  condition: and(succeeded(), eq(variables['DotNetSdkVersion'], ''))
   inputs:
     targetType: 'inline'
     script: |

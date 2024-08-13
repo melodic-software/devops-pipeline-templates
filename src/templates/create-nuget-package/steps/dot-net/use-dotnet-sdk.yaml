@@ -1,9 +1,9 @@
 steps:
 - task: UseDotNet@2
-  name: UseDotNetSDKVersionSpecified
+  name: UseDotNetSdkVersionSpecified
   displayName: Use .NET SDK
-  condition: and(succeeded(), ne(variables['DotNetSDKVersion'], ''))
+  condition: and(succeeded(), ne(variables['DotNetSdkVersion'], ''))
   inputs:
     packageType: 'sdk'
-    version: '$(DotNetSDKVersion)' # https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/releases-index.json
+    version: '$(DotNetSdkVersion)' # https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/releases-index.json
   retryCountOnTaskFailure: 3

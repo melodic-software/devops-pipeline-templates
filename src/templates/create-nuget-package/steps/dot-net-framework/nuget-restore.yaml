@@ -2,7 +2,7 @@ steps:
 - task: NuGetCommand@2
   name: NuGetRestoreDotNetFramework
   displayName: NuGet Restore
-  condition: and(succeeded(), eq(variables['DotNetSDKVersion'], ''))
+  condition: and(succeeded(), eq(variables['DotNetSdkVersion'], ''))
   inputs:
     command: 'restore'
     restoreSolution: '**/*.sln'  # Specify the solution file instead of the project file.

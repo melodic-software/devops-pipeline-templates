@@ -33,7 +33,7 @@ parameters:
       - 'DotNetStandard'
       - 'DotNetFramework'
       - 'MultiTarget'
-  - name: dotNetSDKVersion
+  - name: dotNetSDKVersion # TODO: rename to dotNetSdkVersion
     displayName: .NET SDK Version
     type: string
     default: ''
@@ -112,7 +112,7 @@ variables:
     value: ${{ parameters.projectName }}
   - name: TargetFramework
     value: ${{ parameters.targetFramework }}
-  - name: DotNetSDKVersion
+  - name: DotNetSdkVersion
     value: ${{ parameters.dotNetSDKVersion }}
   - name: SignAssembly
     value: ${{ parameters.signAssembly }}
@@ -140,7 +140,7 @@ jobs:
       - template: ../templates/create-nuget-package/steps/create-nuget-package-steps.yaml
         parameters:
           targetFramework: ${{ parameters.targetFramework }}
-          dotNetSDKVersion: ${{ parameters.dotNetSDKVersion }}
+          dotNetSdkVersion: ${{ parameters.dotNetSDKVersion }} # TODO: rename to dotNetSdkVersion
           useGlobalJson: ${{ parameters.useGlobalJson }}
           includeAzureDevOpsPush: ${{ parameters.includeAzureDevOpsPush }}
           azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}

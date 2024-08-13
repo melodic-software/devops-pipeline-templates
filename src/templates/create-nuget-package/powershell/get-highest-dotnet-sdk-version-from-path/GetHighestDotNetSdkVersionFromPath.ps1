@@ -14,10 +14,6 @@ A directory that contains shared PowerShell script templates.
 A switch to toggle warning logs.
 .PARAMETER Info
 A switch to toggle informational logs.
-.PARAMETER Verbose
-A switch to toggle verbose logs.
-.PARAMETER Debug
-A switch to toggle debug logs.
 .OUTPUTS
 [string]
 Returns the highest .NET SDK version found as a string, or the fallback version if no valid SDK version is detected.
@@ -42,17 +38,13 @@ function Get-HighestDotNetSdkVersionFromPath {
         [string]$SharedTemplateDirectory,
 
         [switch]$Warnings = $false,
-        [switch]$Info = $false,
-        [switch]$Verbose = $false,
-        [switch]$Debug = $false
+        [switch]$Info = $false
     )
 
     # Set log level preferences
     $WarningPreference = if ($Warnings) { 'Continue' } else { 'SilentlyContinue' }
     $InformationPreference = if ($Info) { 'Continue' } else { 'SilentlyContinue' }
-    $VerbosePreference = if ($Verbose) { 'Continue' } else { 'SilentlyContinue' }
-    $DebugPreference = if ($Debug) { 'Continue' } else { 'SilentlyContinue' }
-
+    
     # Import the configuration
     $Config = Import-PowerShellDataFile -Path (Join-Path $PSScriptRoot "DotNetSdkConfig.psd1")
 

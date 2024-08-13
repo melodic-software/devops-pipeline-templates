@@ -33,7 +33,7 @@ steps:
         "AZUREDEVOPSPACKAGESYMBOLSFILEPATH" = "AzureDevopsPackageSymbolsFilePath"
         "BUILDCONFIGURATION" = "BuildConfiguration"
         "BUILDPLATFORM" = "BuildPlatform"
-        "DOTNETSDKVERSION" = "DotNetSDKVersion"
+        "DOTNETSDKVERSION" = "DotNetSdkVersion"
         "GITHUBPACKAGESERVICEINDEX" = "GitHubPackageServiceIndex"
         "INCLUDESYMBOLS" = "IncludeSymbols"
         "NOBUILDBEFOREPACK" = "NoBuildBeforePack"

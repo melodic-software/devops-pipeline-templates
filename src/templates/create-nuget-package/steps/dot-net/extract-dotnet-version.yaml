@@ -1,8 +1,8 @@
 steps:
 - task: PowerShell@2
-  name: ExtractDotNetSDKVersion
+  name: ExtractDotNetSdkVersion
   displayName: Extract .NET SDK Version
-  condition: and(succeeded(), eq(variables['DotNetSDKVersion'], ''))
+  condition: and(succeeded(), eq(variables['DotNetSdkVersion'], ''))
   inputs:
     targetType: 'inline'
     script: |
@@ -44,7 +44,7 @@ steps:
           Write-Host "No .NET SDK version was extracted from the project. SDK installation may be skipped."
       } else {
           # Update the pipeline variable and log the value.
-          Write-Host "##vso[task.setvariable variable=DotNetSDKVersion;]$MajorVersion"
+          Write-Host "##vso[task.setvariable variable=DotNetSdkVersion;]$MajorVersion"
           Write-Host ".NET SDK Version: $MajorVersion"
       }
     pwsh: true

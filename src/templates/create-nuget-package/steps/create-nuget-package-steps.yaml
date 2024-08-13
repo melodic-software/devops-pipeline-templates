@@ -1,6 +1,6 @@
 parameters:
   targetFramework: ''
-  dotNetSDKVersion: ''
+  dotNetSdkVersion: ''
   useGlobalJson: false
   includeAzureDevOpsPush: false
   azureDevOpsPackageFeed: ''
@@ -20,7 +20,7 @@ steps:
 - ${{ if or(eq(parameters.targetFramework, 'DotNet'), eq(parameters.targetFramework, 'DotNetCore'), eq(parameters.targetFramework, 'DotNetStandard'), eq(parameters.targetFramework, 'NotSpecified')) }}:
     - template: ./dot-net/dot-net-steps.yaml
       parameters:
-        dotNetSDKVersion: ${{ parameters.dotNetSDKVersion }}
+        dotNetSdkVersion: ${{ parameters.dotNetSdkVersion }}
         useGlobalJson: ${{ parameters.useGlobalJson }}
 
 - ${{ if or(eq(parameters.targetFramework, 'DotNetFramework'), eq(parameters.targetFramework, 'NotSpecified')) }}:

@@ -2,7 +2,7 @@ steps:
 - task: MSBuild@1
   name: BuildDotNetFramework
   displayName: Build Project
-  condition: and(succeeded(), eq(variables['DotNetSDKVersion'], ''))
+  condition: and(succeeded(), eq(variables['DotNetSdkVersion'], ''))
   inputs:
     solution: '**/*.sln' # This targets all solution files in the repository to build all included projects.
     msbuildArguments: '/p:Configuration=$(BuildConfiguration) /p:RestoreDuringBuild=false /p:OutputPath=bin\$(BuildConfiguration)\ /p:Platform=$(BuildPlatform) /p:SignAssembly=$(SignAssembly) /p:AssemblyOriginatorKeyFile="$(DownloadNuGetSigningKey.secureFilePath)" /p:Deterministic=true /p:DebugType=portable /v:Diagnostic'
