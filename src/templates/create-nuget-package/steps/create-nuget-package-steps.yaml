@@ -23,7 +23,7 @@ steps:
         dotNetSdkVersion: ${{ parameters.dotNetSdkVersion }}
         useGlobalJson: ${{ parameters.useGlobalJson }}
 
-- ${{ if and(or(eq(parameters.targetFramework, 'DotNetFramework')) }}:
+- ${{ if eq(parameters.targetFramework, 'DotNetFramework') }}:
     - template: ./dot-net-framework/dot-net-framework-steps.yaml
 
 - template: ./publish/publish-steps.yaml
