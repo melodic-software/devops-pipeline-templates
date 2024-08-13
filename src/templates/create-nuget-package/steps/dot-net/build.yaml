@@ -6,10 +6,10 @@ steps:
     inputs:
       command: "build"
       projects: "**/$(ProjectName).csproj"
-      arguments: >
+      arguments: >-
         --configuration $(BuildConfiguration)
         --no-restore
         ${{ if eq(variables['SignAssembly'], 'true') }}:
-          /p:SignAssembly=${{ variables['SignAssembly'] }}
+        /p:SignAssembly=$(SignAssembly)
         ${{ if ne(variables['AssemblyOriginatorKeyFile'], '') }}:
-          /p:AssemblyOriginatorKeyFile=${{ variables['AssemblyOriginatorKeyFile'] }}
+        /p:AssemblyOriginatorKeyFile=$(AssemblyOriginatorKeyFile)
