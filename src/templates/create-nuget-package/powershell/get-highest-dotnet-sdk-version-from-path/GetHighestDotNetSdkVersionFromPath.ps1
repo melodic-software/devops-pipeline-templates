@@ -58,7 +58,7 @@ function Get-HighestDotNetSdkVersionFromPath {
     . (Join-Path -Path $SharedTemplateDirectory -ChildPath "powershell/functions/TestDotNetStandardProject.ps1")
     . (Join-Path -Path $SharedTemplateDirectory -ChildPath "powershell/functions/FindProjectPath.ps1")
     . (Join-Path -Path $PSScriptRoot -ChildPath "ConvertToSystemVersion.ps1")
-    . (Join-Path -Path $PSScriptRoot -ChildPath "Convert-VersionPlaceholders.ps1")
+    . (Join-Path -Path $PSScriptRoot -ChildPath "ConvertVersionPlaceholders.ps1")
     . (Join-Path -Path $PSScriptRoot -ChildPath "GetProjectFilePaths.ps1")
     . (Join-Path -Path $PSScriptRoot -ChildPath "GetHighestDotNetSdkVersion.ps1")
     . (Join-Path -Path $PSScriptRoot -ChildPath "GetProjectDotNetSdkVersion.ps1")
