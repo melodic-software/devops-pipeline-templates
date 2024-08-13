@@ -13,7 +13,8 @@ ConvertTo-SystemVersion -VersionString "8.x"
 ConvertTo-SystemVersion -VersionString "3.1" 
 # Returns: Version "3.1"
 .NOTES
-If the version string contains an 'x', this function replaces that segment with '0'. It is crucial to use this function appropriately to avoid unintended behavior, especially in scenarios depending on precise versioning.
+If the version string contains an 'x', this function replaces that segment with '0'.
+It is crucial to use this function appropriately to avoid unintended behavior, especially in scenarios depending on precise versioning.
 #>
 function ConvertTo-SystemVersion {
     param (
@@ -25,7 +26,7 @@ function ConvertTo-SystemVersion {
     Write-Debug "Converting version: $VersionString"
 
     # Convert any 'x' in the version string to '0' to ensure compatibility with System.Version.
-    $VersionString = Convert-VersionXToZero -VersionString $VersionString
+    $VersionString = Convert-VersionPlaceholders -VersionString $VersionString
 
     try {
         # Attempt to create a new System.Version object with the specified string.

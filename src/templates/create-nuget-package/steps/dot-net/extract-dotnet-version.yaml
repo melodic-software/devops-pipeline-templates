@@ -12,8 +12,8 @@ steps:
       $PowerShellScriptsDirectory = "$(PowerShellScriptsDirectory)"
       
       # Construct the path to the primary script
-      $ScriptName = "extract-dotnet-version"
-      $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, "extract-dotnet-version", "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
+      $ScriptName = "GetHighestDotNetSdkVersionFromPath"
+      $ChildPath = ($BuildTemplatesDirectory, $PowerShellScriptsDirectory, "get-highest-dotnet-sdk-version-from-path", "$ScriptName.ps1" -join [IO.Path]::DirectorySeparatorChar)
       $ScriptPath = Join-Path $BaseDirectory -ChildPath $ChildPath
 
       # Define the script parameters
@@ -26,11 +26,12 @@ steps:
       Write-Host "ProjectPath: $ProjectPath"
       Write-Host "SharedTemplateDirectory: $SharedTemplateDirectory"
 
-      # Execute the script and handle potential errors
+      # Dot-source the function script to make the function available in the current scope
+      . $ScriptPath
+
+      # Execute the function and capture the major version
       try {
-          # Capturing the script's output, which is assumed to be the major version
-          # TODO: Convert to function, rename, and execute using function name (requires dot-sourcing the script)
-          $MajorVersion = & $ScriptPath -ProjectPath $ProjectPath -SharedTemplateDirectory $SharedTemplateDirectory -Warnings -Information -Verbose -Debug
+          $MajorVersion = Get-HighestDotNetSdkVersionFromPath -ProjectPath $ProjectPath -SharedTemplateDirectory $SharedTemplateDirectory -Warnings -Info -Verbose -Debug
       }
       catch {
           Write-Host "An error occurred during script execution."

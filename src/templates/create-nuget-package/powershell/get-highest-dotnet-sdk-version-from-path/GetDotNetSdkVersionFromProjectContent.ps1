@@ -2,19 +2,18 @@
 .SYNOPSIS
 Extracts the SDK version from a project file's content.
 .DESCRIPTION
-The function parses the content of a .csproj file, attempting to identify the .NET SDK version being used.
-It focuses on the TargetFramework(s) value, looking for patterns indicative of .NET versions (e.g., 'net5.0', 'net8.0').
+The function retrieves the SDK version from the content of a .csproj file, focusing on the TargetFramework(s) value to identify patterns indicative of .NET versions (e.g., 'net5.0', 'net8.0').
 .PARAMETER ProjectContent
 A string representing the content of a .csproj file.
 .EXAMPLE
 $Project = Get-Content -Path "C:\path\to\project.csproj"
-$DotNetSdkVersion = ParseProjectFile -ProjectContent $Project
+$DotNetSdkVersion = Get-DotNetSdkVersionFromProjectContent -ProjectContent $Project
 Returns the SDK version (like "8.x") if found; otherwise, it returns `$null`.
 .NOTES
 - The function returns the major version with a ".x" suffix, indicating any minor version (like "8.x").
 - It returns `$null` if no SDK version pattern matches or if an error occurs.
 #>
-function ParseProjectFile {
+function Get-DotNetSdkVersionFromProjectContent {
     param (
         [ValidateNotNullOrEmpty()]
         [string]$ProjectContent

@@ -6,11 +6,11 @@ Recursively searches for all .csproj files starting from the designated director
 .PARAMETER Path
 Directory path from which to begin the search for .csproj files.
 .EXAMPLE
-Find-ProjectFiles -Path "C:\path\to\projects"
+Get-ProjectFilePaths -Path "C:\path\to\projects"
 .NOTES
 Outputs an array containing the paths of all discovered .csproj files.
 #>
-function Find-ProjectFiles {
+function Get-ProjectFilePaths {
     param (
         [Parameter(Mandatory=$true)]
         [ValidateScript({
