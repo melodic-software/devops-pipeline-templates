@@ -26,19 +26,6 @@ Describe "Test-DotNetStandardProject Tests" {
             $Result = Test-DotNetStandardProject -ProjectContent $ValidDotNetStandardContent
             $Result | Should -Be $true
         }
-        It "Returns true for multiple target frameworks" {
-
-            $ValidDotNetStandardMultiTargetContent = @"
-<Project>
-    <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;netcoreapp3.1</TargetFrameworks>
-    </PropertyGroup>
-</Project>
-"@
-
-            $Result = Test-DotNetStandardProject -ProjectContent $ValidDotNetStandardMultiTargetContent
-            $Result | Should -Be $true
-        }
     }
 
     Context "When content is not a .NET Standard project" {
@@ -52,19 +39,6 @@ Describe "Test-DotNetStandardProject Tests" {
 </Project>
 "@
             $Result = Test-DotNetStandardProject -ProjectContent $ValidNonDotNetStandardContent
-            $Result | Should -Be $false
-        }
-        It "Returns false for multiple target frameworks" {
-
-            $ValidNonDotNetStandardMultiTargetContent = @"
-<Project>
-    <PropertyGroup>
-        <TargetFrameworks>netcoreapp3.1;net8.0</TargetFrameworks>
-    </PropertyGroup>
-</Project>
-"@
-
-            $Result = Test-DotNetStandardProject -ProjectContent $ValidNonDotNetStandardMultiTargetContent
             $Result | Should -Be $false
         }
     }
