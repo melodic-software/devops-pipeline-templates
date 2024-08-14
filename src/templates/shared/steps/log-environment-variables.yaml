@@ -1,0 +1,16 @@
+steps:
+  - task: PowerShell@2
+    name: LogEnvironmentVariables
+    displayName: Log Environment Variables
+    condition: succeeded()
+    inputs:
+      targetType: "inline"
+      script: |
+        # Get and sort environment variables by their names
+        $envVariables = Get-ChildItem -Path env: | Sort-Object Name
+        
+        # Log each environment variable
+        foreach ($envVariable in $envVariables) {
+            Write-Output "$($envVariable.Name)=$($envVariable.Value)"
+        }
+      pwsh: true

@@ -26,8 +26,10 @@ steps:
   - template: ../../../shared/steps/nuget-tool-install.yaml
   - template: ./checkout.yaml
 
+  # These must run AFTER the checkout step.
   - ${{ if eq(parameters.includeLogSteps, true) }}:
-      - template: ../../../shared/steps/log-predefined-variables.yaml # Must run AFTER the checkout step.
+      - template: ../../../shared/steps/log-predefined-variables.yaml
+      - template: ../../../shared/steps/log-environment-variables.yaml
 
   - template: ./git-version.yaml
   - template: ./update-release-notes.yaml
