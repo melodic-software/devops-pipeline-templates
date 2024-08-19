@@ -36,6 +36,15 @@ steps:
   - ${{ if eq(parameters.clearNuGetCache, true) }}:
       - template: ./nuget-clear-cache.yaml
 
+  - task: PowerShell@2
+    name: DebugCacheHit
+    displayName: "Debug Cache Hit"
+    inputs:
+      targetType: "inline"
+      script: |
+        Write-Host "NuGetCacheRestored: $(NuGetCacheRestored)"
+    pwsh: true
+
   - task: DotNetCoreCLI@2
     name: NuGetRestoreDotNet
     displayName: NuGet Restore
