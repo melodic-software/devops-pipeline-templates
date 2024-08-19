@@ -15,3 +15,5 @@ variables:
     value: "src/templates/shared/powershell"
   - name: DefaultDomain
     value: "melodicsoftware.com"
+  - name: NuGetCacheRestored
+    value: false
