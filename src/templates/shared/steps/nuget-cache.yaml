@@ -1,3 +1,7 @@
+parameters:
+  path: "$(Pipeline.Workspace)/.nuget/packages"
+  cacheHitVar: "NuGetCacheRestored"
+
 steps:
   # https://learn.microsoft.com/en-us/azure/devops/pipelines/artifacts/caching-nuget?view=azure-devops
   # https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/cache-v2?view=azure-pipelines
@@ -8,5 +12,5 @@ steps:
       restoreKeys: |
         nuget | "$(Agent.OS)"
         nuget
-      path: "$(Pipeline.Workspace)/.nuget/packages"
-      cacheHitVar: "NuGetCacheRestored"
+      path: ${{ parameters.path }}
+      cacheHitVar: ${{ parameters.cacheHitVar }}

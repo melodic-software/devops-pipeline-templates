@@ -16,11 +16,9 @@ steps:
   - ${{ if eq(parameters.useGlobalJson, false) }}:
       - template: ./use-dotnet-sdk.yaml
 
-  - ${{ if and(eq(parameters.useNuGetCache, true), ne(parameters.clearNuGetCache, true)) }}:
-      - template: ../../../shared/steps/nuget-cache.yaml
-
   - template: ./nuget-restore.yaml
     parameters:
+      useNuGetCache: ${{ parameters.useNuGetCache }}
       clearNuGetCache: ${{ parameters.clearNuGetCache }}
 
   - template: ./build.yaml
