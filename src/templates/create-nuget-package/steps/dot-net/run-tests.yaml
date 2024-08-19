@@ -9,7 +9,7 @@ steps:
       command: "test"
       projects: |
         $(TestProjects)
-      arguments: --configuration $(BuildConfiguration) --collect:"$(CodeCoverageFramework)" --verbosity detailed /p:AssemblyOriginatorKeyFile=$(AssemblyOriginatorKeyFile) /p:CollectCoverage=true /p:CoverletOutputFormat=$(CoverletOutputFormat)
+      arguments: --configuration $(BuildConfiguration) --collect:"$(CodeCoverageFramework)" --verbosity detailed --parallel /p:AssemblyOriginatorKeyFile=$(AssemblyOriginatorKeyFile) /p:CollectCoverage=true /p:CoverletOutputFormat=$(CoverletOutputFormat)
       publishTestResults: true # This is optional but recommended for better tracking of test results
 
   # The use of /p:AssemblyOriginatorKeyFile=$(AssemblyOriginatorKeyFile)' is for specific test scenarios.
