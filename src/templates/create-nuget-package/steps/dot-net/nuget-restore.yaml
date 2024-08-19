@@ -43,12 +43,12 @@ steps:
       targetType: "inline"
       script: |
         Write-Host "NuGetCacheRestored: $(NuGetCacheRestored)"
-    pwsh: true
+      pwsh: true
 
   - task: DotNetCoreCLI@2
     name: NuGetRestoreDotNet
     displayName: NuGet Restore
-    condition: ne(variables.NuGetCacheRestored, true)
+    condition: and(succeeded(), ne(variables.NuGetCacheRestored, true))
     inputs:
       command: restore
       #projects: $(SelfRepositoryFolder)/**/*.csproj
