@@ -1,5 +1,5 @@
 parameters:
-  path: "$(Pipeline.Workspace)/.nuget/packages"
+  path: "$(NuGetRestoreDirectory)"
   cacheHitVar: "NuGetCacheRestored"
 
 steps:

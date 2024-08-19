@@ -36,28 +36,16 @@ steps:
   - ${{ if eq(parameters.clearNuGetCache, true) }}:
       - template: ./nuget-clear-cache.yaml
 
-  # - task: DotNetCoreCLI@2
-  #   name: NuGetRestoreDotNet
-  #   displayName: NuGet Restore
-  #   condition: and(succeeded(), ne(variables.NuGetCacheRestored, true))
-  #   inputs:
-  #     command: restore
-  #     projects: |
-  #       $(SelfRepositoryFolder)/**/$(ProjectName).csproj
-  #       $(TestProjects)
-  #     feedsToUse: $(FeedsToUse)
-  #     nugetConfigPath: $(NuGetConfigPath)
-  #     noCache: true
-
-  - task: NuGetCommand@2
+  - task: DotNetCoreCLI@2
     name: NuGetRestoreDotNet
     displayName: NuGet Restore
     condition: and(succeeded(), ne(variables.NuGetCacheRestored, true))
     inputs:
-      command: "restore"
-      restoreSolution: |
+      command: restore
+      projects: |
         $(SelfRepositoryFolder)/**/$(ProjectName).csproj
         $(TestProjects)
       feedsToUse: $(FeedsToUse)
       nugetConfigPath: $(NuGetConfigPath)
+      restoreDirectory: $(NuGetRestoreDirectory)
       #noCache: true

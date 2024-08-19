@@ -15,3 +15,5 @@ variables:
     value: "https://packages.melodicsoftware.com/nuget/main-nuget/v3/index.json"
   - name: PowerShellScriptsDirectory
     value: "src/templates/create-nuget-package/powershell"
+  - name: NuGetRestoreDirectory
+    value: "$(Pipeline.Workspace)/.nuget/packages"
