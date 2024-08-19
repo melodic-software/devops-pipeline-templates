@@ -49,6 +49,6 @@ steps:
       feedsToUse: $(FeedsToUse)
       nugetConfigPath: $(NuGetConfigPath)
       # https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-restore
-      restoreArguments: '--locked-mode' # Required for NuGet package caching
+      #restoreArguments: '--locked-mode' # Required for NuGet package caching
       restoreDirectory: $(NuGetRestoreDirectory)
       #noCache: true
