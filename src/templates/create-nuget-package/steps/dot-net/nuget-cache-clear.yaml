@@ -1,0 +1,15 @@
+- task: PowerShell@2
+    name: ClearNuGetCache
+    displayName: 'Clear NuGet Cache'
+    condition: succeeded()
+    continueOnError: true
+    inputs:
+      targetType: 'inline'
+      script: |
+        try {
+          dotnet nuget locals all --clear -v n
+          Write-Host "NuGet cache cleared"
+        } catch {
+          Write-Host "Failed to clear NuGet cache: $_"
+        }
+      pwsh: true

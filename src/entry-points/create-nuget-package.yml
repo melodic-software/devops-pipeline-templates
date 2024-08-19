@@ -39,6 +39,14 @@ parameters:
     displayName: Use Global JSON
     type: boolean
     default: true
+  - name: useNuGetCache
+    displayName: Use NuGet Cache
+    type: boolean
+    default: true
+  - name: clearNuGetCache
+    displayName: Clear NuGet Cache
+    type: boolean
+    default: false
   - name: signAssembly
     displayName: Sign Assembly
     type: boolean
@@ -138,6 +146,8 @@ jobs:
           targetFramework: ${{ parameters.targetFramework }}
           dotNetSdkVersion: ${{ parameters.dotNetSDKVersion }} # TODO: rename to dotNetSdkVersion
           useGlobalJson: ${{ parameters.useGlobalJson }}
+          useNuGetCache: ${{ parameters.useNuGetCache }}
+          clearNuGetCache: ${{ parameters.clearNuGetCache }}
           includeAzureDevOpsPush: ${{ parameters.includeAzureDevOpsPush }}
           azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}
           includeGitHubPush: ${{ parameters.includeGitHubPush }}

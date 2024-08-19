@@ -1,3 +1,6 @@
+parameters:
+  clearNuGetCache: false
+
 steps:
   # https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/nuget-authenticate-v1?view=azure-pipelines
   - task: NuGetAuthenticate@1
@@ -26,26 +29,13 @@ steps:
         }
       pwsh: true
 
-  # - task: PowerShell@2
-  #   name: ClearNuGetCache
-  #   displayName: 'Clear NuGet Cache'
-  #   condition: succeeded()
-  #   continueOnError: true
-  #   inputs:
-  #     targetType: 'inline'
-  #     script: |
-  #       try {
-  #         dotnet nuget locals all --clear
-  #         Write-Host "NuGet cache cleared"
-  #       } catch {
-  #         Write-Host "Failed to clear NuGet cache: $_"
-  #       }
-  #     pwsh: true
+  - ${{ if eq(parameters.clearNuGetCache, true) }}:
+      - template: ./nuget-clear-cache.yaml
 
   - task: DotNetCoreCLI@2
     name: NuGetRestoreDotNet
     displayName: NuGet Restore
-    condition: succeeded()
+    condition: and(succeeded(), ne(variables.NuGetCacheRestored, true))
     inputs:
       command: restore
       projects: |
