@@ -2,7 +2,6 @@ steps:
   # https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/dotnet-core-cli-v2
   # https://learn.microsoft.com/en-us/nuget/reference/msbuild-targets#pack-target
   # https://www.frakkingsweet.com/adding-metadata-to-nuget-packages-in-azure-devops-pipelines/
-
   - task: DotNetCoreCLI@2
     displayName: NuGet Pack
     condition: succeeded()
