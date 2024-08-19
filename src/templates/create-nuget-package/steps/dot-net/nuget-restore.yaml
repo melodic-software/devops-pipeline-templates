@@ -42,10 +42,10 @@ steps:
     condition: and(succeeded(), ne(variables.NuGetCacheRestored, true))
     inputs:
       command: restore
-      projects: $(SelfRepositoryFolder)/**/*.csproj
-      # projects: |
-      #   $(SelfRepositoryFolder)/**/$(ProjectName).csproj
-      #   $(TestProjects)
+      #projects: $(SelfRepositoryFolder)/**/*.csproj
+      projects: |
+        $(SelfRepositoryFolder)/**/$(ProjectName).csproj
+        $(TestProjects)
       feedsToUse: $(FeedsToUse)
       nugetConfigPath: $(NuGetConfigPath)
       # https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-restore
