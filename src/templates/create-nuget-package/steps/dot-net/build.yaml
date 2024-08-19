@@ -12,6 +12,13 @@ steps:
         # Initialize with static values.
         $BuildArguments = "--configuration $(BuildConfiguration) --no-restore"
 
+        # https://learn.microsoft.com/en-us/azure/devops/pipelines/artifacts/caching-nuget?view=azure-devops
+        # https://learn.microsoft.com/en-us/nuget/consume-packages/package-references-in-project-files
+        # https://devblogs.microsoft.com/nuget/enable-repeatable-package-restores-using-a-lock-file
+        # TODO: This will have to be enabled if attempting to use pipeline cache for NuGet packages with .NET Framework projects.
+        # This property could alternatively be enabled in a Directory.Build.props file or the .csproj itself.
+        #$BuildArguments += " -p:RestoreLockedMode=true"
+
         # The following are dynamic properties.
 
         if ($SignAssembly) {
