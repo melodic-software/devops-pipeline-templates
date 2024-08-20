@@ -45,7 +45,7 @@ steps:
           $TrimmedTestProjectsArray = $RawTestProjectsArray | ForEach-Object { $_.Trim() }
 
           # Define the path prefix.
-          $TestProjectPathPrefix = "**/$(SelfRepositoryFolder)/test*/**/"
+          $TestProjectPathPrefix = "**/$(SelfRepositoryFolder)/**/"
 
           # Initialize the hash table to enforce unique formatted paths.
           $UniqueFormattedProjectsHashTable = @{}
