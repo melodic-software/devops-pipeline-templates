@@ -142,7 +142,7 @@ steps:
 
   - task: PowerShell@2
     name: UpdateBuildConfigurationForPreRelease
-    displayName: "Update Build Configuration for Pre-Release"
+    displayName: "Update Build Configuration For Pre-Release"
     condition: succeeded()
     inputs:
       targetType: "inline"
