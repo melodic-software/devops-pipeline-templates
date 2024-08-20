@@ -1,10 +1,36 @@
 steps:
   # https://learn.microsoft.com/en-us/azure/devops/pipelines/artifacts/caching-nuget?view=azure-devops
   # https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/cache-v2?view=azure-pipelines
+  - task: PowerShell@2
+    name: JoinTestProjects
+    displayName: "Join Test Project Paths"
+    inputs:
+      targetType: "inline"
+      script: |
+        $TestProjectsArray = "$(TestProjects)"
+
+        if ($TestProjectsArray -eq '["*.csproj"]' -or [string]::IsNullOrEmpty($TestProjectsArray)) {
+          # Handle default case or empty string
+          $JoinedPaths = "**/*.csproj"
+        } else {
+          # Handle specific projects
+          $TestProjectsArray = $TestProjectsArray -replace '[\[\]\"]', ''  # Remove brackets and quotes
+          $TestProjects = $TestProjectsArray -split ','
+          $JoinedPaths = $TestProjects | ForEach-Object { "**/$($_)/packages.lock.json" } -join ' | '
+        }
+
+        # Define the full cache key
+        $CacheKey = "nuget | $(Agent.OS) | **/$(SelfRepositoryFolder)/**/$(ProjectName)/packages.lock.json | $JoinedPaths,!**/bin/**,!**/obj/**"
+
+        # Log the cache key
+        Write-Host "Cache Key: $CacheKey"
+        Write-Host "##vso[task.setvariable variable=ComputedCacheKey]$CacheKey"
+    pwsh: true
+
   - task: Cache@2
     displayName: NuGet Cache
     inputs:
-      key: 'nuget | "$(Agent.OS)" | **/packages.lock.json,!**/bin/**,!**/obj/**'
+      key: "$(ComputedCacheKey)"
       restoreKeys: |
         nuget | "$(Agent.OS)"
         nuget
