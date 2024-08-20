@@ -33,6 +33,7 @@ steps:
           "AZUREDEVOPSPACKAGESYMBOLSFILEPATH" = "AzureDevopsPackageSymbolsFilePath"
           "BUILDCONFIGURATION" = "BuildConfiguration"
           "BUILDPLATFORM" = "BuildPlatform"
+          "DRYRUN" = "DryRun"
           "GITHUBPACKAGESERVICEINDEX" = "GitHubPackageServiceIndex"
           "INCLUDESYMBOLS" = "IncludeSymbols"
           "NOBUILDBEFOREPACK" = "NoBuildBeforePack"
@@ -48,8 +49,8 @@ steps:
           "SIGNASSEMBLY" = "SignAssembly"
           "SYMBOLPACKAGEFORMAT" = "SymbolPackageFormat"
           "TARGETFRAMEWORK" = "TargetFramework"
-          "TESTMODE" = "TestMode"
           "TESTPROJECTS" = "TestProjects"
+          "TESTSPATHPATTERN" = "TestsPathPattern"
           "VIRTUALMACHINEIMAGE" = "VirtualMachineImage"
         }
 

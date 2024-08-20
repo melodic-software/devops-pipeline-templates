@@ -75,10 +75,11 @@ steps:
         # -- FINAL PROJECT LIST ----------------------------
         # --------------------------------------------------
         $FinalProjectList = "**/$(SelfRepositoryFolder)/**/$(ProjectName).csproj"
+        $TestsPathPattern = "$(TestsPathPattern)"
 
         if ($FormattedTestProjects -ne '') {
           if ($FormattedTestProjects -eq "*.csproj") {
-            $FinalProjectList += "`n**/tests*/*.csproj"
+            $FinalProjectList += "`n$TestsPathPattern/*.csproj"
           } else {
             $FormattedTestProjectsArray = $FormattedTestProjects -split "`n"
             foreach ($TestProject in $FormattedTestProjectsArray) {

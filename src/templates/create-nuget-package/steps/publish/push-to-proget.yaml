@@ -7,7 +7,7 @@ steps:
         succeeded(),
         ne(variables['ProGetPackageServiceIndex'], ''),
         ne(variables['ProGetPackageApiKey'], ''),
-        eq(variables['TestMode'], 'false'),
+        eq(variables['DryRun'], 'false'),
         ne(variables['Build.Reason'], 'PullRequest')
       )
     inputs:

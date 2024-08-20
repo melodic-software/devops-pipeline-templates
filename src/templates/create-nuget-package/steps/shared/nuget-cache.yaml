@@ -7,20 +7,22 @@ steps:
       script: |
         $SelfRepositoryFolder = "$(SelfRepositoryFolder)"
         $TestProjectsArray = "$(TestProjects)"
+        $TestsPathPattern = "$(TestsPathPattern)"
         $ProjectName = "$(ProjectName)"
 
-        Write-Host "Debug: SelfRepositoryFolder = $SelfRepositoryFolder"
-        Write-Host "Debug: TestProjectsArray = $TestProjectsArray"
-        Write-Host "Debug: ProjectName = $ProjectName"
+        Write-Host "SelfRepositoryFolder: $SelfRepositoryFolder"
+        Write-Host "ProjectName: $ProjectName"
+        Write-Host "TestProjectsArray: $TestProjectsArray"
+        Write-Host "TestsPathPattern: $TestsPathPattern"
 
         $ProjectPath = "**/$SelfRepositoryFolder/**/$ProjectName/**/packages.lock.json"
-        Write-Host "Debug: ProjectPath = $ProjectPath"
+        Write-Host "ProjectPath: $ProjectPath"
 
         $TestProjectPaths = $null
 
         if (-not [string]::IsNullOrWhiteSpace($TestProjectsArray)) {
           if ($TestProjectsArray -eq '["*.csproj"]') {
-            $TestProjectPaths = "**/$SelfRepositoryFolder/test*/**/packages.lock.json"
+            $TestProjectPaths = "**/$SelfRepositoryFolder/$TestsPathPattern/packages.lock.json"
           } else {
             $TestProjectsArray = $TestProjectsArray -replace '[\[\]\"]', ''  
             $TestProjects = $TestProjectsArray -split ','
@@ -36,7 +38,7 @@ steps:
           }
         }
 
-        Write-Host "Debug: TestProjectPaths = $TestProjectPaths"
+        Write-Host "TestProjectPaths: $TestProjectPaths"
 
         # Define the full cache key
         if ($TestProjectPaths) {

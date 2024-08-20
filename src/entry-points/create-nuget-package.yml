@@ -31,7 +31,7 @@ parameters:
       - "DotNetCore"
       - "DotNetStandard"
       - "DotNetFramework"
-  - name: dotNetSDKOptions # TODO: rename to dotNetSdkVersion
+  - name: dotNetSdkOptions
     displayName: .NET SDK Options
     type: object
     default:
@@ -63,11 +63,15 @@ parameters:
     default:
       runTests: true
       testProjects: ["*.csproj"]
-      testMode: false
+      testsPathPattern: "**/tests*/**"
   - name: includeLogSteps
     displayName: Include Log Steps
     type: boolean
-    default: true
+    default: false
+  - name: dryRun
+    displayName: Dry Run
+    type: boolean
+    default: false
 
 variables:
   - name: VirtualMachineImage
@@ -92,8 +96,10 @@ variables:
     value: ${{ parameters.packageOptions.releaseNotes }}
   - name: RunTests
     value: ${{ parameters.testOptions.runTests }}
-  - name: TestMode
-    value: ${{ parameters.testOptions.testMode }}
+  - name: TestsPathPattern
+    value: ${{ parameters.testOptions.testsPathPattern }}
+  - name: DryRun
+    value: ${{ parameters.testOptions.dryRun }}
   - group: GlobalSecrets # Must be defined as a variable group in the Azure DevOps UI
   - template: "../templates/shared/variables/global-variables.yaml"
   - template: "../templates/create-nuget-package/variables/create-nuget-package-variables.yaml"
@@ -106,8 +112,8 @@ jobs:
       - template: ../templates/create-nuget-package/steps/create-nuget-package-steps.yaml
         parameters:
           targetFramework: ${{ parameters.targetFramework }}
-          dotNetSdkVersion: ${{ parameters.dotNetSDKOptions.sdkVersion }}
-          useGlobalJson: ${{ parameters.dotNetSDKOptions.useGlobalJson }}
+          dotNetSdkVersion: ${{ parameters.dotNetSdkOptions.sdkVersion }}
+          useGlobalJson: ${{ parameters.dotNetSdkOptions.useGlobalJson }}
           useNuGetCache: ${{ parameters.nuGetOptions.useCache }}
           clearNuGetCache: ${{ parameters.nuGetOptions.clearCache }}
           includeAzureDevOpsPush: ${{ parameters.packageOptions.azureDevOpsPush }}
@@ -117,7 +123,7 @@ jobs:
           proGetPackageServiceIndex: ${{ parameters.packageOptions.proGetServiceIndex }}
           testProjects: ${{ parameters.testOptions.testProjects }}
           includeLogSteps: ${{ parameters.includeLogSteps }}
-          
+
 # TODO: Rename this file exension to the industry standard .yaml over .yml
 # This will be a breaking change to all clients, so it may not be worth it.
 # All other internal files have been renamed.

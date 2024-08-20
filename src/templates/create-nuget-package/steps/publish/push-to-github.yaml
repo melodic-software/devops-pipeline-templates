@@ -7,7 +7,7 @@ steps:
         succeeded(),
         ne(variables['GitHubPackageServiceIndex'], ''),
         ne(variables['GitHubPackageApiKey'], ''),
-        eq(variables['TestMode'], 'false'),
+        eq(variables['DryRun'], 'false'),
         ne(variables['Build.Reason'], 'PullRequest')
       )
     inputs:
