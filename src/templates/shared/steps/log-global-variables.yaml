@@ -20,20 +20,20 @@ steps:
           }
         }
 
-        # Hashtables mapping environment variable names to their Azure DevOps pipeline name
+        # Hashtables mapping environment variable names to their Azure DevOps pipeline name.
 
         $VariableDisplayNames = [ordered]@{
+          "BUILDTEMPLATEBRANCHNAME" = "BuildTemplateBranchName"
+          "BUILDTEMPLATEREPOSITORYFOLDER" = "BuildTemplateRepositoryFolder"
           "COMPANYNAME" = "CompanyName"
           "NUGETTOOLINSTALLVERSIONSPEC" = "NugetToolInstallVersionSpec"
           "SELFREPOSITORYFOLDER" = "SelfRepositoryFolder"
-          "BUILDTEMPLATEREPOSITORYFOLDER" = "BuildTemplateRepositoryFolder"
-          "BUILDTEMPLATEBRANCHNAME" = "BuildTemplateBranchName"
           "SHAREDTEMPLATEDIRECTORY" = "SharedTemplateDirectory"
           "SHAREDTEMPLATEPOWERSHELLDIRECTORY" = "SharedTemplatePowerShellDirectory"
         }
 
         $DynamicVariableDisplayNames = [ordered]@{
-          # These are dynamically determined in an initial script step when the pipeline runs
+          # These are dynamically determined in an initial script step when the pipeline runs.
           "ISWINDOWS" = "IsWindows"
         }
 

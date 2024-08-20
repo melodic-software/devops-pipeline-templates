@@ -1,17 +1,17 @@
 variables:
-  - name: CompanyName
-    value: "Melodic Software"
-  - name: NugetToolInstallVersionSpec
-    value: "6.x"
-  - name: SelfRepositoryFolder # This refers to the "self" repository checkout
-    value: "main-repo"
-  - name: BuildTemplateRepositoryFolder
-    value: "build-template-repo"
   - name: BuildTemplateBranchName
     value: "main"
+  - name: BuildTemplateRepositoryFolder
+    value: "build-template-repo"
+  - name: CompanyName
+    value: "Melodic Software"
+  - name: DefaultDomain
+    value: "melodicsoftware.com"
+  - name: NugetToolInstallVersionSpec
+    value: "6.x"
+  - name: SelfRepositoryFolder
+    value: "main-repo"
   - name: SharedTemplateDirectory
     value: "src/templates/shared"
   - name: SharedTemplatePowerShellDirectory
     value: "src/templates/shared/powershell"
-  - name: DefaultDomain
-    value: "melodicsoftware.com"
