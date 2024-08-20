@@ -74,7 +74,7 @@ steps:
         # --------------------------------------------------
         # -- FINAL PROJECT LIST ----------------------------
         # --------------------------------------------------
-        $FinalProjectList = "**/$(SelfRepositoryFolder)/$(ProjectName).csproj"
+        $FinalProjectList = "**/$(SelfRepositoryFolder)/**/$(ProjectName).csproj"
 
         if ($EscapedFormattedTestProjects -eq '') {
           $FinalProjectList += "`n**/tests*/*.csproj"
