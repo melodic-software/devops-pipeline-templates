@@ -99,7 +99,7 @@ variables:
   - name: TestsPathPattern
     value: ${{ parameters.testOptions.testsPathPattern }}
   - name: DryRun
-    value: ${{ parameters.testOptions.dryRun }}
+    value: ${{ parameters.dryRun }}
   - group: GlobalSecrets # Must be defined as a variable group in the Azure DevOps UI
   - template: "../templates/shared/variables/global-variables.yaml"
   - template: "../templates/create-nuget-package/variables/create-nuget-package-variables.yaml"
