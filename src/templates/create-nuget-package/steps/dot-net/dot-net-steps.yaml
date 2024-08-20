@@ -3,13 +3,16 @@ parameters:
   useGlobalJson: false
   useNuGetCache: true
   clearNuGetCache: false
+  includeLogSteps: false
 
 steps:
   - ${{ if and(eq(parameters.dotNetSdkVersion, ''), eq(parameters.useGlobalJson, false)) }}:
       - template: ./extract-dotnet-version.yaml
 
   - template: ./set-assembly-metadata.yaml
-  - template: ../shared/print-project-content.yaml
+
+  - ${{ if eq(parameters.includeLogSteps, true) }}:
+      - template: ../shared/print-project-content.yaml
 
   - ${{ if eq(parameters.useGlobalJson, true) }}:
       - template: ./use-dotnet-sdk-global.yaml

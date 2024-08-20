@@ -26,9 +26,12 @@ steps:
           useGlobalJson: ${{ parameters.useGlobalJson }}
           useNuGetCache: ${{ parameters.useNuGetCache }}
           clearNuGetCache: ${{ parameters.clearNuGetCache }}
+          includeLogSteps: ${{ parameters.includeLogSteps }}
 
   - ${{ if eq(parameters.targetFramework, 'DotNetFramework') }}:
       - template: ./dot-net-framework/dot-net-framework-steps.yaml
+        parameters:
+          includeLogSteps: ${{ parameters.includeLogSteps }}
 
   - template: ./publish/publish-steps.yaml
     parameters:

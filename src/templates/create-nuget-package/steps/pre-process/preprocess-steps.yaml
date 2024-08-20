@@ -32,5 +32,8 @@ steps:
       - template: ../../../shared/steps/log-environment-variables.yaml
 
   - template: ./git-version.yaml
+    parameters:
+      includeLogSteps: ${{ parameters.includeLogSteps }}
+
   - template: ./update-release-notes.yaml
   - template: ./download-signing-key.yaml

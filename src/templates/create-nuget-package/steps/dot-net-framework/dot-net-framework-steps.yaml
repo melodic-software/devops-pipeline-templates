@@ -1,6 +1,12 @@
+parameters:
+  includeLogSteps: false
+
 steps:
   - template: ./set-assembly-metadata.yaml
-  - template: ../shared/print-project-content.yaml
+
+  - ${{ if eq(parameters.includeLogSteps, true) }}:
+      - template: ../shared/print-project-content.yaml
+
   - template: ./nuget-restore.yaml
   - template: ./build.yaml
   - template: ./run-tests.yaml

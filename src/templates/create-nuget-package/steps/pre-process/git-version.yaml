@@ -1,13 +1,8 @@
 parameters:
-  - name: workingDirectory
-    type: string
-    default: $(Build.SourcesDirectory)/$(SelfRepositoryFolder)
-  - name: configFilePath
-    type: string
-    default: $(Build.SourcesDirectory)/$(BuildTemplateRepositoryFolder)/src/templates/create-nuget-package/git-version/GitVersion.yaml
-  - name: gitVersionSpec
-    type: string
-    default: 6.x
+  workingDirectory: "$(Build.SourcesDirectory)/$(SelfRepositoryFolder)"
+  configFilePath: "$(Build.SourcesDirectory)/$(BuildTemplateRepositoryFolder)/src/templates/create-nuget-package/git-version/GitVersion.yaml"
+  gitVersionSpec: "6.x"
+  includeLogSteps: false
 
 steps:
   - task: PowerShell@2
@@ -43,12 +38,13 @@ steps:
     condition: failed()
     continueOnError: false
 
-  - task: gitversion/command@3.0.0
-    displayName: Log GitVersion Config
-    inputs:
-      targetPath: ${{ parameters.workingDirectory }}
-      disableShallowCloneCheck: false
-      arguments: "/config ${{ parameters.configFilePath }} /showConfig"
+  - ${{ if eq(parameters.includeLogSteps, true) }}:
+      - task: gitversion/command@3.0.0
+        displayName: Log GitVersion Config
+        inputs:
+          targetPath: ${{ parameters.workingDirectory }}
+          disableShallowCloneCheck: false
+          arguments: "/config ${{ parameters.configFilePath }} /showConfig"
 
   # https://github.com/GitTools/actions/blob/main/docs/examples/azure/gitversion/execute.md
   - task: gitversion/execute@3.0.0
@@ -61,37 +57,38 @@ steps:
       useConfigFile: true
       configFilePath: ${{ parameters.configFilePath }}
 
-  - task: PowerShell@2
-    name: DisplayGitVersionVariables
-    displayName: Display GitVersion Variables
-    condition: succeeded()
-    inputs:
-      targetType: "inline"
-      script: |
-        Write-Output "Major: $(Major)"
-        Write-Output "Minor: $(Minor)"
-        Write-Output "Patch: $(Patch)"
-        Write-Output "PreReleaseTag: $(PreReleaseTag)"
-        Write-Output "PreReleaseTagWithDash: $(PreReleaseTagWithDash)"
-        Write-Output "PreReleaseLabel: $(PreReleaseLabel)"
-        Write-Output "PreReleaseNumber: $(PreReleaseNumber)"
-        Write-Output "WeightedPreReleaseNumber: $(WeightedPreReleaseNumber)"
-        Write-Output "BuildMetaData: $(BuildMetaData)"
-        Write-Output "FullBuildMetaData: $(FullBuildMetaData)"
-        Write-Output "MajorMinorPatch: $(MajorMinorPatch)"
-        Write-Output "SemVer: $(SemVer)"
-        Write-Output "AssemblySemVer: $(AssemblySemVer)"
-        Write-Output "AssemblySemFileVer: $(AssemblySemFileVer)"
-        Write-Output "FullSemVer: $(FullSemVer)"
-        Write-Output "InformationalVersion: $(InformationalVersion)"
-        Write-Output "BranchName: $(BranchName)"
-        Write-Output "Sha: $(Sha)"
-        Write-Output "ShortSha: $(ShortSha)"
-        Write-Output "VersionSourceSha: $(VersionSourceSha)"
-        Write-Output "CommitsSinceVersionSource: $(CommitsSinceVersionSource)"
-        Write-Output "UncommittedChanges: $(UncommittedChanges)"
-        Write-Output "CommitDate: $(CommitDate)"
-      pwsh: true
+  - ${{ if eq(parameters.includeLogSteps, true) }}:
+      - task: PowerShell@2
+        name: DisplayGitVersionVariables
+        displayName: Display GitVersion Variables
+        condition: succeeded()
+        inputs:
+          targetType: "inline"
+          script: |
+            Write-Output "Major: $(Major)"
+            Write-Output "Minor: $(Minor)"
+            Write-Output "Patch: $(Patch)"
+            Write-Output "PreReleaseTag: $(PreReleaseTag)"
+            Write-Output "PreReleaseTagWithDash: $(PreReleaseTagWithDash)"
+            Write-Output "PreReleaseLabel: $(PreReleaseLabel)"
+            Write-Output "PreReleaseNumber: $(PreReleaseNumber)"
+            Write-Output "WeightedPreReleaseNumber: $(WeightedPreReleaseNumber)"
+            Write-Output "BuildMetaData: $(BuildMetaData)"
+            Write-Output "FullBuildMetaData: $(FullBuildMetaData)"
+            Write-Output "MajorMinorPatch: $(MajorMinorPatch)"
+            Write-Output "SemVer: $(SemVer)"
+            Write-Output "AssemblySemVer: $(AssemblySemVer)"
+            Write-Output "AssemblySemFileVer: $(AssemblySemFileVer)"
+            Write-Output "FullSemVer: $(FullSemVer)"
+            Write-Output "InformationalVersion: $(InformationalVersion)"
+            Write-Output "BranchName: $(BranchName)"
+            Write-Output "Sha: $(Sha)"
+            Write-Output "ShortSha: $(ShortSha)"
+            Write-Output "VersionSourceSha: $(VersionSourceSha)"
+            Write-Output "CommitsSinceVersionSource: $(CommitsSinceVersionSource)"
+            Write-Output "UncommittedChanges: $(UncommittedChanges)"
+            Write-Output "CommitDate: $(CommitDate)"
+          pwsh: true
 
   - task: PowerShell@2
     name: SetAssemblyVersionVariables
