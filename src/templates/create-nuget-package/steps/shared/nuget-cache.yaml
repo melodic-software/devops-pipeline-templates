@@ -1,0 +1,48 @@
+steps:
+  - task: PowerShell@2
+    name: CreateNuGetCacheKey
+    displayName: "Create NuGet CacheKey"
+    inputs:
+      targetType: "inline"
+      script: |
+        $SelfRepositoryFolder = "$(SelfRepositoryFolder)"
+        $TestProjectsArray = "$(TestProjects)"
+        
+        if ($TestProjectsArray -eq '["*.csproj"]' -or [string]::IsNullOrEmpty($TestProjectsArray)) {
+          # Handle the wildcard case
+          $JoinedPaths = "**/$SelfRepositoryFolder/test*/**/packages.lock.json"
+        } else {
+          # Handle specific projects
+          # Remove brackets and quotes
+          $TestProjectsArray = $TestProjectsArray -replace '[\[\]\"]', ''  
+          $TestProjects = $TestProjectsArray -split ','
+
+          # Generate paths for each project
+          $JoinedPaths = $TestProjects | ForEach-Object {
+            $_ = $_.Trim()
+            # Remove .csproj extension
+            $_ = $_ -replace '\.csproj$', ''
+            "**/$SelfRepositoryFolder/test*/**/$($_)/**/packages.lock.json"
+          } -join ' | '
+        }
+
+        # Define the full cache key
+        $NuGetCacheKey = "nuget | $(Agent.OS) | **/$SelfRepositoryFolder/**/$(ProjectName)/packages.lock.json | $JoinedPaths,!**/bin/**,!**/obj/**"
+
+        # Log the cache key
+        Write-Host "Cache Key: $NuGetCacheKey"
+        Write-Host "##vso[task.setvariable variable=NuGetCacheKey]$NuGetCacheKey"
+      pwsh: true
+
+  # https://learn.microsoft.com/en-us/azure/devops/pipelines/artifacts/caching-nuget?view=azure-devops
+  # https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/cache-v2?view=azure-pipelines
+  - task: Cache@2
+    displayName: NuGet Cache
+    inputs:
+      key: "$(NuGetCacheKey)"
+      #key: 'nuget | "$(Agent.OS)" | **/packages.lock.json,!**/bin/**,!**/obj/**'
+      restoreKeys: |
+        nuget | "$(Agent.OS)"
+        nuget
+      path: "$(NuGetRestoreDirectory)"
+      cacheHitVar: "NuGetCacheRestored"
