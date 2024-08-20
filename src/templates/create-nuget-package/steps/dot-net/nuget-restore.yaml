@@ -48,7 +48,7 @@ steps:
   - task: DotNetCoreCLI@2
     name: NuGetRestoreDotNet
     displayName: NuGet Restore
-    condition: and(succeeded(), or(ne(variables.NuGetCacheRestored, true), eq(variables.NuGetCacheRestored, 'inexact')))
+    condition: and(succeeded(), ne(variables.NuGetCacheRestored, true), ne(variables.NuGetCacheRestored, 'inexact'))
     inputs:
       command: restore
       #projects: $(SelfRepositoryFolder)/**/*.csproj
