@@ -132,8 +132,7 @@ jobs:
           includeGitHubPush: ${{ coalesce(parameters.packageOptions.gitHubPush, false) }}
           includeProGetPush: ${{ coalesce(parameters.packageOptions.proGetPush, false) }}
           proGetPackageServiceIndex: ${{ coalesce(parameters.packageOptions.proGetServiceIndex, '') }}
-          testProjects: ${{ coalesce(parameters.testOptions.testProjects, ['*.csproj']) }}
+          testProjects: ${{ parameters.testOptions.testProjects }}
           includeLogSteps: ${{ coalesce(parameters.includeLogSteps, false) }}
-
 # TODO: Eventually we'll want to remove all older .NET framework paths
 # It will help simplify and streamline things.
