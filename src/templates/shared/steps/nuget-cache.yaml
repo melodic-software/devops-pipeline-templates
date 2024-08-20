@@ -8,7 +8,7 @@ steps:
       targetType: "inline"
       script: |
         $TestProjectsArray = "$(TestProjects)"
-
+        
         if ($TestProjectsArray -eq '["*.csproj"]' -or [string]::IsNullOrEmpty($TestProjectsArray)) {
           # Handle default case or empty string
           $JoinedPaths = "**/*.csproj"
@@ -16,7 +16,7 @@ steps:
           # Handle specific projects
           $TestProjectsArray = $TestProjectsArray -replace '[\[\]\"]', ''  # Remove brackets and quotes
           $TestProjects = $TestProjectsArray -split ','
-          $JoinedPaths = $TestProjects | ForEach-Object { "**/$($_)/packages.lock.json" } -join ' | '
+          $JoinedPaths = ($TestProjects | ForEach-Object { "**/$($_)/packages.lock.json" }) -join ' | '
         }
 
         # Define the full cache key
