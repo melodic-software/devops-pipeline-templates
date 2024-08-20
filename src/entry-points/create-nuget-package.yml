@@ -31,77 +31,39 @@ parameters:
       - "DotNetCore"
       - "DotNetStandard"
       - "DotNetFramework"
-  - name: dotNetSDKVersion # TODO: rename to dotNetSdkVersion
-    displayName: .NET SDK Version
-    type: string
-    default: ""
-  - name: useGlobalJson
-    displayName: Use Global JSON
-    type: boolean
-    default: true
-  - name: useNuGetCache
-    displayName: Use NuGet Cache
-    type: boolean
-    default: false
-  - name: clearNuGetCache
-    displayName: Clear NuGet Cache
-    type: boolean
-    default: false
-  - name: signAssembly
-    displayName: Sign Assembly
-    type: boolean
-    default: true
-  - name: includeSymbols
-    displayName: Include Symbols
-    type: boolean
-    default: true
-  - name: symbolPackageFormat
-    displayName: Symbol Package Format
-    type: string
-    default: "snupkg"
-    values:
-      - "symbols.nupkg"
-      - "snupkg"
-  - name: noBuildBeforePack
-    displayName: No Build Before Pack
-    type: boolean
-    default: true
-  - name: releaseNotes
-    displayName: Release Notes
-    type: string
-    default: ""
-  - name: includeAzureDevOpsPush # Push package to an Azure DevOps feed?
-    displayName: Include Azure DevOps Push
-    type: boolean
-    default: true
-  - name: azureDevOpsPackageFeed
-    displayName: Azure DevOps Package Feed
-    type: string
-    default: "" # If specified, the default AzureDevOpsPackageFeed global variable will be overwritten.
-  - name: includeGitHubPush # Push to GitHub packages?
-    displayName: Include GitHub Push
-    type: boolean
-    default: false
-  - name: includeProGetPush # Push packages to ProGet server?
-    displayName: Include ProGet Push
-    type: boolean
-    default: false
-  - name: proGetPackageServiceIndex
-    displayName: ProGet Package Service Index
-    type: string
-    default: "" # If specified, the default ProGetPackageServiceIndex global variable will be overwritten.
-  - name: runTests
-    displayName: Run Tests
-    type: boolean
-    default: true
-  - name: testProjects
-    displayName: Test Projects
+  - name: dotNetSDKOptions # TODO: rename to dotNetSdkVersion
+    displayName: .NET SDK Options
     type: object
-    default: ["*.csproj"] # Allow for providing specific .csproj names in the standard "test"/"tests" folder in the main repo root.
-  - name: testMode # Allow for skipping package push steps, symbol publication, etc.
-    displayName: Test Mode
-    type: boolean
-    default: false
+    default:
+      sdkVersion: ""
+      useGlobalJson: true
+  - name: nuGetOptions
+    displayName: NuGet Options
+    type: object
+    default:
+      useCache: false
+      clearCache: false
+  - name: packageOptions
+    displayName: Package Options
+    type: object
+    default:
+      signAssembly: true
+      includeSymbols: true
+      symbolPackageFormat: "snupkg"
+      noBuildBeforePack: true
+      releaseNotes: ""
+      azureDevOpsPush: true
+      azureDevOpsFeed: ""
+      gitHubPush: false
+      proGetPush: false
+      proGetServiceIndex: ""
+  - name: testOptions
+    displayName: Test Options
+    type: object
+    default:
+      runTests: true
+      testProjects: ["*.csproj"]
+      testMode: false
   - name: includeLogSteps
     displayName: Include Log Steps
     type: boolean
@@ -119,19 +81,19 @@ variables:
   - name: TargetFramework
     value: ${{ parameters.targetFramework }}
   - name: SignAssembly
-    value: ${{ parameters.signAssembly }}
+    value: ${{ parameters.packageOptions.signAssembly }}
   - name: IncludeSymbols
-    value: ${{ parameters.includeSymbols }}
+    value: ${{ parameters.packageOptions.includeSymbols }}
   - name: SymbolPackageFormat
-    value: ${{ parameters.symbolPackageFormat }}
+    value: ${{ parameters.packageOptions.symbolPackageFormat }}
   - name: NoBuildBeforePack
-    value: ${{ parameters.noBuildBeforePack }}
+    value: ${{ parameters.packageOptions.noBuildBeforePack }}
   - name: ReleaseNotes
-    value: ${{ parameters.releaseNotes }}
+    value: ${{ parameters.packageOptions.releaseNotes }}
   - name: RunTests
-    value: ${{ parameters.runTests }}
+    value: ${{ parameters.testOptions.runTests }}
   - name: TestMode
-    value: ${{ parameters.testMode }}
+    value: ${{ parameters.testOptions.testMode }}
   - group: GlobalSecrets # Must be defined as a variable group in the Azure DevOps UI
   - template: "../templates/shared/variables/global-variables.yaml"
   - template: "../templates/create-nuget-package/variables/create-nuget-package-variables.yaml"
@@ -144,18 +106,18 @@ jobs:
       - template: ../templates/create-nuget-package/steps/create-nuget-package-steps.yaml
         parameters:
           targetFramework: ${{ parameters.targetFramework }}
-          dotNetSdkVersion: ${{ parameters.dotNetSDKVersion }} # TODO: rename to dotNetSdkVersion
-          useGlobalJson: ${{ parameters.useGlobalJson }}
-          useNuGetCache: ${{ parameters.useNuGetCache }}
-          clearNuGetCache: ${{ parameters.clearNuGetCache }}
-          includeAzureDevOpsPush: ${{ parameters.includeAzureDevOpsPush }}
-          azureDevOpsPackageFeed: ${{ parameters.azureDevOpsPackageFeed }}
-          includeGitHubPush: ${{ parameters.includeGitHubPush }}
-          includeProGetPush: ${{ parameters.includeProGetPush }}
-          proGetPackageServiceIndex: ${{ parameters.proGetPackageServiceIndex }}
-          testProjects: ${{ parameters.testProjects }}
+          dotNetSdkVersion: ${{ parameters.dotNetSDKOptions.sdkVersion }}
+          useGlobalJson: ${{ parameters.dotNetSDKOptions.useGlobalJson }}
+          useNuGetCache: ${{ parameters.nuGetOptions.useCache }}
+          clearNuGetCache: ${{ parameters.nuGetOptions.clearCache }}
+          includeAzureDevOpsPush: ${{ parameters.packageOptions.azureDevOpsPush }}
+          azureDevOpsPackageFeed: ${{ parameters.packageOptions.azureDevOpsFeed }}
+          includeGitHubPush: ${{ parameters.packageOptions.gitHubPush }}
+          includeProGetPush: ${{ parameters.packageOptions.proGetPush }}
+          proGetPackageServiceIndex: ${{ parameters.packageOptions.proGetServiceIndex }}
+          testProjects: ${{ parameters.testOptions.testProjects }}
           includeLogSteps: ${{ parameters.includeLogSteps }}
-
+          
 # TODO: Rename this file exension to the industry standard .yaml over .yml
 # This will be a breaking change to all clients, so it may not be worth it.
 # All other internal files have been renamed.
