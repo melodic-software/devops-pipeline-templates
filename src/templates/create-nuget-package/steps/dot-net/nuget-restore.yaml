@@ -30,20 +30,17 @@ steps:
         }
       pwsh: true
 
+  # This uses Azure DevOps pipeline caching.
   - ${{ if and(eq(parameters.useNuGetCache, true), ne(parameters.clearNuGetCache, true)) }}:
       - template: ../shared/nuget-cache.yaml
 
+  # This actually clears the NuGet cache, which may only be valid for self-hosted agents.
+  # It shouldn't normally be used, as there aren't many conditions where we'd want to do this.
+  # One example would be a NuGet package update that overwrote an already published version.
+  # This is something that really shouldn't be done, but one scenario where the cache might need to be explicitly cleared.
+  # The restore step (noCache) might also be a way to avoid cache.
   - ${{ if eq(parameters.clearNuGetCache, true) }}:
       - template: ./nuget-clear-cache.yaml
-
-  - task: PowerShell@2
-    name: DebugCacheHit
-    displayName: "Debug Cache Hit"
-    inputs:
-      targetType: "inline"
-      script: |
-        Write-Host "NuGetCacheRestored: $(NuGetCacheRestored)"
-      pwsh: true
 
   # See this link, and the documentation.
   # It describes why this condition does not check for the environment variable
