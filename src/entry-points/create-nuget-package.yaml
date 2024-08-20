@@ -109,7 +109,7 @@ variables:
   - name: TestsPathPattern
     value: ${{ coalesce(parameters.testOptions.testsPathPattern, '**/tests*/**') }}
   - name: DryRun
-    value: ${{ parameters.dryRun }}
+    value: ${{ coalesce(parameters.dryRun, false) }}
 
   - group: GlobalSecrets # Must be defined as a variable group in the Azure DevOps UI
   - template: "../templates/shared/variables/global-variables.yaml"
