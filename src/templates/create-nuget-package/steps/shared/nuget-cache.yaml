@@ -17,13 +17,16 @@ steps:
           $TestProjectsArray = $TestProjectsArray -replace '[\[\]\"]', ''  
           $TestProjects = $TestProjectsArray -split ','
 
-          # Generate paths for each project
-          $JoinedPaths = $TestProjects | ForEach-Object {
+          # Generate paths for each project and store in an array
+          $PathArray = $TestProjects | ForEach-Object {
             $_ = $_.Trim()
             # Remove .csproj extension
             $_ = $_ -replace '\.csproj$', ''
             "**/$SelfRepositoryFolder/test*/**/$($_)/**/packages.lock.json"
-          } -join ' | '
+          }
+          
+          # Join the paths with ' | '
+          $JoinedPaths = $PathArray -join ' | '
         }
 
         # Define the full cache key
