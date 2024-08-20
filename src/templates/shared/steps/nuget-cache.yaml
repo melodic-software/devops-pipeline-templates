@@ -8,23 +8,24 @@ steps:
       targetType: "inline"
       script: |
         $TestProjectsArray = "$(TestProjects)"
+        $SelfRepositoryFolder = "$(SelfRepositoryFolder)"
         
         if ($TestProjectsArray -eq '["*.csproj"]' -or [string]::IsNullOrEmpty($TestProjectsArray)) {
           # Handle default case or empty string
-          $JoinedPaths = "**/*.csproj"
+          $JoinedPaths = "$SelfRepositoryFolder/test*/**/*.csproj"
         } else {
           # Handle specific projects
           $TestProjectsArray = $TestProjectsArray -replace '[\[\]\"]', ''  # Remove brackets and quotes
           $TestProjects = $TestProjectsArray -split ','
-          $PathList = $TestProjects | ForEach-Object {
-            $_ -replace '\.csproj$', ''  # Remove .csproj extension
-            "**/$($_)/packages.lock.json"
-          }
-          $JoinedPaths = $PathList -join ' | '
+
+          $JoinedPaths = $TestProjects | ForEach-Object {
+            $_ = $_ -replace '\.csproj$', ''  # Remove .csproj extension
+            "$SelfRepositoryFolder/test*/**/$($_)/packages.lock.json"
+          } -join ' | '
         }
 
         # Define the full cache key
-        $CacheKey = "nuget | $(Agent.OS) | **/$(SelfRepositoryFolder)/**/$(ProjectName)/packages.lock.json | $JoinedPaths,!**/bin/**,!**/obj/**"
+        $CacheKey = "nuget | $(Agent.OS) | **/$SelfRepositoryFolder/**/$(ProjectName)/packages.lock.json | $JoinedPaths,!**/bin/**,!**/obj/**"
 
         # Log the cache key
         Write-Host "Cache Key: $CacheKey"
