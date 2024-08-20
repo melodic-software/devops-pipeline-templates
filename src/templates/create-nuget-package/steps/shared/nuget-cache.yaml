@@ -7,7 +7,7 @@ steps:
       script: |
         $SelfRepositoryFolder = "$(SelfRepositoryFolder)"
         $TestProjectsArray = "$(TestProjects)"
-        $ProjectName = "$(ProjectName)
+        $ProjectName = "$(ProjectName)"
 
         $ProjectPath = "**/$SelfRepositoryFolder/**/$ProjectName/**/packages.lock.json"
 
