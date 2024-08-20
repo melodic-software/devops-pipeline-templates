@@ -45,7 +45,7 @@ steps:
           $TrimmedTestProjectsArray = $RawTestProjectsArray | ForEach-Object { $_.Trim() }
 
           # Define the path prefix.
-          $TestProjectPathPrefix = "$(SelfRepositoryFolder)/test*/**/"
+          $TestProjectPathPrefix = "**/$(SelfRepositoryFolder)/test*/**/"
 
           # Initialize the hash table to enforce unique formatted paths.
           $UniqueFormattedProjectsHashTable = @{}
@@ -65,7 +65,7 @@ steps:
         }
 
         # Log the assigned value.
-        Write-Host "Formatted Test Projects: $FormattedTestProjects"
+        Write-Host "TestProjects: $FormattedTestProjects"
 
         # Set the value using escaped data to ensure correct assignment in Azure DevOps.
         $EscapedFormattedTestProjects = Escape-Data -data $FormattedTestProjects
@@ -74,7 +74,7 @@ steps:
         # --------------------------------------------------
         # -- FINAL PROJECT LIST ----------------------------
         # --------------------------------------------------
-        $FinalProjectList = "**/$(ProjectName).csproj"
+        $FinalProjectList = "**/$(SelfRepositoryFolder)/$(ProjectName).csproj"
 
         if ($EscapedFormattedTestProjects -eq '') {
           $FinalProjectList += "`n**/tests*/*.csproj"
@@ -90,11 +90,9 @@ steps:
           }
         }
 
-        # Log the final project list.
-        Write-Host "Final Project List:"
+        Write-Host "ProjectList:"
         Write-Host $FinalProjectList
 
-        # Set the final project list using escaped data.
         $EscapedFinalProjectList = Escape-Data -data $FinalProjectList
         Write-Host "##vso[task.setvariable variable=ProjectList;]$EscapedFinalProjectList"
       pwsh: true
