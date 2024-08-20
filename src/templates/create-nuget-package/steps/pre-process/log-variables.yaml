@@ -42,6 +42,7 @@ steps:
           "POWERSHELLSCRIPTSDIRECTORY" = "PowerShellScriptsDirectory"
           "PROGETPACKAGESERVICEINDEX" = "ProGetPackageServiceIndex"
           "PROJECTNAME" = "ProjectName"
+          "PROJECTLIST" = "ProjectList"
           "RELEASENOTES" = "ReleaseNotes"
           "RUNTESTS" = "RunTests"
           "SIGNASSEMBLY" = "SignAssembly"

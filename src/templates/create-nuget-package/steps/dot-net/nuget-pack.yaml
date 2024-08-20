@@ -15,7 +15,8 @@ steps:
       includesource: false
       versioningScheme: byEnvVar
       versionEnvVar: GitVersion_SemVer
+      arguments: --no-restore
 
   # Regarding the $(NoBuildBeforePack) and "nobuild".
   # In most cases, this can be true since we've already built the project at this point.
-  # This might need to be set to false for a package built from a proejct that has internal project references.
+  # This might need to be set to false for a package built from a project that has internal project references.

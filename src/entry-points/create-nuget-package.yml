@@ -65,7 +65,7 @@ parameters:
   - name: noBuildBeforePack
     displayName: No Build Before Pack
     type: boolean
-    default: false
+    default: true
   - name: releaseNotes
     displayName: Release Notes
     type: string
