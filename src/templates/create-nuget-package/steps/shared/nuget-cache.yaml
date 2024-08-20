@@ -9,7 +9,12 @@ steps:
         $TestProjectsArray = "$(TestProjects)"
         $ProjectName = "$(ProjectName)"
 
+        Write-Host "Debug: SelfRepositoryFolder = $SelfRepositoryFolder"
+        Write-Host "Debug: TestProjectsArray = $TestProjectsArray"
+        Write-Host "Debug: ProjectName = $ProjectName"
+
         $ProjectPath = "**/$SelfRepositoryFolder/**/$ProjectName/**/packages.lock.json"
+        Write-Host "Debug: ProjectPath = $ProjectPath"
 
         if ($TestProjectsArray -eq '["*.csproj"]' -or [string]::IsNullOrEmpty($TestProjectsArray)) {
           $TestProjectPaths = "**/$SelfRepositoryFolder/test*/**/packages.lock.json"
@@ -21,18 +26,21 @@ steps:
             $_ = $_.Trim()
             # Remove .csproj extension
             $_ = $_ -replace '\.csproj$', ''
-            "**/$SelfRepositoryFolder/test*/**/$_/**/packages.lock.json"
+            "**/$_/**/packages.lock.json"
           }
           
           $TestProjectPaths = $PathArray -join ' | '
         }
 
+        Write-Host "Debug: TestProjectPaths = $TestProjectPaths"
+
         # Define the full cache key
         $NuGetCacheKey = "nuget | $(Agent.OS) | $ProjectPath | $TestProjectPaths,!**/bin/**,!**/obj/**"
 
-        # Log the cache key
         Write-Host "Cache Key: $NuGetCacheKey"
         Write-Host "##vso[task.setvariable variable=NuGetCacheKey]$NuGetCacheKey"
+
+        
       pwsh: true
 
   # https://learn.microsoft.com/en-us/azure/devops/pipelines/artifacts/caching-nuget?view=azure-devops
