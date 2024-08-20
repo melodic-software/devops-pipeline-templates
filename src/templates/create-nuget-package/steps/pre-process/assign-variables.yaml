@@ -12,7 +12,7 @@ steps:
       targetType: "inline"
       script: |
         # Escape percent signs, newlines, and carriage returns.
-        # This is required for the $TestProjects variable assignment below.
+        # This is required for the $TestProjects and $ProjectList variable assignments below.
         # TODO: Migrate this out if needed in other scripts.
         function Escape-Data {
             param (
@@ -35,7 +35,7 @@ steps:
         # -- TEST PROJECTS ---------------------------------
         # --------------------------------------------------
         # Convert the input parameter to a PowerShell array.
-        $TestProjects = "${{ join(',', parameters.testProjects) }}".Split(',')
+        $TestProjects = "${{ join(',', parameters.testProjects) }}".Split(',', [System.StringSplitOptions]::RemoveEmptyEntries)
 
         # If the array is empty or contains only empty strings, set TestProjects to an empty string.
         if (-not ($TestProjects -join '').Trim()) {
@@ -68,7 +68,30 @@ steps:
         Write-Host "TestProjects: $TestProjectsString"
 
         # We set the value using escaped data, because otherwise the value won't get assigned correctly.
-        # The esacped values will be resolved when accessed.
+        # The escaped values will be resolved when accessed.
         $EscapedTestProjectsString = Escape-Data -data $TestProjectsString
         Write-Host "##vso[task.setvariable variable=TestProjects;]$EscapedTestProjectsString"
+
+        # --------------------------------------------------
+        # -- PROJECT LIST ----------------------------------
+        # --------------------------------------------------
+        $ProjectList = "**/$(ProjectName).csproj"
+        $TestProjects = "$(TestProjects)"
+
+        if ($TestProjects -eq '["*.csproj"]') {
+          $ProjectList += "`n**/tests*/*.csproj"
+        } else {
+          # Split using both newline and comma to handle different input formats.
+          $TestProjects = $TestProjects -split "(`n|,)"
+          foreach ($TestProject in $TestProjects) {
+            if ($TestProject.Trim()) {
+              $ProjectList += "`n$($TestProject.Trim())"
+            }
+          }
+        }
+
+        Write-Host "Project List:"
+        Write-Host $ProjectList
+        $EscapedProjectList = Escape-Data -data $ProjectList
+        Write-Host "##vso[task.setvariable variable=ProjectList;]$EscapedProjectList"
       pwsh: true

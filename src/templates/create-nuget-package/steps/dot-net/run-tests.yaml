@@ -4,12 +4,19 @@ steps:
   - task: DotNetCoreCLI@2
     name: RunTestsDotNet
     displayName: Run Tests
-    condition: and(succeeded(), eq(variables['RunTests'], true), ne(variables['TestProjects'], ''))
+    condition: and(succeeded(), eq(variables['RunTests'], 'true'), ne(variables['TestProjects'], ''))
     inputs:
       command: "test"
-      projects: |
-        $(TestProjects)
-      arguments: --configuration $(BuildConfiguration) --collect:"$(CodeCoverageFramework)" --verbosity detailed /p:AssemblyOriginatorKeyFile=$(AssemblyOriginatorKeyFile) /p:CollectCoverage=true /p:CoverletOutputFormat=$(CoverletOutputFormat)
+      projects: "$(TestProjects)"
+      arguments: >
+        --configuration $(BuildConfiguration) 
+        --collect:"$(CodeCoverageFramework)" 
+        --verbosity detailed 
+        --no-restore 
+        --no-build
+        /p:AssemblyOriginatorKeyFile=$(AssemblyOriginatorKeyFile) 
+        /p:CollectCoverage=true 
+        /p:CoverletOutputFormat=$(CoverletOutputFormat)
       publishTestResults: true # This is optional but recommended for better tracking of test results
 
   # The use of /p:AssemblyOriginatorKeyFile=$(AssemblyOriginatorKeyFile)' is for specific test scenarios.
@@ -23,7 +30,7 @@ steps:
   # Publish code coverage results for both Windows and Linux
   - task: PublishCodeCoverageResults@2
     displayName: "Publish Code Coverage Results"
-    condition: and(succeeded(), eq(variables['RunTests'], true), ne(variables['TestProjects'], ''))
+    condition: and(succeeded(), eq(variables['RunTests'], 'true'), ne(variables['TestProjects'], ''))
     inputs:
       codeCoverageTool: $(CodeCoverageTool)
       summaryFileLocation: "$(Agent.TempDirectory)/**/coverage.cobertura.xml"
