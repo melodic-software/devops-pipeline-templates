@@ -42,7 +42,7 @@ parameters:
   - name: useNuGetCache
     displayName: Use NuGet Cache
     type: boolean
-    default: true
+    default: false
   - name: clearNuGetCache
     displayName: Clear NuGet Cache
     type: boolean
