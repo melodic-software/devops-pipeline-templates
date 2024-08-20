@@ -26,7 +26,7 @@ steps:
             $_ = $_.Trim()
             # Remove .csproj extension
             $_ = $_ -replace '\.csproj$', ''
-            "**/$_/**/packages.lock.json"
+            "$_/**/packages.lock.json"
           }
           
           $TestProjectPaths = $PathArray -join ' | '
