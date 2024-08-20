@@ -16,11 +16,11 @@ steps:
           # Handle specific projects
           $TestProjectsArray = $TestProjectsArray -replace '[\[\]\"]', ''  # Remove brackets and quotes
           $TestProjects = $TestProjectsArray -split ','
-          $JoinedPaths = ($TestProjects | ForEach-Object { "**/$($_)/packages.lock.json" }) -join ' | '
+          $JoinedPaths = ($TestProjects | ForEach-Object { "**/$($_)" }) -join ' | '
         }
 
         # Define the full cache key
-        $CacheKey = "nuget | $(Agent.OS) | **/$(SelfRepositoryFolder)/**/$(ProjectName)/packages.lock.json | $JoinedPaths,!**/bin/**,!**/obj/**"
+        $CacheKey = "nuget | $(Agent.OS) | **/$(SelfRepositoryFolder)/**/$(ProjectName)/packages.lock.json | $JoinedPaths/packages.lock.json,!**/bin/**,!**/obj/**"
 
         # Log the cache key
         Write-Host "Cache Key: $CacheKey"
