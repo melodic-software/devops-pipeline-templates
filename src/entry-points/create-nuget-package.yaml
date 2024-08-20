@@ -109,7 +109,7 @@ variables:
   - name: TestsPathPattern
     value: ${{ coalesce(parameters.testOptions.testsPathPattern, '**/tests*/**') }}
   - name: DryRun
-    value: ${{ coalesce(parameters.dryRun, false) }}
+    value: ${{ parameters.dryRun }}
 
   - group: GlobalSecrets # Must be defined as a variable group in the Azure DevOps UI
   - template: "../templates/shared/variables/global-variables.yaml"
@@ -133,6 +133,7 @@ jobs:
           includeProGetPush: ${{ coalesce(parameters.packageOptions.proGetPush, false) }}
           proGetPackageServiceIndex: ${{ coalesce(parameters.packageOptions.proGetServiceIndex, '') }}
           testProjects: ${{ parameters.testOptions.testProjects }}
-          includeLogSteps: ${{ coalesce(parameters.includeLogSteps, false) }}
+          includeLogSteps: ${{ parameters.includeLogSteps }}
+
 # TODO: Eventually we'll want to remove all older .NET framework paths
 # It will help simplify and streamline things.
