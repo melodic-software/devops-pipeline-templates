@@ -17,12 +17,11 @@ steps:
           # Handle specific projects
           $TestProjectsArray = $TestProjectsArray -replace '[\[\]\"]', ''  # Remove brackets and quotes
           $TestProjects = $TestProjectsArray -split ','
-          
-          # Construct the paths for each project, removing .csproj and appending the rest of the path
+
           $JoinedPaths = $TestProjects | ForEach-Object {
             $_ = $_.Trim()
             $_ = $_ -replace '\.csproj$', ''  # Remove .csproj extension
-            "$SelfRepositoryFolder/test*/**/$_/packages.lock.json"
+            "$SelfRepositoryFolder/test*/**/$($_)/packages.lock.json"
           } -join ' | '
         }
 
