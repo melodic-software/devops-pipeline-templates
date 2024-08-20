@@ -25,7 +25,7 @@ steps:
         # Log the cache key
         Write-Host "Cache Key: $CacheKey"
         Write-Host "##vso[task.setvariable variable=ComputedCacheKey]$CacheKey"
-    pwsh: true
+      pwsh: true
 
   - task: Cache@2
     displayName: NuGet Cache
