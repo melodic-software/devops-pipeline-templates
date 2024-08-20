@@ -135,9 +135,5 @@ jobs:
           testProjects: ${{ coalesce(parameters.testOptions.testProjects, ['*.csproj']) }}
           includeLogSteps: ${{ coalesce(parameters.includeLogSteps, false) }}
 
-# TODO: Rename this file exension to the industry standard .yaml over .yml
-# This will be a breaking change to all clients, so it may not be worth it.
-# All other internal files have been renamed.
-
 # TODO: Eventually we'll want to remove all older .NET framework paths
 # It will help simplify and streamline things.
