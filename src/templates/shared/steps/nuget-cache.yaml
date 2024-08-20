@@ -20,7 +20,7 @@ steps:
 
           $JoinedPaths = $TestProjects | ForEach-Object {
             $_ = $_ -replace '\.csproj$', ''  # Remove .csproj extension
-            "$SelfRepositoryFolder/test*/**/$($_)/packages.lock.json"
+            "$SelfRepositoryFolder/test*/**/$_/packages.lock.json"
           } -join ' | '
         }
 
