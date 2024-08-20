@@ -45,10 +45,14 @@ steps:
         Write-Host "NuGetCacheRestored: $(NuGetCacheRestored)"
       pwsh: true
 
+  # See this link, and the documentation.
+  # It describes why this condition does not check for the environment variable
+  # that is set to true when the NuGet package cache has been restored.
+  # https://developercommunity.visualstudio.com/t/occasional-error-netsdk1004-assets-file-projectass/1219159
   - task: DotNetCoreCLI@2
     name: NuGetRestoreDotNet
     displayName: NuGet Restore
-    condition: and(succeeded(), ne(variables.NuGetCacheRestored, 'true'))
+    condition: succeeded()
     inputs:
       command: restore
       projects: "$(ProjectList)"

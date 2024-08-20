@@ -76,16 +76,15 @@ steps:
         # --------------------------------------------------
         $FinalProjectList = "**/$(SelfRepositoryFolder)/**/$(ProjectName).csproj"
 
-        if ($EscapedFormattedTestProjects -eq '') {
-          $FinalProjectList += "`n**/tests*/*.csproj"
-        } elseif ($EscapedFormattedTestProjects -eq (Escape-Data -data '["*.csproj"]')) {
-          $FinalProjectList += "`n**/tests*/*.csproj"
-        } else {
-          # Split using both newline and comma to handle different input formats.
-          $FormattedTestProjectsArray = $EscapedFormattedTestProjects -split "%0A|%2C"
-          foreach ($TestProject in $FormattedTestProjectsArray) {
-            if ($TestProject.Trim()) {
-              $FinalProjectList += "`n$($TestProject.Trim())"
+        if ($FormattedTestProjects -ne '') {
+          if ($FormattedTestProjects -eq "*.csproj") {
+            $FinalProjectList += "`n**/tests*/*.csproj"
+          } else {
+            $FormattedTestProjectsArray = $FormattedTestProjects -split "`n"
+            foreach ($TestProject in $FormattedTestProjectsArray) {
+              if ($TestProject.Trim()) {
+                $FinalProjectList += "`n$($TestProject.Trim())"
+              }
             }
           }
         }
