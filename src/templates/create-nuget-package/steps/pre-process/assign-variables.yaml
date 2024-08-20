@@ -69,7 +69,7 @@ steps:
 
         # Set the value using escaped data to ensure correct assignment in Azure DevOps.
         $EscapedFormattedTestProjects = Escape-Data -data $FormattedTestProjects
-        Write-Host "##vso[task.setvariable variable=FormattedTestProjects;]$EscapedFormattedTestProjects"
+        Write-Host "##vso[task.setvariable variable=TestProjects;]$EscapedFormattedTestProjects"
 
         # --------------------------------------------------
         # -- FINAL PROJECT LIST ----------------------------
@@ -96,5 +96,5 @@ steps:
 
         # Set the final project list using escaped data.
         $EscapedFinalProjectList = Escape-Data -data $FinalProjectList
-        Write-Host "##vso[task.setvariable variable=FinalProjectList;]$EscapedFinalProjectList"
+        Write-Host "##vso[task.setvariable variable=ProjectList;]$EscapedFinalProjectList"
       pwsh: true
