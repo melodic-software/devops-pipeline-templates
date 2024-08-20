@@ -85,21 +85,32 @@ variables:
   - name: TargetFramework
     value: ${{ parameters.targetFramework }}
   - name: SignAssembly
-    value: ${{ parameters.packageOptions.signAssembly }}
+    value: ${{ coalesce(parameters.packageOptions.signAssembly, true) }}
   - name: IncludeSymbols
-    value: ${{ parameters.packageOptions.includeSymbols }}
+    value: ${{ coalesce(parameters.packageOptions.includeSymbols, true) }}
   - name: SymbolPackageFormat
-    value: ${{ parameters.packageOptions.symbolPackageFormat }}
+    value: ${{ coalesce(parameters.packageOptions.symbolPackageFormat, 'snupkg') }}
   - name: NoBuildBeforePack
-    value: ${{ parameters.packageOptions.noBuildBeforePack }}
+    value: ${{ coalesce(parameters.packageOptions.noBuildBeforePack, true) }}
   - name: ReleaseNotes
-    value: ${{ parameters.packageOptions.releaseNotes }}
+    value: ${{ coalesce(parameters.packageOptions.releaseNotes, '') }}
+  - name: AzureDevOpsPush
+    value: ${{ coalesce(parameters.packageOptions.azureDevOpsPush, true) }}
+  - name: AzureDevOpsFeed
+    value: ${{ coalesce(parameters.packageOptions.azureDevOpsFeed, '') }}
+  - name: GitHubPush
+    value: ${{ coalesce(parameters.packageOptions.gitHubPush, false) }}
+  - name: ProGetPush
+    value: ${{ coalesce(parameters.packageOptions.proGetPush, false) }}
+  - name: ProGetServiceIndex
+    value: ${{ coalesce(parameters.packageOptions.proGetServiceIndex, '') }}
   - name: RunTests
-    value: ${{ parameters.testOptions.runTests }}
+    value: ${{ coalesce(parameters.testOptions.runTests, true) }}
   - name: TestsPathPattern
-    value: ${{ parameters.testOptions.testsPathPattern }}
+    value: ${{ coalesce(parameters.testOptions.testsPathPattern, '**/tests*/**') }}
   - name: DryRun
     value: ${{ parameters.dryRun }}
+
   - group: GlobalSecrets # Must be defined as a variable group in the Azure DevOps UI
   - template: "../templates/shared/variables/global-variables.yaml"
   - template: "../templates/create-nuget-package/variables/create-nuget-package-variables.yaml"
@@ -112,17 +123,17 @@ jobs:
       - template: ../templates/create-nuget-package/steps/create-nuget-package-steps.yaml
         parameters:
           targetFramework: ${{ parameters.targetFramework }}
-          dotNetSdkVersion: ${{ parameters.dotNetSdkOptions.sdkVersion }}
-          useGlobalJson: ${{ parameters.dotNetSdkOptions.useGlobalJson }}
-          useNuGetCache: ${{ parameters.nuGetOptions.useCache }}
-          clearNuGetCache: ${{ parameters.nuGetOptions.clearCache }}
-          includeAzureDevOpsPush: ${{ parameters.packageOptions.azureDevOpsPush }}
-          azureDevOpsPackageFeed: ${{ parameters.packageOptions.azureDevOpsFeed }}
-          includeGitHubPush: ${{ parameters.packageOptions.gitHubPush }}
-          includeProGetPush: ${{ parameters.packageOptions.proGetPush }}
-          proGetPackageServiceIndex: ${{ parameters.packageOptions.proGetServiceIndex }}
-          testProjects: ${{ parameters.testOptions.testProjects }}
-          includeLogSteps: ${{ parameters.includeLogSteps }}
+          dotNetSdkVersion: ${{ coalesce(parameters.dotNetSdkOptions.sdkVersion, '') }}
+          useGlobalJson: ${{ coalesce(parameters.dotNetSdkOptions.useGlobalJson, true) }}
+          useNuGetCache: ${{ coalesce(parameters.nuGetOptions.useCache, false) }}
+          clearNuGetCache: ${{ coalesce(parameters.nuGetOptions.clearCache, false) }}
+          includeAzureDevOpsPush: ${{ coalesce(parameters.packageOptions.azureDevOpsPush, true) }}
+          azureDevOpsPackageFeed: ${{ coalesce(parameters.packageOptions.azureDevOpsFeed, '') }}
+          includeGitHubPush: ${{ coalesce(parameters.packageOptions.gitHubPush, false) }}
+          includeProGetPush: ${{ coalesce(parameters.packageOptions.proGetPush, false) }}
+          proGetPackageServiceIndex: ${{ coalesce(parameters.packageOptions.proGetServiceIndex, '') }}
+          testProjects: ${{ coalesce(parameters.testOptions.testProjects, ['*.csproj']) }}
+          includeLogSteps: ${{ coalesce(parameters.includeLogSteps, false) }}
 
 # TODO: Rename this file exension to the industry standard .yaml over .yml
 # This will be a breaking change to all clients, so it may not be worth it.
