@@ -16,10 +16,11 @@ steps:
           # Handle specific projects
           $TestProjectsArray = $TestProjectsArray -replace '[\[\]\"]', ''  # Remove brackets and quotes
           $TestProjects = $TestProjectsArray -split ','
-          $JoinedPaths = $TestProjects | ForEach-Object {
+          $PathList = $TestProjects | ForEach-Object {
             $_ -replace '\.csproj$', ''  # Remove .csproj extension
             "**/$($_)/packages.lock.json"
-          } -join ' | '
+          }
+          $JoinedPaths = $PathList -join ' | '
         }
 
         # Define the full cache key
