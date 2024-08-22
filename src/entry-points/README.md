@@ -23,12 +23,12 @@ The templates within the "entry-points" directory, along with their related temp
 Before making changes:
 
 1. **Communicate**: Communicate with the team so everybody is aware of the desired change. Consult with a senior team member if needed.
-1. **Understand the Implications**: Ensure you grasp the extent of the impact your changes might have.
-1. **Testing**: Always test your changes thoroughly (if possible) in an isolated environment before merging.
-1. **Versioning**: If your changes might break existing workflows, consider introducing versioning for your templates. This allows pipelines to specify which version of a template they want to use. Versioning can be applied by using a folder like "v1", "v2" and so on.
-1. **Tagging**: Whenever a significant change is made, tag the repository. This provides a clear history of changes and allows for easy rollbacks if needed. Also, existing repositories can reference a tag associated with this repo, which forces the consuming repos to update versions manually.
-1. **Documentation**: Update all relevant documentation to reflect your changes. This ensures that users are aware of any new features or modifications.
-1. **Review**: Always have another team member review your changes before merging to ensure quality and that no unintentional disruptions occur.
+2. **Understand the Implications**: Ensure you grasp the extent of the impact your changes might have.
+3. **Testing**: Always test your changes thoroughly (if possible) in an isolated environment before merging.
+4. **Versioning**: If your changes might break existing workflows, consider introducing versioning for your templates. This allows pipelines to specify which version of a template they want to use. Versioning can be applied by using a folder like "v1", "v2" and so on.
+5. **Tagging**: Whenever a significant change is made, tag the repository. This provides a clear history of changes and allows for easy rollbacks if needed. Also, existing repositories can reference a tag associated with this repo, which forces the consuming repos to update versions manually.
+6. **Documentation**: Update all relevant documentation to reflect your changes. This ensures that users are aware of any new features or modifications.
+7. **Review**: Always have another team member review your changes before merging to ensure quality and that no unintentional disruptions occur.
 
 ## Usage
 
