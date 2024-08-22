@@ -30,10 +30,7 @@ steps:
         }
 
         # Determine the value for NuGetNoCache
-        $UseNuGetCache = ${{ parameters.useNuGetCache }}
-        $ClearNuGetCache = ${{ parameters.clearNuGetCache }}
-
-        if (-not $UseNuGetCache -or $ClearNuGetCache) {
+        if ("${{ parameters.useNuGetCache }}" -eq "False" -or "${{ parameters.clearNuGetCache }}" -eq "True") {
             $NuGetNoCache = "true"
         } else {
             $NuGetNoCache = "false"
