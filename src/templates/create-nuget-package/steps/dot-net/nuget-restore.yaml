@@ -28,6 +28,17 @@ steps:
             Write-Host "No NuGet.config found. Using default configuration."
             echo "##vso[task.setvariable variable=FeedsToUse]select"
         }
+
+        # Determine the value for NuGetNoCache
+        $UseNuGetCache = ${{ parameters.useNuGetCache }}
+        $ClearNuGetCache = ${{ parameters.clearNuGetCache }}
+
+        if (-not $UseNuGetCache -or $ClearNuGetCache) {
+            $NuGetNoCache = "true"
+        } else {
+            $NuGetNoCache = "false"
+        }
+        echo "##vso[task.setvariable variable=NuGetNoCache]$NuGetNoCache"
       pwsh: true
 
   # This uses Azure DevOps pipeline caching.
@@ -58,4 +69,4 @@ steps:
       # https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-restore
       #restoreArguments: '--locked-mode' # Required for NuGet package caching
       restoreDirectory: $(NuGetRestoreDirectory)
-      #noCache: true
+      noCache: $(NuGetNoCache)
