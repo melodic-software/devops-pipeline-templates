@@ -15,5 +15,5 @@ variables:
     value: "Melodic"
   - name: PowerShellScriptsDirectory
     value: "src/templates/create-nuget-package/powershell"
-   - name: ProGetPackageServiceIndex
+  - name: ProGetPackageServiceIndex
     value: "https://packages.melodicsoftware.com/nuget/main-nuget/v3/index.json"
