@@ -68,3 +68,4 @@ steps:
       #restoreArguments: '--locked-mode' # Required for NuGet package caching
       restoreDirectory: $(NuGetRestoreDirectory)
       noCache: $(NuGetNoCache)
+    retryCountOnTaskFailure: 3
