@@ -36,15 +36,11 @@ function Set-AssemblyVersionVariables {
         [string]$OriginalBuildNumber,
         [string]$SemVer,
         [string]$Major,
-        [string]$Minor,
-        [string]$Patch,
+        [string]$Minor = "0",
+        [string]$Patch = "0",
         [string]$PreReleaseLabel,
         [string]$ShortSha
     )
-
-    # Default Minor and Patch if not set
-    $Minor = if ($Minor) { $Minor } else { "0" }
-    $Patch = if ($Patch) { $Patch } else { "0" }
 
     $MajorMinorPatch = "$Major.$Minor.$Patch"
 
@@ -66,7 +62,7 @@ function Set-AssemblyVersionVariables {
     # Define the regex pattern to match a build number format of 'yyyyMMdd.Revision'
     $BuildNumberPattern = '^(\d{8})\.(\d+)$'
 
-    # Determine the effective build number to use.
+    # Determine the effective build number.
     $EffectiveBuildNumber = if ($OriginalBuildNumber -match $BuildNumberPattern) { 
         $OriginalBuildNumber 
     }
@@ -77,7 +73,15 @@ function Set-AssemblyVersionVariables {
         $null 
     }
 
+    # Best practice for assembly versions:
+    # https://learn.microsoft.com/en-us/dotnet/standard/library-guidance/versioning
+
+    $AssemblyVersion = "$Major.0.0.0"  # Only major version as per guidelines
+    Write-Host "AssemblyVersion: $AssemblyVersion"
+    Write-Host "##vso[task.setvariable variable=AssemblyVersion]$AssemblyVersion"
+
     if ($null -ne $EffectiveBuildNumber) {
+        # If BuildNumber matches 'yyyyMMdd.Revision'
         $DatePart = $EffectiveBuildNumber.Split('.')[0]
         $RevisionPart = $EffectiveBuildNumber.Split('.')[-1]
 
@@ -93,25 +97,34 @@ function Set-AssemblyVersionVariables {
         Write-Host "RevisionPart: $RevisionPart"
         Write-Host "Revision: $Revision"
 
-        $AssemblyVersion = "$Major.0.0.0"
-        Write-Host "AssemblyVersion: $AssemblyVersion"
-        Write-Host "##vso[task.setvariable variable=AssemblyVersion]$AssemblyVersion"
-
+        # FileVersion includes Build (SafeBuildId) and Revision
         $FileVersion = "$Major.$Minor.$SafeBuildId.$Revision"
         Write-Host "FileVersion: $FileVersion"
         Write-Host "##vso[task.setvariable variable=FileVersion]$FileVersion"
-
-        $InformationalVersion = "$MajorMinorPatch"
-        if (-not [string]::IsNullOrEmpty($PreReleaseLabel)) {
-            $InformationalVersion = "$InformationalVersion-$PreReleaseLabel"
-        }
-        $InformationalVersion = "$InformationalVersion+$ShortSha"
     }
     else {
-        Write-Error "BuildNumber is not in the expected format."
-        throw "Invalid BuildNumber format, cannot proceed."
+        # Fallback logic for invalid or unexpected build number formats
+        Write-Warning "BuildNumber does not match expected format 'yyyyMMdd.Revision'. Applying fallback logic."
+
+        # Fallback SafeBuildId: Current date and time for more uniqueness
+        $CurrentDate = (Get-Date).ToString("yyDDD")  # Year + Day of the Year
+        $CurrentTime = (Get-Date).ToString("HHmm")   # Hour and minute to ensure uniqueness within the same day
+        $SafeBuildId = "$CurrentDate$CurrentTime"
+
+        # Use a 3-digit hash of the ShortSha as the revision number for better uniqueness
+        $ShortShaHash = [Math]::Abs(($ShortSha.GetHashCode() % 1000)).ToString("D3")
+
+        # FileVersion includes Build (SafeBuildId + Time) and Revision (ShortShaHash)
+        $FileVersion = "$Major.$Minor.$SafeBuildId.$ShortShaHash"
+        Write-Host "FileVersion (Fallback): $FileVersion"
+        Write-Host "##vso[task.setvariable variable=FileVersion]$FileVersion"
     }
 
+    $InformationalVersion = "$MajorMinorPatch"
+    if (-not [string]::IsNullOrEmpty($PreReleaseLabel)) {
+        $InformationalVersion = "$InformationalVersion-$PreReleaseLabel"
+    }
+    $InformationalVersion = "$InformationalVersion+$ShortSha"
     Write-Host "InformationalVersion: $InformationalVersion"
     Write-Host "##vso[task.setvariable variable=InformationalVersion]$InformationalVersion"
 
