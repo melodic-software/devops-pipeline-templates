@@ -55,6 +55,7 @@ steps:
   # It describes why this condition does not check for the environment variable
   # that is set to true when the NuGet package cache has been restored.
   # https://developercommunity.visualstudio.com/t/occasional-error-netsdk1004-assets-file-projectass/1219159
+  # https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-restore
   - task: DotNetCoreCLI@2
     name: NuGetRestoreDotNet
     displayName: NuGet Restore
@@ -64,8 +65,7 @@ steps:
       projects: "$(ProjectList)"
       feedsToUse: $(FeedsToUse)
       nugetConfigPath: $(NuGetConfigPath)
-      # https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-restore
-      #restoreArguments: '--locked-mode' # Required for NuGet package caching
+      restoreArguments: '--force-evaluate'
       restoreDirectory: $(NuGetRestoreDirectory)
       noCache: $(NuGetNoCache)
     retryCountOnTaskFailure: 3
