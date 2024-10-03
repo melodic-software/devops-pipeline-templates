@@ -63,7 +63,6 @@ steps:
         nuget
       path: |
         $(NuGetRestoreDirectory)
-        $(Build.SourcesDirectory)/**/obj/project.assets.json
       cacheHitVar: "NuGetCacheRestored"
 
   - task: PowerShell@2
