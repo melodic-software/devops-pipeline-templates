@@ -1,11 +1,11 @@
 steps:
-- task: PowerShell@2
+  - task: PowerShell@2
     name: ClearNuGetCache
-    displayName: 'Clear NuGet Cache'
+    displayName: "Clear NuGet Cache"
     condition: succeeded()
     continueOnError: true
     inputs:
-      targetType: 'inline'
+      targetType: "inline"
       script: |
         try {
           dotnet nuget locals all --clear -v n
