@@ -51,9 +51,6 @@ steps:
   - ${{ if eq(parameters.clearNuGetCache, true) }}:
       - template: ./nuget-clear-cache.yaml
 
-  - script: echo "NuGetConfigPath: $(NuGetConfigPath)"
-  - script: echo "FeedsToUse: $(FeedsToUse)"
-
   # See this link, and the documentation.
   # It describes why this condition does not check for the environment variable
   # that is set to true when the NuGet package cache has been restored.
