@@ -42,7 +42,7 @@ parameters:
     type: object
     default:
       useCache: true
-      clearCache: true
+      clearCache: false
   - name: packageOptions
     displayName: Package Options
     type: object
