@@ -8,7 +8,7 @@ steps:
       targetType: "inline"
       script: |
         try {
-          dotnet nuget locals all --clear -v n
+          dotnet nuget locals all --clear
           Write-Host "NuGet cache cleared"
         } catch {
           Write-Host "Failed to clear NuGet cache: $_"
