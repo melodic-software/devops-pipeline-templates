@@ -58,7 +58,7 @@ steps:
   - task: DotNetCoreCLI@2
     name: NuGetRestoreDotNet
     displayName: NuGet Restore
-    condition: succeeded()
+    condition: and(succeeded(), ne(variables['NuGetCacheRestored'], 'true'))
     inputs:
       command: restore
       projects: "$(ProjectList)"

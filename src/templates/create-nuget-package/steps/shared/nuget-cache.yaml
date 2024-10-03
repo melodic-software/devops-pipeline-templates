@@ -42,9 +42,9 @@ steps:
 
         # Define the full cache key
         if ($TestProjectPaths) {
-          $NuGetCacheKey = "nuget | $(Agent.OS) | $ProjectPath | $TestProjectPaths,!**/bin/**,!**/obj/**"
+            $NuGetCacheKey = "nuget | $(Agent.OS) | $ProjectPath | $TestProjectPaths,!**/bin/**,!**/obj/**"
         } else {
-          $NuGetCacheKey = "nuget | $(Agent.OS) | $ProjectPath,!**/bin/**,!**/obj/**"
+            $NuGetCacheKey = "nuget | $(Agent.OS) | $ProjectPath,!**/bin/**,!**/obj/**"
         }
 
         Write-Host "Cache Key: $NuGetCacheKey"
@@ -61,7 +61,9 @@ steps:
       restoreKeys: |
         nuget | "$(Agent.OS)"
         nuget
-      path: "$(NuGetRestoreDirectory)"
+      path: |
+        $(NuGetRestoreDirectory)
+        $(Build.SourcesDirectory)/**/obj/project.assets.json
       cacheHitVar: "NuGetCacheRestored"
 
   - task: PowerShell@2
