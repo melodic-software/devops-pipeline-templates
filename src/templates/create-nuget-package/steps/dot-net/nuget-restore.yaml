@@ -65,7 +65,7 @@ steps:
       projects: "$(ProjectList)"
       feedsToUse: $(FeedsToUse)
       nugetConfigPath: $(NuGetConfigPath)
-      restoreArguments: '--force-evaluate'
+      #restoreArguments: '--force-evaluate'
       restoreDirectory: $(NuGetRestoreDirectory)
       noCache: $(NuGetNoCache)
     retryCountOnTaskFailure: 3

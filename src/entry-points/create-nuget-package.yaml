@@ -41,7 +41,7 @@ parameters:
     displayName: NuGet Options
     type: object
     default:
-      useCache: true
+      useCache: false
       clearCache: false
   - name: packageOptions
     displayName: Package Options
