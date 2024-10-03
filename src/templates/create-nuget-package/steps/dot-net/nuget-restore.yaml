@@ -49,7 +49,7 @@ steps:
   # This is something that really shouldn't be done, but one scenario where the cache might need to be explicitly cleared.
   # The restore step (noCache) might also be a way to avoid cache.
   - ${{ if eq(parameters.clearNuGetCache, true) }}:
-      - template: ./nuget-clear-cache.yaml
+      - template: ./nuget-cache-clear.yaml
 
   # See this link, and the documentation.
   # It describes why this condition does not check for the environment variable
