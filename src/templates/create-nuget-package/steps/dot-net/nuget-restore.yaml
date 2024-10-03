@@ -58,14 +58,14 @@ steps:
   - task: DotNetCoreCLI@2
     name: NuGetRestoreDotNet
     displayName: NuGet Restore
-    condition: succeeded()
-    inputs:
+    condition: and(succeeded(), ne(variables['NuGetCacheRestored'], 'true'))
+    inputs: $(NuGetCacheRestored)
       command: restore
       projects: "$(ProjectList)"
       feedsToUse: $(FeedsToUse)
       nugetConfigPath: $(NuGetConfigPath)
       # https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-restore
-      restoreArguments: '--locked-mode' # Required for NuGet package caching
+      #restoreArguments: '--locked-mode' # Required for NuGet package caching
       restoreDirectory: $(NuGetRestoreDirectory)
       noCache: $(NuGetNoCache)
     retryCountOnTaskFailure: 3
