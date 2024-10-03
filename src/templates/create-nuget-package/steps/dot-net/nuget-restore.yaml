@@ -59,7 +59,7 @@ steps:
     name: NuGetRestoreDotNet
     displayName: NuGet Restore
     condition: and(succeeded(), ne(variables['NuGetCacheRestored'], 'true'))
-    inputs: $(NuGetCacheRestored)
+    inputs:
       command: restore
       projects: "$(ProjectList)"
       feedsToUse: $(FeedsToUse)
