@@ -17,7 +17,6 @@ branches:
     prevent-increment:
       of-merged-branch: true
     track-merge-target: false
-    track-merge-message: true
     regex: ^support[/-](?<BranchName>.+)
     source-branches:
       - main

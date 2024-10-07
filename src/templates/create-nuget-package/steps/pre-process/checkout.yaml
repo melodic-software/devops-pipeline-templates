@@ -6,6 +6,7 @@ steps:
     fetchDepth: 0 # we need the full history for GitVersion to work
     persistCredentials: true
     clean: true
+    fetchTags: true
     #lfs: true
 
   - checkout: templates
