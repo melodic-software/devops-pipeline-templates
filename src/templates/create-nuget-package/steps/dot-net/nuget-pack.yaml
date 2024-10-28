@@ -27,17 +27,14 @@ steps:
         # --------------------------------------------------
         # -- PREPARE ARGUMENTS------------------------------
         # --------------------------------------------------
-        # Manually specify all parameters as arguments to retain `dotnet pack` behavior with custom properties
-        # We have to do this because custom properties like $(NuGetPackageId) require the command to be custom
         $PackArguments = "$ResolvedProjectPath --output $ArtifactStagingDirectory --no-restore"
         
-        # Conditionally add --no-build directly after --no-restore based on NoBuildBeforePack
         if ($NoBuildBeforePack -eq "true") {
           $PackArguments += " --no-build"
         }
 
         # Add remaining parameters
-        $PackArguments += " --include-symbols /p:Configuration=$BuildConfiguration /p:PackageVersion=$PackageVersion /p:NugetPackageId=$NugetPackageId --verbosity Detailed"
+        $PackArguments += " --include-symbols /p:Configuration=$BuildConfiguration /p:PackageVersion=$PackageVersion /p:PackageId=$NugetPackageId --verbosity Detailed"
 
         Write-Host "Pack Arguments: $PackArguments"
         Write-Output "##vso[task.setvariable variable=PackArguments]$PackArguments"
