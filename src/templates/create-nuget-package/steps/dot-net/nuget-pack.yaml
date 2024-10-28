@@ -37,7 +37,7 @@ steps:
         }
 
         # Add remaining parameters
-        $PackArguments += " --include-symbols /p:Configuration=$BuildConfiguration /p:PackageVersion=$PackageVersion /p:NugetPackageId=$NugetPackageId --verbosity Normal"
+        $PackArguments += " --include-symbols /p:Configuration=$BuildConfiguration /p:PackageVersion=$PackageVersion /p:NugetPackageId=$NugetPackageId --verbosity Detailed"
 
         Write-Host "Pack Arguments: $PackArguments"
         Write-Output "##vso[task.setvariable variable=PackArguments]$PackArguments"
