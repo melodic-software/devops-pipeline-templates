@@ -9,10 +9,11 @@ steps:
       command: custom
       custom: "pack"
       # Manually specify all parameters as arguments to retain `dotnet pack` behavior with custom properties
+      # We have to do this because custom properties like $(NuGetPackageId) require the command to be custom
       arguments: |
-        $(SelfRepositoryFolder)/**/$(ProjectName).csproj
-        --output $(Build.ArtifactStagingDirectory)
-        --configuration $(BuildConfiguration)
+        "$(SelfRepositoryFolder)/**/$(ProjectName).csproj"
+        --output "$(Build.ArtifactStagingDirectory)"
+        --configuration "$(BuildConfiguration)"
         --no-restore
         --no-build
         --include-symbols
