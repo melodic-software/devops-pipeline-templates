@@ -7,16 +7,17 @@ steps:
     condition: succeeded()
     inputs:
       command: custom
-      custom: 'pack'
-      packagesToPack: $(SelfRepositoryFolder)/**/$(ProjectName).csproj
-      packDirectory: $(Build.ArtifactStagingDirectory) # This is the default. The alias "outputDir" can also be used.
-      configuration: $(BuildConfiguration)
-      nobuild: $(NoBuildBeforePack)
-      includesymbols: $(IncludeSymbols) # Creates symbol NuGet packages.
-      includesource: false
-      versioningScheme: byEnvVar
-      versionEnvVar: GitVersion_SemVer
-      arguments: '--no-restore -p:NugetPackageId=$(NugetPackageId)'
+      custom: "pack"
+      # Manually specify all parameters as arguments to retain `dotnet pack` behavior with custom properties
+      arguments: |
+        $(SelfRepositoryFolder)/**/$(ProjectName).csproj
+        --output $(Build.ArtifactStagingDirectory)
+        --configuration $(BuildConfiguration)
+        --no-restore
+        --no-build
+        --include-symbols
+        -p:PackageVersion=$(GitVersion_SemVer)
+        -p:NugetPackageId=$(NugetPackageId)
 
   # Regarding the $(NoBuildBeforePack) and "nobuild".
   # In most cases, this can be true since we've already built the project at this point.
