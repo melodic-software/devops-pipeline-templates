@@ -72,13 +72,6 @@ steps:
         Write-Host "##vso[task.setvariable variable=TestProjects;]$EscapedFormattedTestProjects"
 
         # --------------------------------------------------
-        # -- RESOLVE PROJECT PATH---------------------------
-        # --------------------------------------------------
-        $ResolvedProjectPath = Get-ChildItem -Path "$(SelfRepositoryFolder)" -Recurse -Filter "$(ProjectName).csproj" | Select-Object -First 1 -ExpandProperty FullName
-        Write-Host "ResolvedProjectPath: $ResolvedProjectPath"
-        Write-Output "##vso[task.setvariable variable=ResolvedProjectPath]$ResolvedProjectPath"
-
-        # --------------------------------------------------
         # -- FINAL PROJECT LIST ----------------------------
         # --------------------------------------------------
         $FinalProjectList = "**/$(SelfRepositoryFolder)/**/$(ProjectName).csproj"
