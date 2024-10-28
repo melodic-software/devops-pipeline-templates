@@ -6,7 +6,8 @@ steps:
     displayName: NuGet Pack
     condition: succeeded()
     inputs:
-      command: pack
+      command: custom
+      custom: 'pack'
       packagesToPack: $(SelfRepositoryFolder)/**/$(ProjectName).csproj
       packDirectory: $(Build.ArtifactStagingDirectory) # This is the default. The alias "outputDir" can also be used.
       configuration: $(BuildConfiguration)
