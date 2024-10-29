@@ -1,46 +1,4 @@
 steps:
-  - task: PowerShell@2
-    name: PreparePackArguments
-    displayName: Prepare Pack Arguments
-    condition: succeeded()
-    inputs:
-      targetType: "inline"
-      script: |
-        # --------------------------------------------------
-        # -- CAPTURE PIPELINE VARIABLES---------------------
-        # --------------------------------------------------
-        $SelfRepositoryFolder = "$(SelfRepositoryFolder)"
-        $ProjectName = "$(ProjectName)"
-        $ArtifactStagingDirectory = "$(Build.ArtifactStagingDirectory)"
-        $BuildConfiguration = "$(BuildConfiguration)"
-        $PackageVersion = "$(GitVersion_SemVer)"
-        $NugetPackageId = "$(NugetPackageId)"
-        $NoBuildBeforePack = "$(NoBuildBeforePack)"
-        $TFBuild = "$(TF_BUILD)"
-
-        # --------------------------------------------------
-        # -- RESOLVE PROJECT PATH---------------------------
-        # --------------------------------------------------
-        $ResolvedProjectPath = Get-ChildItem -Path $SelfRepositoryFolder -Recurse -Filter "$ProjectName.csproj" | Select-Object -First 1 -ExpandProperty FullName
-        Write-Host "ResolvedProjectPath: $ResolvedProjectPath"
-        Write-Output "##vso[task.setvariable variable=ResolvedProjectPath]$ResolvedProjectPath"
-
-        # --------------------------------------------------
-        # -- PREPARE ARGUMENTS------------------------------
-        # --------------------------------------------------
-        $PackArguments = "$ResolvedProjectPath --output $ArtifactStagingDirectory --no-restore"
-        
-        if ($NoBuildBeforePack -eq "true") {
-          $PackArguments += " --no-build"
-        }
-
-        # Add remaining parameters
-        $PackArguments += " --include-symbols /p:Configuration=$BuildConfiguration /p:PackageVersion=$PackageVersion /p:TF_BUILD=$TFBuild --verbosity Detailed"
-
-        Write-Host "Pack Arguments: $PackArguments"
-        Write-Output "##vso[task.setvariable variable=PackArguments]$PackArguments"
-      pwsh: true
-
   # https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/dotnet-core-cli-v2
   # https://learn.microsoft.com/en-us/nuget/reference/msbuild-targets#pack-target
   # https://www.frakkingsweet.com/adding-metadata-to-nuget-packages-in-azure-devops-pipelines/
@@ -48,9 +6,16 @@ steps:
     displayName: NuGet Pack
     condition: succeeded()
     inputs:
-      command: custom
-      custom: "pack"
-      arguments: "$(PackArguments)"
+      command: pack
+      packagesToPack: $(SelfRepositoryFolder)/**/$(ProjectName).csproj
+      packDirectory: $(Build.ArtifactStagingDirectory) # This is the default. The alias "outputDir" can also be used.
+      configuration: $(BuildConfiguration)
+      nobuild: $(NoBuildBeforePack)
+      includesymbols: $(IncludeSymbols) # Creates symbol NuGet packages.
+      includesource: false
+      versioningScheme: byEnvVar
+      versionEnvVar: GitVersion_SemVer
+      arguments: "--no-restore"
 
   # Regarding the $(NoBuildBeforePack) and "nobuild".
   # In most cases, this can be true since we've already built the project at this point.
