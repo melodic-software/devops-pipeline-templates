@@ -16,6 +16,7 @@ steps:
         $PackageVersion = "$(GitVersion_SemVer)"
         $NugetPackageId = "$(NugetPackageId)"
         $NoBuildBeforePack = "$(NoBuildBeforePack)"
+        $TFBuild = "$(TF_BUILD)"
 
         # --------------------------------------------------
         # -- RESOLVE PROJECT PATH---------------------------
@@ -34,7 +35,7 @@ steps:
         }
 
         # Add remaining parameters
-        $PackArguments += " --include-symbols /p:Configuration=$BuildConfiguration /p:PackageVersion=$PackageVersion --verbosity Detailed"
+        $PackArguments += " --include-symbols /p:Configuration=$BuildConfiguration /p:PackageVersion=$PackageVersion /p:TF_BUILD=$TFBuild --verbosity Detailed"
 
         Write-Host "Pack Arguments: $PackArguments"
         Write-Output "##vso[task.setvariable variable=PackArguments]$PackArguments"
